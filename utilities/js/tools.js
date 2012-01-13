@@ -1,9 +1,9 @@
 /**
 * Douglas Crawford's supplant renamed to interpolate.
 * For all instances of the regex (b) wrapped between { and } (a)
-* replace b with the member of o that matches b, or it stays the same.
+* replace b with the member of o that matches b, or it remains blank/excluded.
 * "test {test} {test3} {test} {t}".interpolate({test: "works", test2: 564, test3: "34"});
-* resulting string "test works 34 works {t}"
+* resulting string "test works 34 works"
 *
 * @param o Object containing members to be matched.
 */
@@ -11,7 +11,7 @@ String.prototype.interpolate = function (o) {
     return this.replace(/{([^{}]*)}/g,
         function (a, b) {
             var r = o[b];
-            return typeof r === 'string' || typeof r === 'number' ? r : a;
+            return typeof r === 'string' || typeof r === 'number' ? r : '';
         }
     );
 };
@@ -35,3 +35,19 @@ Element.prototype.select = function(e) {
 	/// @TODO implement unified single & multi-element selection
 	return typeof e == "string" ? this.querySelector(e) : e;
 };
+
+/**
+* insert method for elements.
+* @param h HTML to insert, if h.top and/or h.bottom exist,
+* append HTML before or after original contents.
+*/
+Element.prototype.insert = function(h) {
+	if(h.top || h.bottom) {
+		this.innerHTML = ("{top}"+this.innerHTML+"{bottom}").interpolate({
+			top: h.top,
+			bottom: h.bottom
+		});
+	} else {
+		this.innerHTML = h;
+	}
+ }

@@ -51,3 +51,11 @@ Element.prototype.insert = function(h) {
 		this.innerHTML = h;
 	}
  }
+ 
+ /**
+ * replace the current element with another element.
+ * @param e The new element.
+ */
+ Element.prototype.replace = function(e) {
+ 	this.parentNode.replaceChild(e, this);
+ }

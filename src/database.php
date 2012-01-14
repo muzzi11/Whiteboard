@@ -3,21 +3,16 @@
 /**
 Creates the database and all it's tables on the localhost.
 */
-function wb_create_database($username, $password)
+function wb_create_database($db_name, $username, $password)
 {
     $con = mysql_connect('localhost', $username, $password);
-    if( !$con ){
+    if( !$con )
         die( 'Could not connect: ' . mysql_error() );
-    }
     
-    $database = 'whiteboard_db';
-    {
-        if( !mysql_query("CREATE DATABASE IF NOT EXISTS $database", $con) )
-            die( 'Could not create databse: ' . mysql_error() );
-        
-        if( !mysql_select_db($database, $con) )
-            die( 'Could not select database: ' . mysql_error() );
-    }
+    if( !mysql_query("CREATE DATABASE IF NOT EXISTS $database", $con) )
+        die( 'Could not create databse: ' . mysql_error() );
+    if( !mysql_select_db($db_name, $con) )
+        die( 'Could not select database: ' . mysql_error() );
     
     wb_create_sitemap_table($con);
     wb_create_content_table($con);
@@ -57,7 +52,6 @@ function wb_create_content_table($con)
         sitemap_id INT UNSIGNED NOT NULL,
         FOREIGN KEY(sitemap_id) REFERENCES sitemap(sitemap_id),
         active BIT,
-        title VARCHAR(50),
         data MEDIUMBLOB
     )";
     
@@ -106,15 +100,15 @@ function wb_create_permissions_table($con)
 
 /**
 Creates the last_pages table if it doesn't exist yet.
-
-NOTE: need to discuss this table's design.
+last_pages is a serialized array of
 */
 function wb_create_last_pages_table($con)
 {
     $query = "CREATE TABLE IF NOT EXISTS last_pages
     (
         user_id BIGINT UNSIGNED NOT NULL UNIQUE,
-        FOREIGN KEY(user_id) REFERENCES users(user_id)
+        FOREIGN KEY(user_id) REFERENCES users(user_id),
+        ser_last_pages BLOB
     )";
     
     if( !mysql_query($query, $con) )
@@ -128,11 +122,11 @@ function wb_create_comments_table($con)
 {
     $query = "CREATE TABLE IF NOT EXISTS last_pages
     (
-        page_name VARCHAR(255) NOT NULL UNIQUE,
-        PRIMARY KEY(page_name),
-        comment_id INT UNSIGNED NOT NULL,
+        comment_id SERIAL,
+        PRIMARY KEY(comment_id),
         user_id BIGINT UNSIGNED NOT NULL,
         FOREIGN KEY(user_id) REFERENCES users(user_id),
+        page_url VARCHAR(50) NOT NULL,
         datetime DATETIME,
         comment TEXT
     )";

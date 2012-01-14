@@ -59,3 +59,28 @@ Element.prototype.insert = function(h) {
  Element.prototype.replace = function(e) {
  	this.parentNode.replaceChild(e, this);
  }
+ 
+ Element.prototype.css = function(o) {
+	this.class.style = o;
+	return this.class;
+}
+
+Element.prototype.addClass = function(s) {
+	classList = this.getClass() != '' && this.getClass() != null ? this.getClass() +' '+ s : s;
+	this.setClass(classList);
+}
+
+Element.prototype.setClass = function(s) {
+	this.setAttribute('class', s);
+}
+
+Element.prototype.getClass = function() {
+	return this.getAttribute('class');
+}
+
+Element.prototype.removeClass = function(s) {
+	classList = this.getClass();
+	var reg = new RegExp(s, 'g');
+	classList = classList.replace(reg, '');
+	this.setClass(classList);
+}

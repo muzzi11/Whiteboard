@@ -29,8 +29,9 @@ function wb_create_sitemap_table($con)
 {
     $query = "CREATE TABLE IF NOT EXISTS last_pages
     (
-        sitemap_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+        page_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(sitemap_id),
+        parent_id INT UNSIGNED,
         title VARCHAR(50)
     )";
     
@@ -49,8 +50,8 @@ function wb_create_content_table($con)
     (
         content_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(content_id),
-        sitemap_id INT UNSIGNED NOT NULL,
-        FOREIGN KEY(sitemap_id) REFERENCES sitemap(sitemap_id),
+        page_id INT UNSIGNED NOT NULL,
+        FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
         active BIT,
         data MEDIUMBLOB
     )";
@@ -81,6 +82,8 @@ function wb_create_users_table($con)
 
 /**
 Creates the permissions table if it doesn't exist yet.
+Could be optimized a little by making user_id a SERIAL PRIMAL KEY,
+application would have to handle relation with the users table.
 */
 function wb_create_permissions_table($con)
 {
@@ -100,7 +103,7 @@ function wb_create_permissions_table($con)
 
 /**
 Creates the last_pages table if it doesn't exist yet.
-last_pages is a serialized array of
+last_pages is a serialized array of page_ids and corresponding parent page ids: [parent id][page id]
 */
 function wb_create_last_pages_table($con)
 {
@@ -126,7 +129,7 @@ function wb_create_comments_table($con)
         PRIMARY KEY(comment_id),
         user_id BIGINT UNSIGNED NOT NULL,
         FOREIGN KEY(user_id) REFERENCES users(user_id),
-        page_url VARCHAR(50) NOT NULL,
+        page_id INT UNSIGNED NOT NULL,
         datetime DATETIME,
         comment TEXT
     )";

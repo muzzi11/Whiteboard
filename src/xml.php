@@ -9,7 +9,10 @@ function import_xml($filename)
         $xml = simplexml_load_file($filename);
         
         echo '<pre>';
-        print_r($xml);
+        foreach($xml->folder as $folder)
+        {
+            print_r($folder->title);
+        }
         echo '</pre>';
     }
     else

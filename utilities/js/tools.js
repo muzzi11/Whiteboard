@@ -122,11 +122,24 @@ Element.prototype.show = function() {
 	}
 }
 
-Ajax = function() {
+Ajax = function(success) {
 	this.httpRequestObject = null;
+	this.successHandler = null;
+	this.asyncFlag = null;
+	this.method = null;
+	this.url = null;
 	
 	Ajax.prototype.init = function () {
 		this.httpRequestObject = this.getHttpRequestObject();
+		this.setDefaults();
+	}
+	
+	Ajax.prototype.setDefaults = function() {
+		this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		this.httpRequestObject.onreadystatechange = this.stateHandler;
+		this.successHandler = success;
+		this.asyncFlag = true;
+		this.method = 'GET';
 	}
 	
 	Ajax.prototype.getHttpRequestObject = function() {
@@ -149,6 +162,30 @@ Ajax = function() {
 			return false;
 		}
 		return httpRequest;
+	}
+	
+	this.prototype.stateHandler = function() {
+		switch(this.httpRequestObject.readyState) {
+			case 0: /*uninitialized*/ ; break;
+			case 1: /*loading*/ ; break;
+			case 2: /*loaded*/ ; break;
+			case 3: /*interactive*/ ; break;
+			case 4: /*complete*/ {
+				if (this.httpRequestObject.status === 200) {
+					this.successHandler(this.httpRequestObject.responseText);
+				} else {
+					alert("ERROR: "+this.httpRequestObject.status);
+				}
+				this.httpRequestObject.close();
+			} ; break;
+		}
+	}
+	
+	this.prototype.request = function(url, method) {
+		var u = url==null ? this.url : url;
+		var m = method==null ? this.method : method;
+		httpRequest.open(m, u, this.asyncFlag);
+		httpRequest.send();
 	}
 	
 	this.init();

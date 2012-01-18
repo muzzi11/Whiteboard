@@ -41,7 +41,6 @@ function wb_load_xml_from_string($data)
 }
 
 /**
-title, description removen
 */
 function wb_import_xml($xml)
 {
@@ -66,7 +65,6 @@ function wb_import_xml($xml)
                 $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
                 if( wb_query($query, $con) )
                 {
-                    $desc = $chapter->desc;
                     $page_id = mysql_insert_id($con);
                     
                     //Filter out title and description out of parent folder
@@ -78,7 +76,8 @@ function wb_import_xml($xml)
                         $desc_elements = $chapter->xpath('desc');
                         if( count($desc_elements) > 0)
                         {
-                            $dom = dom_import_simplexml($desc_elements[0]);
+                            $desc = $desc_elements[0];
+                            $dom = dom_import_simplexml($desc);
                             if($dom)
                                 $dom->parentNode->removeChild($dom);
                         }

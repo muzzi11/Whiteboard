@@ -33,6 +33,16 @@ $.prototype.foreach = function(func) {
 	}
 }
 
+$.prototype.addNewElement = function(o) {
+	var elem = this.createElement(o.tag, o.attribs);
+	if(o.top || o.bottom) {
+		this.insert(o);
+	} else {
+		this.insert({bottom: elem;});
+	}
+	this.insert();
+}
+
 /**
 * unified selector for DOM elements, return element that matches e.
 * @param e css selector rule.

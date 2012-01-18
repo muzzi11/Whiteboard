@@ -23,18 +23,25 @@ String.prototype.interpolate = function (o) {
 $ = function(e) {
 	/// @TODO implement cross-browser compatibility
 	/// @TODO implement unified single & multi-element selection
-	return typeof e == "string" ? document.querySelector(e) : e;
+	var parent = typeof this === "function" ? document : this;
+	return typeof e == "string" ? parent.querySelector(e) : e;
 };
+
+$.prototype.foreach = function(func) {
+	for(elem in this) {
+		func(elem);
+	}
+}
 
 /**
 * unified selector for DOM elements, return element that matches e.
 * @param e css selector rule.
 */
-Element.prototype.select = function(e) {
+Element.prototype.select = $;/*function(e) {
 	/// @TODO implement cross-browser compatibility
 	/// @TODO implement unified single & multi-element selection
 	return typeof e == "string" ? this.querySelector(e) : e;
-};
+};*/
 
 /**
 * insert method for elements.
@@ -122,12 +129,13 @@ Element.prototype.show = function() {
 	}
 }
 
-Ajax = function(success) {
+Ajax = function(success, server) {
 	this.httpRequestObject = null;
 	this.successHandler = null;
 	this.asyncFlag = null;
 	this.method = null;
 	this.url = null;
+	this.serverUrl = server;
 	
 	Ajax.prototype.init = function () {
 		this.httpRequestObject = this.getHttpRequestObject();
@@ -139,7 +147,7 @@ Ajax = function(success) {
 		this.httpRequestObject.onreadystatechange = this.stateHandler;
 		this.successHandler = success;
 		this.asyncFlag = true;
-		this.method = 'GET';
+		this.method = 'POST';
 	}
 	
 	Ajax.prototype.getHttpRequestObject = function() {
@@ -181,11 +189,11 @@ Ajax = function(success) {
 		}
 	}
 	
-	this.prototype.request = function(url, method) {
+	this.prototype.request = function(url, method, queryString) {
 		var u = url==null ? this.url : url;
 		var m = method==null ? this.method : method;
-		httpRequest.open(m, u, this.asyncFlag);
-		httpRequest.send();
+		httpRequest.open(m, this.serverUrl+u, this.asyncFlag);
+		httpRequest.send(queryString);
 	}
 	
 	this.init();

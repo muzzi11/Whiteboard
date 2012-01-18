@@ -1,2 +1,0 @@
-#ignore db-config.php, which contains user and password info
-db-config.php

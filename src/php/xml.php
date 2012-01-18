@@ -1,7 +1,8 @@
 <?php
 require 'database.php';
 
-//wb_import_xml_from_file('../xml/cs50.tv.xml');
+$xml = wb_load_xml_from_file('../../xml/cs50.tv.xml');
+wb_import_xml($xml);
 
 /**
 Loads an xml file into a simplexml object.
@@ -45,28 +46,53 @@ title, description removen
 function wb_import_xml($xml)
 {
     $con = wb_connect_database();
-    if($con)
-    {
-        foreach($xml->folder as $section)
-        {
-            $title = '';
-            $desc = '';
-            
-            $query = "INSERT INTO sitemap(parent_id, title, desc) VALUES()";
-        }
-    }
-    echo '<pre>';
+    if(!$con)
+        return;
+        
     foreach($xml->folder as $section)
     {
-        echo $section->title . "\n";
+        $parent_id = 0;
+        $title = $section->title;
         
-        foreach($section->folder as $chapter)
+        $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
+        if( wb_query($query, $con) )
         {
-            echo "\t" . $chapter->title . "\n";
-            echo $chapter->asXML() . "\n";
+            $parent_id = mysql_insert_id($con);
+            
+            foreach($section->folder as $chapter)
+            {
+                $title = $chapter->title;
+                
+                $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
+                if( wb_query($query, $con) )
+                {
+                    $desc = $chapter->desc;
+                    $page_id = mysql_insert_id($con);
+                    
+                    //Filter out title and description out of parent folder
+                    {
+                        $dom = dom_import_simplexml($chapter->title);
+                        if($dom)
+                            $dom->parentNode->removeChild($dom);
+                        
+                        $desc_elements = $chapter->xpath('desc');
+                        if( count($desc_elements) > 0)
+                        {
+                            $dom = dom_import_simplexml($desc_elements[0]);
+                            if($dom)
+                                $dom->parentNode->removeChild($dom);
+                        }
+                    }
+                    $data = $chapter->asXML();
+
+                    //ERROR: fails silently, why?
+                    $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', x'$data')";
+                }
+            }
         }
     }
-    echo '</pre>';
+    
+    mysql_close($con);
 }
 
 ?>

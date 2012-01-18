@@ -30,7 +30,7 @@ function wb_connect_database()
     if($con)
     {
         if( !mysql_select_db($db_name, $con) )
-            wb_create_database($db_name);
+            wb_create_database($db_name, $con);
     }
     else
     {
@@ -69,8 +69,8 @@ function wb_create_sitemap_table($con)
         page_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(page_id),
         parent_id INT UNSIGNED,
-        title VARCHAR(50)
-    )';
+        title VARCHAR(100)
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }
@@ -82,16 +82,16 @@ NOTE: not sure if data should be of type MEDIUMBLOB
 */
 function wb_create_content_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS content
+    $query = "CREATE TABLE IF NOT EXISTS content
     (
         content_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(content_id),
         page_id INT UNSIGNED NOT NULL,
         FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
-        active BIT,
-        desc TEXT,
+        active BOOL NOT NULL DEFAULT b'1',
+        description TEXT,
         data MEDIUMBLOB
-    )';
+    ) ENGINE=InnoDB";
     
     wb_query($query, $con);
 }
@@ -110,7 +110,7 @@ function wb_create_users_table($con)
         PRIMARY KEY(user_id),
         UvaNetID VARCHAR(50) NOT NULL UNIQUE,
         name VARCHAR(50)
-    )';
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }
@@ -124,13 +124,15 @@ function wb_create_permissions_table($con)
 {
     $query = 'CREATE TABLE IF NOT EXISTS permissions
     (
+        permission_id SERIAL,
+        PRIMARY KEY(permission_id),
         user_id BIGINT UNSIGNED NOT NULL,
         FOREIGN KEY(user_id) REFERENCES users(user_id),
-        view BOOL,
-        edit BOOL,
-        del BOOL,
-        admin BOOL
-    )';
+        view BOOL NOT NULL DEFAULT 1,
+        edit BOOL NOT NULL DEFAULT 1,
+        del BOOL NOT NULL DEFAULT 0,
+        admin BOOL NOT NULL DEFAULT 0
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }
@@ -143,10 +145,12 @@ function wb_create_last_pages_table($con)
 {
     $query = 'CREATE TABLE IF NOT EXISTS last_pages
     (
+        last_page_id SERIAL,
+        PRIMARY KEY(last_page_id),
         user_id BIGINT UNSIGNED NOT NULL UNIQUE,
         FOREIGN KEY(user_id) REFERENCES users(user_id),
         ser_last_pages BLOB
-    )';
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }
@@ -165,7 +169,7 @@ function wb_create_comments_table($con)
         page_id INT UNSIGNED NOT NULL,
         datetime DATETIME,
         comment TEXT
-    )';
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }

@@ -1,8 +1,14 @@
 <?php
 require 'database.php';
 
-$xml = wb_load_xml_from_file('../../xml/cs50.tv.xml');
-wb_import_xml($xml);
+if( isset($_GET['cmd']) )
+{
+    if('import' == $_GET['cmd'])
+    {
+        $xml = wb_load_xml_from_file('../../xml/cs50.tv.xml');
+        wb_import_xml($xml);
+    }
+}
 
 /**
 Loads an xml file into a simplexml object.
@@ -16,7 +22,7 @@ function wb_load_xml_from_file($filename)
         $xml = simplexml_load_file($filename);
         if($xml)
             return $xml;
-        else
+        else        
             $error = "Error: failed to load $filename";
     }
     else
@@ -37,7 +43,9 @@ function wb_load_xml_from_string($data)
     if($xml)
         return $xml;
     else
-        $error = "Error: failed to load $filename";
+        echo "Error: failed to load $filename";
+        
+    return FALSE;
 }
 
 /**
@@ -68,6 +76,7 @@ function wb_import_xml($xml)
                     $page_id = mysql_insert_id($con);
                     
                     //Filter out title and description out of parent folder
+                    $desc = '';
                     {
                         $dom = dom_import_simplexml($chapter->title);
                         if($dom)
@@ -83,9 +92,11 @@ function wb_import_xml($xml)
                         }
                     }
                     $data = $chapter->asXML();
+                    $data = addslashes($data);
+                    $desc = addslashes($desc);
 
-                    //ERROR: fails silently, why?
-                    $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', x'$data')";
+                    $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', '$data')";
+                    wb_query($query, $con);
                 }
             }
         }

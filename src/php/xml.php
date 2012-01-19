@@ -95,8 +95,8 @@ function wb_import_xml($xml)
                         }
                     }
                     $data = $chapter->asXML();
-                    $data = addslashes($data);
-                    $desc = addslashes($desc);
+                    $data = mysql_real_escape_string($data, $con);
+                    $desc = mysql_real_escape_string($desc, $con);
 
                     $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', '$data')";
                     wb_query($query, $con);

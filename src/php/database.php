@@ -6,7 +6,7 @@ MySQL query wrapper for error logging purposes.
 function wb_query($query, $con)
 {
     $resource = mysql_query($query, $con);
-    if(!$resource && $verbose)
+    if(!$resource)
         echo 'Invalid query: ' . mysql_error() . "\nQuery: $query";
         
     return $resource;
@@ -37,6 +37,9 @@ function wb_connect_database()
         echo 'Could not connect: ' . mysql_error();
         return FALSE;
     }
+    
+    if( !mysql_set_charset('utf8', $con) )
+        echo 'Failed to set character set, current set is:' . mysql_client_encoding($con);
         
     return $con;
 }

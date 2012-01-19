@@ -3,9 +3,11 @@ html, body {
    padding: 0px;
    background-color: #ff9f9f;
 }
+h1{font:bold 20pt/14pt helvetica;line-height:20px;color:#FFF;text-align:center;}
+h2{font:normal 14pt/14pt helvetica;line-height:14px;color:#FFF;text-align:center;}
+h4{font:normal 10pt/8pt verdana;line-height:10px;color:#000000;}
+h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
 
-h6{font:normal 8pt/8pt Verdana;line-height:10px;color:#000000;}
-}
 
 
 #rootDiv {
@@ -63,6 +65,8 @@ h6{font:normal 8pt/8pt Verdana;line-height:10px;color:#000000;}
 
 #discussionDiv{
    display:block;
+   margin: 0px;
+   padding: 0px;
    float:left;
    width:100%;
    height:600px;
@@ -70,17 +74,22 @@ h6{font:normal 8pt/8pt Verdana;line-height:10px;color:#000000;}
 }
 
 #discussionTable{
+   margin: 0px;
+   padding: 0px;
    align:center;
    text-align:left;
+   width:100%;
 
 }
 
-teachersDiscussionArea{
+td.teachersDiscussionArea{
    background-color:white;
+   width:50%;
 }
 
-studentsDiscussionArea{
-   background-color:red;
+td.studentsDiscussionArea{
+   background-color:pink;
+   width:50%;
 }
 
 input.login{width:100px;

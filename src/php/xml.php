@@ -49,6 +49,9 @@ function wb_load_xml_from_string($data)
 }
 
 /**
+Imports the $xml object into the database. The root folders are considered sections, the folder one level below are considered chapters.
+The section and chapter titles and the chapter description are imported into the sitemap table.
+Chapter title and description elements are taken out of the xml, the resting xml for that chapter is imported into the content table. 
 */
 function wb_import_xml($xml)
 {

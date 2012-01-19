@@ -6,7 +6,7 @@ MySQL query wrapper for error logging purposes.
 function wb_query($query, $con)
 {
     $resource = mysql_query($query, $con);
-    if( !$resource )
+    if(!$resource && $verbose)
         echo 'Invalid query: ' . mysql_error() . "\nQuery: $query";
         
     return $resource;

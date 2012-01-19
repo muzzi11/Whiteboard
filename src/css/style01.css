@@ -17,9 +17,8 @@ html, body {
    top:0px;
    right:0px;	
    width:200px;
-   height:75px; 
-   background-color: #00ff00;
-  
+   height:75px;
+   background-color: #FFE;
 }
 
 #titleDiv{
@@ -27,7 +26,7 @@ html, body {
    float:left;
    width:100%;
    height:75px;
-   background-color: #00ffff;
+   background-color: #F90;
 }
 
 #menuDiv{
@@ -51,7 +50,7 @@ html, body {
    float:left;
    width:100%;
    height:200px;
-   background-color: #f0f000;
+   background-color: #FC0;
 }
 
 #discussionDiv{

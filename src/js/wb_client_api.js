@@ -15,9 +15,14 @@ Client = function() {
 	}
 	
 	this.prototype.successHandler = function(response) {
+		alert(response);
 		var elems;
 		///@TODO Format data to something useful.
 		displayHandler(elems);
+	}
+	
+	this.prototype.loadPage = function(pageNr) {
+		this.ajax.request("query.php", "GET", "q=sitemap");
 	}
 	
 	

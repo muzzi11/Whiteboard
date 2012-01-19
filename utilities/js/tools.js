@@ -14,7 +14,7 @@ String.prototype.interpolate = function (o) {
             return typeof r === 'string' || typeof r === 'number' ? r : '';
         }
     );
-};
+}
 
 /**
 * unified selector, returns element that matches e.
@@ -23,10 +23,11 @@ String.prototype.interpolate = function (o) {
 $ = function(e) {
 	/// @TODO implement cross-browser compatibility
 	/// @TODO implement unified single & multi-element selection
-	var parent = typeof this === "function" ? document : this;
+	/// @TODO fix selection to context of element.
+	var parent = document;//typeof this === "function" ? document : this;
 	return typeof e == "string" ? parent.querySelector(e) : e;
-};
-
+}
+/*
 $.prototype.foreach = function(func) {
 	for(elem in this) {
 		func(elem);
@@ -41,7 +42,7 @@ $.prototype.addNewElement = function(o) {
 		this.insert({bottom: elem;});
 	}
 	this.insert();
-}
+}*/
 
 /**
 * unified selector for DOM elements, return element that matches e.

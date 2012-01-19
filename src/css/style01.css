@@ -4,21 +4,28 @@ html, body {
    background-color: #ff9f9f;
 }
 
+h6{font:normal 8pt/8pt Verdana;line-height:10px;color:#000000;}
+}
+
+
 #rootDiv {
    margin: 0px;
-   padding 0px;
+   padding: 0px;
    background-color: #ff0000;
 
 }
 
 #loginDiv{
    display:block;
+   margin: 0px;
+   padding: 0px;
    position:absolute;
    top:0px;
    right:0px;	
    width:200px;
    height:75px;
    background-color: #FFE;
+   text-align:right;
 }
 
 #titleDiv{
@@ -75,4 +82,7 @@ studentsDiscussionArea{
    background-color:red;
 }
 
+login{
+
+}
 

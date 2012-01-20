@@ -70,6 +70,10 @@ Element.prototype.insert = function(h) {
 	}
  }
  
+ Element.prototype.eventClick = function(func) {
+ 	this.onclick = func;
+ }
+ 
  /**
  * replace the current element with another element.
  * @param e The new element.

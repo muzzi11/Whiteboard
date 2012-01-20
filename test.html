@@ -19,10 +19,10 @@ var b = $("body");
 $('body').insert({top:"TOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
 
 var html = new Viewer();
-var api = new Client(html.displayFunction);
+document.api = new Client(html.displayFunction);
 //api.init(html.displayFunction);
-api.displayHandler = html.displayFunction;
-api.loadPage(0);
+document.api.displayHandler = html.displayFunction;
+document.api.loadPage(0);
 //alert('');
 //1. Page load.
 //2. Get layout.

@@ -16,9 +16,9 @@ Client = function(displayFunc) {
 	}
 	
 	Client.prototype.successHandler = function(response) {
-		alert(response);
+		//alert(response);
 		
-		var elems = eval(response);
+		var elems = eval('('+response+')');
 		///@TODO Format data to something useful.
 		this.me.displayHandler(elems);
 	}
@@ -27,8 +27,9 @@ Client = function(displayFunc) {
 		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=sitemap");
 	}
 	
-	Client.prototype.loadContent = function(pageNr) {
-		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content");
+	Client.prototype.loadContent = function(pageNr, handler) {
+		this.ajax.me.displayHandler = handler;
+		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
 	
 	

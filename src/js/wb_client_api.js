@@ -14,15 +14,15 @@ Client = function() {
 		this.ajax = new Ajax(this.successHandler, this.serverUrl);
 	}
 	
-	this.prototype.successHandler = function(response) {
-		alert(response);
+	Client.prototype.successHandler = function(response) {
+		//alert(response);
 		var elems;
 		///@TODO Format data to something useful.
 		displayHandler(elems);
 	}
 	
-	this.prototype.loadPage = function(pageNr) {
-		this.ajax.request("query.php", "GET", "q=sitemap");
+	Client.prototype.loadPage = function(pageNr) {
+		this.ajax.request("Whiteboard/src/php/query.php", "GET", "q=sitemap");
 	}
 	
 	

@@ -8,13 +8,13 @@ Viewer = function() {
 	this.main = "article";
 	this.footer = "footer";
 	
-	this.prototype.init = function() {
-	}
+	//this.prototype.init = function() {
+	//}
 	
-	this.prototype.displayFunction = function(elems) {
+	Viewer.prototype.displayFunction = function(elems) {
 		for (e in elems) {
 			/// @TODO display elements in HTML.
 		}
 	}
-	this.init();
+	//this.init();
 }

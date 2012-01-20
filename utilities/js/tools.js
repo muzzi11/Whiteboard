@@ -39,7 +39,7 @@ $.prototype.addNewElement = function(o) {
 	if(o.top || o.bottom) {
 		this.insert(o);
 	} else {
-		this.insert({bottom: elem;});
+		this.insert({bottom: elem});
 	}
 	this.insert();
 }*/
@@ -147,6 +147,7 @@ Ajax = function(success, server) {
 	this.method = null;
 	this.url = null;
 	this.serverUrl = server;
+	this.me = this;
 	
 	Ajax.prototype.init = function () {
 		this.httpRequestObject = this.getHttpRequestObject();
@@ -154,7 +155,7 @@ Ajax = function(success, server) {
 	}
 	
 	Ajax.prototype.setDefaults = function() {
-		this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		//this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		this.httpRequestObject.onreadystatechange = this.stateHandler;
 		this.successHandler = success;
 		this.asyncFlag = true;
@@ -183,28 +184,30 @@ Ajax = function(success, server) {
 		return httpRequest;
 	}
 	
-	this.prototype.stateHandler = function() {
-		switch(this.httpRequestObject.readyState) {
+	Ajax.prototype.stateHandler = function() {
+		switch(this.readyState) {
 			case 0: /*uninitialized*/ ; break;
 			case 1: /*loading*/ ; break;
 			case 2: /*loaded*/ ; break;
 			case 3: /*interactive*/ ; break;
 			case 4: /*complete*/ {
-				if (this.httpRequestObject.status === 200) {
-					this.successHandler(this.httpRequestObject.responseText);
+				if (this.status === 200) {
+					this.successHandler(this);
 				} else {
-					alert("ERROR: "+this.httpRequestObject.status);
+					alert("ERROR: "+this.status);
 				}
-				this.httpRequestObject.close();
+				//this.httpRequestObject.close();
 			} ; break;
 		}
 	}
 	
-	this.prototype.request = function(url, method, queryString) {
+	Ajax.prototype.request = function(url, method, queryString) {
 		var u = url==null ? this.url : url;
 		var m = method==null ? this.method : method;
-		httpRequest.open(m, this.serverUrl+u, this.asyncFlag);
-		httpRequest.send(queryString);
+		//alert(this.serverUrl+'/'+u+'\n'+m+'\n'+queryString);
+		this.httpRequestObject.open(m, 'http://localhost/'+u, this.asyncFlag);
+		this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		this.httpRequestObject.send(queryString);
 	}
 	
 	this.init();

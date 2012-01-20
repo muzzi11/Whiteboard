@@ -1,20 +1,20 @@
 <?php
 
-function server_error()
+function wb_server_error()
 {
     header('HTTP/1.1 500 Internal Server Error');
     die();
 }
 
 if( !isset($_GET['q']) )
-    server_error();
+    wb_server_error();
 
 
 require 'database.php';
 
 $con = wb_connect_database();
 if(!$con)
-    server_error();
+    wb_server_error();
 
 
 $q = $_GET['q'];
@@ -28,7 +28,7 @@ if( 'sitemap' == $q)
 {       
     $result = mysql_query('SELECT * FROM sitemap', $con);
     if(!$result)
-        server_error();
+        wb_server_error();
     
     $pages = array();
     while( $row = mysql_fetch_array($result) )
@@ -70,14 +70,14 @@ array( 'desc' => , 'data' => )
 else if('content' == $q)
 {
     if( !isset($_GET['page']) )
-        server_error();
+        wb_server_error();
         
     $page_id = mysql_real_escape_string( $_GET['page'] );
     
     $query = "SELECT description, data FROM content WHERE page_id='$page_id' LIMIT 1";
     $result = mysql_query($query, $con);
     if(!$result || mysql_num_rows($result) == 0)
-        server_error();
+        wb_server_error();
         
     $row = mysql_fetch_array($result);
     $content = array( 'desc' => $row['description'], 'data' => $row['data'] );
@@ -85,6 +85,6 @@ else if('content' == $q)
     echo json_encode($content);
 }
 else
-    server_error();
+    wb_server_error();
 
 ?>

@@ -16,7 +16,7 @@ Client = function(displayFunc) {
 	}
 	
 	Client.prototype.successHandler = function(response) {
-		//alert(eval(response));
+		alert(response);
 		
 		var elems = eval(response);
 		///@TODO Format data to something useful.
@@ -25,6 +25,10 @@ Client = function(displayFunc) {
 	
 	Client.prototype.loadPage = function(pageNr) {
 		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=sitemap");
+	}
+	
+	Client.prototype.loadContent = function(pageNr) {
+		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content");
 	}
 	
 	

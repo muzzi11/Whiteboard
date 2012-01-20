@@ -18,7 +18,8 @@ var b = $("body");
 //b.select("b").replace(elem);
 
 var html = new Viewer();
-var api = new Client();
+var api = new Client(html.displayFunction);
+//api.init(html.displayFunction);
 api.displayHandler = html.displayFunction;
 api.loadPage(0);
 //alert('');
@@ -58,6 +59,6 @@ api.loadPage(0);
 </script>
 </head>
 <body>
-
+<menu></menu>
 </body>
 </html>

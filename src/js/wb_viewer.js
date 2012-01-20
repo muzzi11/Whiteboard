@@ -7,14 +7,20 @@ Viewer = function() {
 	this.sidebar = "aside";
 	this.main = "article";
 	this.footer = "footer";
+	//this.displayFunction.me = this;
+	this.init = function() {
+		//this.displayFunction = Viewer.displayFunction;
+	}
 	
-	//this.prototype.init = function() {
-	//}
-	
-	Viewer.prototype.displayFunction = function(elems) {
+	this.displayFunction = function(elems) {
 		for (e in elems) {
 			/// @TODO display elements in HTML.
+			//alert(elems[e].title);
+			var html = "<a href='#' onclick='alert(\"{title}\");' >{title}</a>";
+			html = html.interpolate(elems[e]);
+			$('menu').insert({bottom: html});
 		}
 	}
-	//this.init();
+	
+	this.init();
 }

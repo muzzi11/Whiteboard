@@ -142,7 +142,7 @@ Element.prototype.show = function() {
 
 Ajax = function(success, server) {
 	this.httpRequestObject = null;
-	this.successHandler = null;
+	this.successFunc = null;
 	this.asyncFlag = null;
 	this.method = null;
 	this.url = null;
@@ -154,10 +154,15 @@ Ajax = function(success, server) {
 		this.setDefaults();
 	}
 	
+	Ajax.prototype.successHandler = function(response) {
+		this.successFunc(response);
+	}
+	
 	Ajax.prototype.setDefaults = function() {
 		//this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		this.httpRequestObject.onreadystatechange = this.stateHandler;
-		this.successHandler = success;
+		this.successFunc = success;
+		this.httpRequestObject.me = this;
 		this.asyncFlag = true;
 		this.method = 'POST';
 	}
@@ -192,7 +197,7 @@ Ajax = function(success, server) {
 			case 3: /*interactive*/ ; break;
 			case 4: /*complete*/ {
 				if (this.status === 200) {
-					this.successHandler(this);
+					this.me.successHandler(this.responseText);
 				} else {
 					alert("ERROR: "+this.status);
 				}
@@ -205,9 +210,9 @@ Ajax = function(success, server) {
 		var u = url==null ? this.url : url;
 		var m = method==null ? this.method : method;
 		//alert(this.serverUrl+'/'+u+'\n'+m+'\n'+queryString);
-		this.httpRequestObject.open(m, 'http://localhost/'+u, this.asyncFlag);
+		this.httpRequestObject.open(m, 'http://localhost/'+u+queryString, this.asyncFlag);
 		this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		this.httpRequestObject.send(queryString);
+		this.httpRequestObject.send(null);
 	}
 	
 	this.init();

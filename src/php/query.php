@@ -19,6 +19,8 @@ if(!$con)
 
 $q = $_GET['q'];
 /**
+Usage: /query.php?q=sitemap
+
 Retrieves the sitemap from the database and echos a json encoded associative array. Structure:
 array( 'title' => , 'children' => array ( 'page_id' => , 'title' =>) )
 */
@@ -59,6 +61,8 @@ if( 'sitemap' == $q)
     echo json_encode($sitemap);
 }
 /**
+Usage: /query.php?q=content&page=[page_id]
+
 Retrieves the description and data from the content table for the page_id specified in $_GET['page'].
 Echos a json encoded associative array with the following structure:
 array( 'desc' => , 'data' => )
@@ -68,7 +72,7 @@ else if('content' == $q)
     if( !isset($_GET['page']) )
         server_error();
         
-    $page_id = $_GET['page'];
+    $page_id = mysql_real_escape_string( $_GET['page'] );
     
     $query = "SELECT description, data FROM content WHERE page_id='$page_id' LIMIT 1";
     $result = mysql_query($query, $con);

@@ -72,6 +72,7 @@ function wb_create_sitemap_table($con)
         page_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(page_id),
         parent_id INT UNSIGNED,
+        active BOOL NOT NULL DEFAULT 1,
         title VARCHAR(100)
     ) ENGINE=InnoDB';
     
@@ -85,16 +86,15 @@ NOTE: not sure if data should be of type MEDIUMBLOB
 */
 function wb_create_content_table($con)
 {
-    $query = "CREATE TABLE IF NOT EXISTS content
+    $query = 'CREATE TABLE IF NOT EXISTS content
     (
         content_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
         PRIMARY KEY(content_id),
         page_id INT UNSIGNED NOT NULL,
         FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
-        active BOOL NOT NULL DEFAULT b'1',
         description TEXT,
         data MEDIUMBLOB
-    ) ENGINE=InnoDB";
+    ) ENGINE=InnoDB';
     
     wb_query($query, $con);
 }

@@ -28,39 +28,30 @@ function wb_verify_ticket($ticket)
  
     curl_setopt($ch, CURLOPT_URL, "https://bt-lap.ic.uva.nl/cas/serviceValidate?ticket=$ticket&service=$host");
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
     curl_setopt($ch, CURLOPT_HEADER, false);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
     
     $result = curl_exec($ch);
     curl_close($ch);
     
-    $result = str_replace(':', '-', $result);
-    $xml = simplexml_load_string($result);
-    
-    if($xml)
     {
-        if( $user = wb_find_user($xml) )
+        $result = str_replace('cas:', '', $result);
+        
+        $xml = simplexml_load_string($result);
+        $json = json_encode($xml);
+        $array = json_decode($json, true);
+        
+        if( is_array($array) && array_key_exists('authenticationSuccess', $array) )
         {
-            $replace = array("\n", ' ');
-            echo str_replace($replace, '', $user);
+            if( is_array($array) && array_key_exists('user', $array['authenticationSuccess']) )
+            {
+                echo $array['authenticationSuccess']['user'];
+            }
         }
+        else
+            print_r($array);
     }
-    else
-        echo 'Failed to load xml.';
-}
-
-function wb_find_user($element)
-{
-    if( $element->count() )
-    {
-        foreach($element->children() as $child)
-        {
-            if( wb_find_user($child) )
-                return $child;
-        }
-    }
-    return $element->getName() == 'cas-user' ? $element : FALSE;
 }
 
 ?>

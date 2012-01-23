@@ -1,5 +1,10 @@
 <?php
 
+session_start();
+
+if( isset($_SESSION['user_id']) )
+    echo 'Session: ' . $_SESSION['user_id'];
+
 /**
 Usage: casclient?login
 Redirects the user to the CAS login page.
@@ -12,13 +17,22 @@ if( isset($_GET['login']) )
 }
 
 /**
-Proceeds to validate ticket.
+Proceeds to validate ticket. If ticket is valid, user is inserted into database and user_id is stored in session.
 */
 if( isset($_GET['ticket']) )
-    wb_verify_ticket($_GET['ticket']);
+{
+    require 'user.php';
+    
+    if ( $UvaNetID = wb_verify_ticket($_GET['ticket']) )
+    {
+        if( $user_id = wb_insert_user($UvaNetID) )
+            $_SESSION['user_id'] = $user_id;
+    }
+}
 
 /**
 Validates the ticket trough CAS.
+Returns the UvaNetID on succes, false otherwise.
 */
 function wb_verify_ticket($ticket)
 {
@@ -45,13 +59,11 @@ function wb_verify_ticket($ticket)
         if( is_array($array) && array_key_exists('authenticationSuccess', $array) )
         {
             if( is_array($array) && array_key_exists('user', $array['authenticationSuccess']) )
-            {
-                echo $array['authenticationSuccess']['user'];
-            }
+                return $array['authenticationSuccess']['user'];
         }
-        else
-            print_r($array);
     }
+    
+    return false;
 }
 
 ?>

@@ -84,6 +84,35 @@ else if('content' == $q)
     
     echo json_encode($content);
 }
+else if('comments' == $q)
+{
+    if( !isset($_GET['page']) )
+        wb_server_error();
+        
+    $page_id = mysql_real_escape_string( $_GET['page'] );
+    
+    if(isset($_GET['post']) && isset($_GET['user'])) {
+    	$post = mysql_real_escape_string( $_GET['post'] );
+    	$user = mysql_real_escape_string( $_GET['user'] );
+    	$query = "INSERT INTO comments (comment, datetime, user_id, page_id) 
+    	VALUES ('$post', NOW(),'$user', '$page_id')";
+		mysql_query($query, $con);
+    }
+    
+    
+    $query = "SELECT comment, user_id, datetime FROM comments WHERE page_id='$page_id'";
+    $result = mysql_query($query, $con);
+    if(!$result || mysql_num_rows($result) == 0)
+        wb_server_error();
+        
+    $row = mysql_fetch_array($result);
+    $content = array( 'text' => $row['comment'],
+    						 'user' => $row['user_id'],
+    						 'date' => $row['datetime'] );
+    
+    echo json_encode($content);
+}
+
 else
     wb_server_error();
 

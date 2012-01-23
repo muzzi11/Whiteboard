@@ -14,6 +14,7 @@ Viewer = function() {
 	
 	this.displayFunction = function(elems) {
 		for (e in elems) {
+			document.sitemap = elems;
 			/// @TODO display elements in HTML.
 			//alert(elems[e].title);
 			var html = "<a href='#' onclick='document.click({num});' >{title}</a>";
@@ -33,7 +34,10 @@ Viewer = function() {
 				}
 			}
 		document.loadContent = function(page_id) {
+			$('article').page_id = page_id;
 			document.api.loadContent(page_id, document.genContent);
+			document.api.loadComments(page_id, document.genComments);
+		
 		}
 		document.genContent = function(response) {
 			$('article').insert("<h1>{desc}</h1><section>{data}</section>".interpolate(response));
@@ -44,8 +48,21 @@ Viewer = function() {
 					items = menu_item.interpolate(pages[p]);
 					$('aside').insert({bottom:menu_item});
 				}*/
+			
 		}
-		document.sitemap = elems;
+				}
+		document.genComments = function(response) {
+			for (c in comments) {
+				$('article').insert({bottom:"<h3>{user} : {datetime}</h3><section>{comment}</section>".interpolate(response)});
+			}alert('');
+			$('textarea').insert('');
+		}
+		document.userID = '1';
+		document.postComment = function() {
+			document.api.postComment($('article').page_id, document.userID, $('textarea').innerHTML, document.genComments);
+
+
+		//document.sitemap = elems;
 	}
 	
 	Viewer.prototype.reSubMenu = function(nr, content) {

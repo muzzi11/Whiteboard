@@ -31,6 +31,16 @@ Client = function(displayFunc) {
 		this.ajax.me.displayHandler = handler;
 		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
+	Client.prototype.loadComments = function(pageNr, userID, handler) {
+		this.ajax.me.displayHandler = handler;
+		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+	}
+	Client.prototype.postComment = function(pageNr, userID, comment, handler) {
+		this.ajax.me.displayHandler = handler;
+		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID, post:comment}));
+		
+		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+	}
 	
 	
 	this.init(displayFunc);

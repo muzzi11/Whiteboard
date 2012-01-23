@@ -1,2 +1,2 @@
-###RewriteEngine on
-###RewriteRule ^casclient$ src/php/casclient.php
+RewriteEngine on
+RewriteRule ^casclient$ src/php/casclient.php

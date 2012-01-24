@@ -202,7 +202,9 @@ Ajax = function(success, server) {
 			case 4: /*complete*/ {
 				if (this.status === 200) {
 					this.me.successHandler(this.responseText);
-				} else {
+				} else if (this.status != 0) {
+					/// @TODO add parameter for empty response handling.
+					// Just ignore empty reponses for now and alert only on error.
 					alert("ERROR: "+this.status);
 				}
 				//this.httpRequestObject.close();

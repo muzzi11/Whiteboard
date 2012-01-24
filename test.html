@@ -18,14 +18,14 @@ var b = $("body");
 //b.select("b").replace(elem);
 
 $('body').insert({top:"TESTTOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
-$('#footer').insert({bottom:"<textarea></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>"});
+$('#footer').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>"});
 			
 
 var html = new Viewer();
 document.api = new Client(html.displayFunction);
 //api.init(html.displayFunction);
 document.api.displayHandler = html.displayFunction;
-document.api.loadPage(0);
+document.api.loadPage(0, html.displayFunction);
 //alert('');
 //1. Page load.
 //2. Get layout.

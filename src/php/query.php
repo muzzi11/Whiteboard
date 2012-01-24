@@ -107,11 +107,12 @@ else if('comments' == $q)
     
     //We will assume that no comments is a valid posibility.
     if(mysql_num_rows($result) != 0) {
-    	$row = mysql_fetch_array($result);
-    	$content = array( 'text' => $row['comment'],
+    	
+    	while($row = mysql_fetch_array($result)) {
+    		$content[] = array( 'text' => $row['comment'],
     						 'user' => $row['user_id'],
     						 'date' => $row['datetime'] );
-    
+    }
     	echo json_encode($content);
     }
         

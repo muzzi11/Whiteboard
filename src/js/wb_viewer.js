@@ -55,12 +55,14 @@ Viewer = function() {
 		}
 				}
 		document.genComments = function(comments) {
+			//alert(comments);
+			$('#comments').insert('');
 			if(comments != ''){
 			comments = eval('('+comments+')');
 			for (c in comments) {
-				$('article').insert({bottom:"<h3>{user} : {datetime}</h3><section>{comment}</section>".interpolate(comments[c])});
+				$('#comments').insert({bottom:"<h3>USER:	{user}	DATE:	{date}</h3><section style='background: lightgrey;'>{text}</section>".interpolate(comments[c])});
 			}//alert('');
-			$('textarea').insert('');
+			$('#textarea').value = '';
 		}
 		}
 			document.postComment = function() {//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');

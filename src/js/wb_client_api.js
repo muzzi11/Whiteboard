@@ -24,20 +24,20 @@ Client = function(displayFunc) {
 	}
 	
 	Client.prototype.loadPage = function(pageNr) {
-		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=sitemap");
+		this.ajax.request("Whiteboard/query", "GET", "?q=sitemap");
 	}
 	
 	Client.prototype.loadContent = function(pageNr, handler) {
 		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
+		this.ajax.request("Whiteboard/query", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
 	Client.prototype.loadComments = function(pageNr, userID, handler) {
 		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+		this.ajax.request("Whiteboard/query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
 	Client.prototype.postComment = function(pageNr, userID, comment, handler) {
 		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID, post:comment}));
+		this.ajax.request("Whiteboard/query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID, post:comment}));
 		
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}

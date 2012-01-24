@@ -9,7 +9,7 @@ Client = function(displayFunc) {
 	//this.displayHandler = 0;
 	
 	this.init = function(displayFunc){
-		this.serverUrl = "localhost";
+		this.serverUrl = window.location.pathname;
 		//this.displayHandler = displayFunc;
 		this.ajax = new Ajax(this.successHandler, this.serverUrl);
 		this.ajax.me = this;

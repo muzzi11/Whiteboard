@@ -13,6 +13,7 @@ Viewer = function() {
 	}
 	
 	this.displayFunction = function(elems) {
+		elems = eval('('+elems+')');
 		for (e in elems) {
 			document.sitemap = elems;
 			/// @TODO display elements in HTML.
@@ -35,11 +36,13 @@ Viewer = function() {
 			}
 		document.loadContent = function(page_id) {
 			$('article').page_id = page_id;
+			document.userID = '1';
 			document.api.loadContent(page_id, document.genContent);
-			document.api.loadComments(page_id, document.genComments);
+			document.api.loadComments(page_id, document.userID, document.genComments);
 		
 		}
 		document.genContent = function(response) {
+			response = eval('('+response+')');
 			$('article').insert("<h1>{desc}</h1><section>{data}</section>".interpolate(response));
 			parse = new DOMParser();
 			alert(parse.parseFromString(response.data, "text/xml"));
@@ -51,15 +54,17 @@ Viewer = function() {
 			
 		}
 				}
-		document.genComments = function(response) {
+		document.genComments = function(comments) {
+			if(comments != ''){
+			comments = eval('('+comments+')');
 			for (c in comments) {
-				$('article').insert({bottom:"<h3>{user} : {datetime}</h3><section>{comment}</section>".interpolate(response)});
-			}alert('');
+				$('article').insert({bottom:"<h3>{user} : {datetime}</h3><section>{comment}</section>".interpolate(comments[c])});
+			}//alert('');
 			$('textarea').insert('');
 		}
-		document.userID = '1';
-		document.postComment = function() {
-			document.api.postComment($('article').page_id, document.userID, $('textarea').innerHTML, document.genComments);
+		}
+			document.postComment = function() {//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
+			document.api.postComment($('article').page_id, document.userID, $('textarea').value, document.genComments);
 
 
 		//document.sitemap = elems;

@@ -102,15 +102,21 @@ else if('comments' == $q)
     
     $query = "SELECT comment, user_id, datetime FROM comments WHERE page_id='$page_id'";
     $result = mysql_query($query, $con);
-    if(!$result || mysql_num_rows($result) == 0)
+    if(!$result)
         wb_server_error();
-        
-    $row = mysql_fetch_array($result);
-    $content = array( 'text' => $row['comment'],
+    
+    //We will assume that no comments is a valid posibility.
+    if(mysql_num_rows($result) != 0) {
+    	$row = mysql_fetch_array($result);
+    	$content = array( 'text' => $row['comment'],
     						 'user' => $row['user_id'],
     						 'date' => $row['datetime'] );
     
-    echo json_encode($content);
+    	echo json_encode($content);
+    }
+        
+        
+    
 }
 
 else

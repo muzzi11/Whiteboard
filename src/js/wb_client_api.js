@@ -11,33 +11,41 @@ Client = function(displayFunc) {
 	this.init = function(displayFunc){
 		this.serverUrl = window.location.host;
 		//this.displayHandler = displayFunc;
-		this.ajax = new Ajax(this.successHandler, this.serverUrl);
-		this.ajax.me = this;
+		//this.ajax = new Ajax(this.successHandler, this.serverUrl);
+		//this.ajax.me = this;
 	}
 	
 	Client.prototype.successHandler = function(response) {
 		//alert(response);
-		
+		if (response !='')
 		var elems = eval('('+response+')');
 		///@TODO Format data to something useful.
 		this.me.displayHandler(elems);
 	}
 	
-	Client.prototype.loadPage = function(pageNr) {
-		this.ajax.request("Whiteboard/query", "GET", "?q=sitemap");
+	Client.prototype.loadPage = function(pageNr, handler) {
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=sitemap");
 	}
 	
 	Client.prototype.loadContent = function(pageNr, handler) {
-		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/query", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		ajax.me.displayHandler = handler;
+		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
 	Client.prototype.loadComments = function(pageNr, userID, handler) {
-		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		ajax.me.displayHandler = handler;
+		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
 	Client.prototype.postComment = function(pageNr, userID, comment, handler) {
-		this.ajax.me.displayHandler = handler;
-		this.ajax.request("Whiteboard/query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID, post:comment}));
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		ajax.me.displayHandler = handler;
+		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}&post='{post}'".interpolate({nr:pageNr, user:userID, post:comment}));
 		
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}

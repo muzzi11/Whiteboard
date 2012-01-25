@@ -1,3 +1,3 @@
 RewriteEngine on
-RewriteRule ^casclient$ src/php/casclient.php
+RewriteRule ^authentication$ src/php/authentication.php
 RewriteRule ^query$ src/php/query.php

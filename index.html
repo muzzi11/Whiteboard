@@ -4,6 +4,63 @@
 <head>
    <link rel="stylesheet" type="text/css" href="src/css/style01.css" title="externalStyleSheet">
    <meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
+<script type="text/javascript" src="utilities/js/tools.js"></script>
+<script type="text/javascript" src="src/js/wb_client_api.js"></script>
+<script type="text/javascript" src="src/js/wb_viewer.js"></script>
+<script type="text/javascript">
+
+window.onload = function(){
+var b = $("body");
+//alert(b);
+//document.body.innerHTML =("test {test} {test3} {test} {t}".interpolate({test: "<b>works</b>", test2: 564, test3: "<a>34</a>"}));
+
+
+//$("body").insert({top:"<i>yes</i>"});
+//var elem = document.createElement('i');
+//elem.innerHTML = "wahaha";
+//b.select("b").replace(elem);
+
+var html = new Viewer();
+document.api = new Client(html.displayFunction);
+//api.init(html.displayFunction);
+document.api.displayHandler = html.displayFunction;
+document.api.loadPage(0);
+//alert('');
+//1. Page load.
+//2. Get layout.
+//	2.1 Do sitemap/menu request.
+//		2.1.1 Script to query.
+//		2.1.2 Database query.
+//		2.1.3 Query response to object.
+//	2.2 Respond as structured menu object.
+//	2.3 Handle menu object.
+//		2.3.1 Render menu object.
+//-----------------------------------------
+//3. Click on menu item.
+//4. Get content.
+//	4.1 Do content request.
+//		4.1.1 Script to query.
+//		4.1.2 Database query.
+//		4.1.3 Query response to object.
+//		4.1.4 Object to JSON.
+//	4.2 Repond as structured content JSON object.
+//	4.3 Handle content object.
+//		4.3.1 Parse content tree.
+//		4.3.1 Render content.
+//-----------------------------------------
+//5. Update sub-menu.
+//	5.1 Do sub-menu request.
+//		5.1.1 Script to query.
+//		5.1.2 Database query of sub-menu from sitemap.
+//		5.1.3 Query Response.
+//	5.2 Respond as structured sub-menu object.
+//	5.3 Handle sub-menu object.
+//		5.3.1 Render sub-menu object.
+//-------------------------------------------
+};
+
+</script>
+
 </head>
 
 <body>
@@ -24,11 +81,15 @@
 	</div>
 	
 	<div id="menuDiv">
-	<h2>available courses</h2>
+	<h2>available courses</h2><h4>
+	<menu></menu>
+	<aside></aside>
+	</h4>
 	</div>
 
 	<div id="movieDiv">
 	<h2>movie</h2>
+	<article></article>
 	</div>
 	
 	<div id="teachersAreaDiv">

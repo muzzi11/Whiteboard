@@ -94,13 +94,24 @@ else if('comments' == $q)
     if(isset($_GET['post']) && isset($_GET['user'])) {
     	$post = mysql_real_escape_string( $_GET['post'] );
     	$user = mysql_real_escape_string( $_GET['user'] );
-    	$query = "INSERT INTO comments (comment, datetime, user_id, page_id) 
-    	VALUES ('$post', NOW(),'$user', '$page_id')";
+    	/*if(isset($_GET['parent'])) {
+    		$parent = mysql_real_escape_string( $_GET['parent'] );
+    		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
+   	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
+   	} else {
+   		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
+    		VALUES ('$post', NOW(),'$user', '$page_id', NULL)";
+    		}
+    	*/
+    		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : 'NULL';
+    		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
+   	 	VALUES ('$post', NOW(),'$user', '$page_id', $parent)";
+    	
 		mysql_query($query, $con);
     }
     
     
-    $query = "SELECT comment, user_id, datetime FROM comments WHERE page_id='$page_id'";
+    $query = "SELECT comment_id, comment, user_id, datetime, reply_ref FROM comments WHERE page_id='$page_id'";
     $result = mysql_query($query, $con);
     if(!$result)
         wb_server_error();
@@ -109,9 +120,11 @@ else if('comments' == $q)
     if(mysql_num_rows($result) != 0) {
     	
     	while($row = mysql_fetch_array($result)) {
-    		$content[] = array( 'text' => $row['comment'],
+    		$content[] = array( 'id' => $row['comment_id'],
+    						 'text' => $row['comment'],
     						 'user' => $row['user_id'],
-    						 'date' => $row['datetime'] );
+    						 'date' => $row['datetime'],
+    						 'parent' => $row['reply_ref']);
     }
     	echo json_encode($content);
     }

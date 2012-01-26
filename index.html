@@ -1,51 +1,84 @@
 <!DOCTYPE HTML>
-<html xmlns="http://w3c.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 
 <head>
-   <link rel="stylesheet" type="text/css" href="src/css/style01.css" title="externalStyleSheet">
+   <link rel="stylesheet" type="text/css" href="src/css/style.css" title="externalStyleSheet">
    <meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
+<script type="text/javascript" src="utilities/js/tools.js"></script>
+<script type="text/javascript" src="src/js/wb_client_api.js"></script>
+<script type="text/javascript" src="src/js/wb_viewer.js"></script>
+<script type="text/javascript">
+
+window.onload = function(){
+var b = $("body");
+//alert(b);
+//document.body.innerHTML =("test {test} {test3} {test} {t}".interpolate({test: "<b>works</b>", test2: 564, test3: "<a>34</a>"}));
+
+
+
+//$('body').insert({top:"TESTTOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
+$('#footer').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>"});
+			
+
+var html = new Viewer();
+document.viewer = html;
+html.header = "#header";
+html.menu = "#topmenu";
+html.aside = "#aside";
+html.article = "#article";
+html.footer = "#footer";
+document.api = new Client(html.displayFunction);
+//api.init(html.displayFunction);
+document.api.displayHandler = html.displayFunction;
+document.api.loadPage(0, html.displayFunction);
+
+};
+
+</script>
 </head>
 
 <body>
-   <div id="rootDiv">
-	<div id="loginDiv">
-	<form class="login">
-	<h6 class="login">NetID:
-	<input type="text" size="16" maxlength="32" class="login" name="netid"/><br />
-	Password:
-	<input type="password" size="16" maxlength="32" class="login" name="password" /><br />
-	<input type="submit" value="Log In" class="login" />
-	</h6>
-	</form>
-	</div>
+	
+	
 
-	<div id="titleDiv">
-	<h1>whiteboard</h1>
+	<div id="header">
+		<h1>whiteboard</h1>
+		<div id="loginDiv">
+			<form class="login">
+				NetID:
+				<input type="text" size="16" maxlength="32" class="login" name="netid"/><br />
+				Password:
+				<input type="password" size="16" maxlength="32" class="login" name="password" /><br />
+				<input type="submit" value="Log In" class="login" />
+			</form>
+		</div>
 	</div>
 	
-	<div id="menuDiv">
-	<h2>available courses</h2>
+	
+	<div id="menu">
+		<h2>available courses</h2>
+		<div id="topmenu"></div>
+		<hr/>
+		<div id="aside"></div>
 	</div>
 
-	<div id="movieDiv">
-	<h2>movie</h2>
+	<div id="article">
+		<h2>movie</h2>
 	</div>
 	
-	<div id="teachersAreaDiv">
-	<h2>announcements<h2 />
-	<h4 class="teacher">Teacher says:I forgot to put the sheets online, they are available on my website by tomorrow.<h4 />
-	</div>
-
-	<div id="discussionDiv">
-	<h2>discussion</h2>>
-	   <table id="discussionTable">
-	      <tr>
-		 <td class="teachersDiscussionArea"><h4 class="teacher">Teacher says: what seems to be difficult to do?</h4></td>
-		 <td class="studentsDiscussionArea"><h4 class="student">Student says: everything which seems to be difficult, probably.</h4></td>	
-	      </tr>
+	<div id="comments"></div>
+	
+	
+	<div id="footer">
+		<h2>discussion</h2>
+		<table id="discussionTable">
+		<tr>
+			<td class="teachersDiscussionArea"><h4 class="teacher">Teacher says: what seems to be difficult to do?</h4></td>
+			<td class="studentsDiscussionArea"><h4 class="student">Student says: everything which seems to be difficult, probably.</h4></td>	
+	   </tr>
 	   </table>	
 	</div>
 
-   </div>
+  
 </body>
 </html>

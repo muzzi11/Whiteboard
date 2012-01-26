@@ -9,14 +9,11 @@ body {
    padding: 50px;
    display: block;
    min-width: 800px;
+   font-family: verdanna;
 }
-h1{font:bold 20pt/14pt helvetica;line-height:14px;color:#FFF;text-align:center;}
-h2{font:normal 14pt/14pt helvetica;line-height:14px;color:#FFF;text-align:center;}
-h4{font:normal 10pt/8pt verdana;line-height:10px;color:#000000;}
-h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
-
-
-
+h1, h2 {
+	font-family: helvetica;
+}
 #rootDiv {
    
 }
@@ -31,7 +28,7 @@ h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
    height:75px;
    text-align:right;
    background-color: #FFE;
-   -moz-border-radius: 0px 19px 0px 0px;
+   -moz-border-radius: 0px 18px 0px 0px;
    font:normal 8pt/8pt verdana;
 }
 
@@ -42,28 +39,34 @@ h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
    background-color: #202020;
    position: relative;
    border: solid white;
-   border-width: 1px 0px 0px 1px;
+   border-width: 1px 1px 0px 1px;
    -moz-border-radius: 20px 20px 0px 0px;
+   color: #FFFFFF;
+   text-align: center;
 }
 
 #content {
 	display: block;
 	width: 100%;
 	height: auto;
-	background: #FFFFFF;
+	min-height: 500px;
+	min-width: 800px;
+	background: #F8F8F8;
 	position: relative;
+	overflow: auto;
+	border: solid #FFFFFF 1px;
 }
 
 #menu, menu{
-   display:block;
+   display:inline-block;
    float:left;
-   top: 126px;
-   left: 50px;
+   top: 0px;
+   left: 0px;
    width:220px;
    height:auto;
    min-height: 500px;
    background-color: #D8D8D8;
-   position: absolute;
+   position: relative;
 }
 #menu a, menu a {
 	display: inline-block;
@@ -78,9 +81,16 @@ h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
 	text-align: center;
 	position: relative;
 }
-#menu a:hover, menu a:hover {
+#menu a:hover, menu a:hover, #menu a:focus, menu a:focus {
 	background: lightgray;
 	color: #000000;
+	outline: none;
+}
+#menu h2, menu h2 {
+	background: #202020;
+	padding: 8px;
+	margin: 2px 2px 20px;
+	color: #FFFFFF;
 }
 
 #aside, aside {
@@ -94,22 +104,29 @@ h6{font:normal 8pt/8pt verdana;line-height:10px;color:#000000;}
 }
 
 #article, article{
-   display:block;
+   display:inline-block;
    float:right;
-   top: 126px;
-   right: 49px;
-   left: 270px;
+   top: 0px;
    min-height:500px;
-   height: auto;
-   background-color: #F8F8F8;
-   position: absolute;
+   overflow: auto;
+   position: relative;
+   width: 70%;
 }
 
 #comments {
 	background: #EEF2FF;
 	overflow: auto;
 	bottom: 0px;
-	
+	padding: 20px;
+}
+#comments section {
+	background: #D6DAF0;
+	border: solid #B7C5D9;
+	border-width: 0px 1px 1px 0px;
+	padding: 20px 10px;
+	min-height: 60px;
+	min-width: 200px;
+	display: inline-block;
 }
 
 #teachersAreaDiv{

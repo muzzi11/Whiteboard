@@ -47,7 +47,7 @@ Viewer = function() {
 		}
 		document.genContent = function(response) {
 			response = eval('('+response+')');
-			$(document.viewer.article).insert("<h1>{desc}</h1><section>{data}</section>".interpolate(response));
+			$(document.viewer.article).insert("<section>{desc}</section>".interpolate(response));
             
             try {
                 if(window.DOMParser) {
@@ -125,7 +125,7 @@ Viewer = function() {
 			comments = eval('('+comments+')');
 			for (c in comments) {
 				comments[c].nr = c;
-				$('#comments').insert({bottom:"<h3>POST:	{nr}	REPLY TO:	{parent}	\nUSER:	{user}	DATE:	{date}</h3><section style='background: lightgrey;'>{text}<input type='checkbox' value='{id}' onclick='document.reply(this.value)'/></section>".interpolate(comments[c])});
+				$('#comments').insert({bottom:"<h3>POST:	{nr}	REPLY TO:	{parent}	\nUSER:	{user}	DATE:	{date}</h3><section>{text}<input type='checkbox' value='{id}' onclick='document.reply(this.value)'/></section>".interpolate(comments[c])});
 			}//alert('');
 			$('#textarea').value = '';
 		}

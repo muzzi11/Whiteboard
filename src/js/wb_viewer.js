@@ -21,7 +21,7 @@ Viewer = function() {
 			document.sitemap = elems;
 			/// @TODO display elements in HTML.
 			//alert(elems[e].title);
-			var html = "<a href='#' onclick='document.click({num});' >{title}</a>";
+			var html = "<a href='#' onclick='document.click({num}); return false;' >{title}</a>";
 			elems[e].num = e;//alert(elems[e].children);
 			html = html.interpolate(elems[e]);
 			//var obj = eval(html.interpolate(elems[e]));
@@ -32,7 +32,7 @@ Viewer = function() {
 				var pages = document.sitemap[nr].children;
 				$(document.viewer.aside).insert('');
 				for(p in pages) {					
-					var menu_item = "<a href='#' onclick='document.loadContent({page_id});' >{title}</a>";
+					var menu_item = "<a href='#' onclick='document.loadContent({page_id}); return false;' >{title}</a>";
 					menu_item = menu_item.interpolate(pages[p]);
 					$(document.viewer.aside).insert({bottom:menu_item});
 				}
@@ -122,10 +122,10 @@ Viewer = function() {
                 
 		document.genComments = function(comments) {
 			//alert(comments);
-			$('#comments').insert("<a href='#' onclick='document.reply(null)'>POST NEW</a>");
+			$('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
 			if(comments != ''){
 			comments = eval('('+comments+')');
-			var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id})'>No.{nr}</a><hr />{text}</section>";
+			var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a><hr />{text}</section>";
 			var count = 0;
 			for (c in comments) {
 				count++;

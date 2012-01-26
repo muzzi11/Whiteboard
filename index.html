@@ -18,7 +18,7 @@ var b = $("body");
 
 
 //$('body').insert({top:"TESTTOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
-$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>	<a href='#' onclick='document.postClose()'>CLOSE</a>"});
+$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
 			
 
 var html = new Viewer();

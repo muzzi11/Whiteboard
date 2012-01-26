@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns="http://w3c.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 
 <head>
 <title>test</title>
@@ -10,7 +10,6 @@
 
 window.onload = function(){
 
-$('article').insert({top:"TESTTOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
 $('#footer').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>"});
 			
 
@@ -27,7 +26,7 @@ document.api.loadPage(0, html.displayFunction);
 <body>test
 <menu></menu>
 <aside></aside>
-<section id="videos"></section>
+<div><div id="videos"></div></div>
 <article>
 </article>
 <section id="comments"></section>

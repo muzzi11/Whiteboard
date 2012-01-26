@@ -25,7 +25,7 @@ document.viewer = html;
 html.header = "#header";
 html.menu = "#topmenu";
 html.aside = "#aside";
-html.article = "#article";
+html.article = "#article h2";
 html.footer = "#footer";
 document.api = new Client(html.displayFunction);
 //api.init(html.displayFunction);
@@ -64,6 +64,7 @@ document.api.loadPage(0, html.displayFunction);
 
 	<div id="article">
 		<h2>movie</h2>
+		<div id="videos"></div>
 	</div>
 	
 	<div id="comments"></div>

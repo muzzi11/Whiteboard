@@ -26,19 +26,19 @@ Viewer = function() {
 			html = html.interpolate(elems[e]);
 			//var obj = eval(html.interpolate(elems[e]));
 			
-			$('menu').insert({bottom: html});
+			$(document.viewer.menu).insert({bottom: html});
 		}
 		document.click = function(nr) {
 				var pages = document.sitemap[nr].children;
-				$('aside').insert('');
+				$(document.viewer.aside).insert('');
 				for(p in pages) {					
 					var menu_item = "<a href='#' onclick='document.loadContent({page_id});' >{title}</a>";
 					menu_item = menu_item.interpolate(pages[p]);
-					$('aside').insert({bottom:menu_item});
+					$(document.viewer.aside).insert({bottom:menu_item});
 				}
 			}
 		document.loadContent = function(page_id) {
-			$('article').page_id = page_id;
+			$(document.viewer.article).page_id = page_id;
 			$('#textarea').parent = null;
 			document.userID = '1';
 			document.api.loadContent(page_id, document.genContent);
@@ -47,7 +47,7 @@ Viewer = function() {
 		}
 		document.genContent = function(response) {
 			response = eval('('+response+')');
-			$('article').insert("<h1>{desc}</h1><section>{data}</section>".interpolate(response));
+			$(document.viewer.article).insert("<h1>{desc}</h1><section>{data}</section>".interpolate(response));
             
             try {
                 if(window.DOMParser) {
@@ -89,7 +89,7 @@ Viewer = function() {
                 if(titles.length > 0)
                 {
                     if(level > 0)
-                        $('article').insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
+                        $(document.viewer.article).insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
                     
                     document.DOMWalker(nodes[i], level + 1);
                 }
@@ -101,7 +101,7 @@ Viewer = function() {
                     $('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
                 }
                 
-                $('article').insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
+                $(document.viewer.article).insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
             }
         }
     }

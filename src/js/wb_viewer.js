@@ -15,6 +15,7 @@ Viewer = function() {
 	}
 	
 	this.displayFunction = function(elems) {
+		//alert(elems);
 		elems = eval('('+elems+')');
 		for (e in elems) {
 			document.sitemap = elems;
@@ -38,6 +39,7 @@ Viewer = function() {
 			}
 		document.loadContent = function(page_id) {
 			$('article').page_id = page_id;
+			$('#textarea').parent = null;
 			document.userID = '1';
 			document.api.loadContent(page_id, document.genContent);
 			document.api.loadComments(page_id, document.userID, document.genComments);
@@ -122,18 +124,25 @@ Viewer = function() {
 			if(comments != ''){
 			comments = eval('('+comments+')');
 			for (c in comments) {
-				$('#comments').insert({bottom:"<h3>USER:	{user}	DATE:	{date}</h3><section style='background: lightgrey;'>{text}</section>".interpolate(comments[c])});
+				comments[c].nr = c;
+				$('#comments').insert({bottom:"<h3>POST:	{nr}	REPLY TO:	{parent}	\nUSER:	{user}	DATE:	{date}</h3><section style='background: lightgrey;'>{text}<input type='checkbox' value='{id}' onclick='document.reply(this.value)'/></section>".interpolate(comments[c])});
 			}//alert('');
 			$('#textarea').value = '';
 		}
 		}
-			document.postComment = function() {//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
-			document.api.postComment($('article').page_id, document.userID, $('textarea').value, document.genComments);
-
+		
+			document.postComment = function() {
+				//alert($('#textarea').parent);
+				//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
+			document.api.postComment($('article').page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent);
+			$('#textarea').parent = null;
 
 		//document.sitemap = elems;
 	}
-	
+	document.reply = function(parent) {
+		$('#textarea').parent = parent;
+	}
+
 	Viewer.prototype.reSubMenu = function(nr, content) {
 		alert(nr+"	"+document.sitemap);
 	}

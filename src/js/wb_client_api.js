@@ -44,11 +44,19 @@ Client = function(displayFunc) {
 		ajax.me.displayHandler = handler;
 		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
-	Client.prototype.postComment = function(pageNr, userID, comment, handler) {
+	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'".interpolate({nr:pageNr, user:userID, post:comment}));
+		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}".interpolate({
+			nr:pageNr,
+			user:userID, 
+			post:comment, 
+			parent: parent == null || typeof parent === 'undefined' ? '' : "&parent={parent}".interpolate({
+					parent: parent
+				})
+			})
+		);
 		
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}

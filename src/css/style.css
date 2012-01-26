@@ -38,7 +38,7 @@ h1, h2 {
    height:75px;
    background-color: #202020;
    position: relative;
-   border: solid white;
+   border: solid #FFFFFF;
    border-width: 1px 1px 0px 1px;
    -moz-border-radius: 20px 20px 0px 0px;
    color: #FFFFFF;
@@ -67,6 +67,7 @@ h1, h2 {
    min-height: 500px;
    background-color: #D8D8D8;
    position: relative;
+   text-align: center;
 }
 #menu a, menu a {
 	display: inline-block;
@@ -117,7 +118,9 @@ h1, h2 {
 	background: #EEF2FF;
 	overflow: auto;
 	bottom: 0px;
-	padding: 20px;
+	padding: 20px 0px 20px 8%;
+	border: 1px solid #FFFFFF;
+	width: 92%;
 }
 #comments section {
 	background: #D6DAF0;
@@ -163,8 +166,12 @@ h1, h2 {
    margin: 0px;
    padding: 0px;
    width:100%;
-   background-color: #D6DAF0;
+   height:75px;
+   background-color: #202020;
    border: 1px solid #FFFFFF;
+   -moz-border-radius: 0px 0px 20px 20px;
+   color: #FFFFFF;
+   text-align: center;
 }
 
 #discussionTable{

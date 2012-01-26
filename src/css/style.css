@@ -123,10 +123,31 @@ h1, h2 {
 	background: #D6DAF0;
 	border: solid #B7C5D9;
 	border-width: 0px 1px 1px 0px;
-	padding: 20px 10px;
+	padding: 0px 10px 20px 10px;
 	min-height: 60px;
 	min-width: 200px;
-	display: inline-block;
+	display: block;
+	margin: 20px 5px;
+	width: 1%;
+}
+
+#reply {
+	position: fixed;
+	min-width: 400px;
+	min-height: 200px;
+	width: 60%;
+	height: 60%;
+	display: block;
+	background: #FFFFFF;
+	top: 20%;
+	bottom: 20%;
+	left: 20%;
+	right: 20%;
+	z-index: 10;
+}
+#reply textarea {
+	width: 80%;
+	height: 80%;
 }
 
 #teachersAreaDiv{
@@ -143,6 +164,7 @@ h1, h2 {
    padding: 0px;
    width:100%;
    background-color: #D6DAF0;
+   border: 1px solid #FFFFFF;
 }
 
 #discussionTable{

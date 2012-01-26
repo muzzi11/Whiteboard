@@ -16,6 +16,7 @@ Viewer = function() {
 	
 	this.displayFunction = function(elems) {
 		//alert(elems);
+		$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
 		elems = eval('('+elems+')');
 		for (e in elems) {
 			document.sitemap = elems;
@@ -41,6 +42,7 @@ Viewer = function() {
 			$(document.viewer.article).page_id = page_id;
 			$('#textarea').parent = null;
 			$('#reply').hide();
+			$('#comments').show();
 			$('#comments').insert('');
 			document.userID = '1';
 			document.api.loadContent(page_id, document.genContent);
@@ -49,8 +51,8 @@ Viewer = function() {
 		}
 		document.genContent = function(response) {
 			response = eval('('+response+')');
-			$(document.viewer.article).insert("<section>{desc}</section>".interpolate(response));
-            
+			$("#desc").insert("{desc}".interpolate(response));
+         $(document.viewer.article).insert('');
             try {
                 if(window.DOMParser) {
                     parser = new DOMParser();

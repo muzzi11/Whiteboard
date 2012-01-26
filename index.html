@@ -1,46 +1,31 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
-<title>Whiteboard: </title>
+	<title>Whiteboard: </title>
    <link rel="stylesheet" type="text/css" href="src/css/style.css" />
    <meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
-<script type="text/javascript" src="utilities/js/tools.js"></script>
-<script type="text/javascript" src="src/js/wb_client_api.js"></script>
-<script type="text/javascript" src="src/js/wb_viewer.js"></script>
-<script type="text/javascript">
+	<script type="text/javascript" src="utilities/js/tools.js"></script>
+	<script type="text/javascript" src="src/js/wb_client_api.js"></script>
+	<script type="text/javascript" src="src/js/wb_viewer.js"></script>
+	<script type="text/javascript">
 
-window.onload = function(){
-var b = $("body");
-//alert(b);
-//document.body.innerHTML =("test {test} {test3} {test} {t}".interpolate({test: "<b>works</b>", test2: 564, test3: "<a>34</a>"}));
+		window.onload = function() {
 
-
-
-//$('body').insert({top:"TESTTOPTOPTOPTOPTOP", bottom:"BOTTOMBOTTOM"});
-$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
-			
-
-var html = new Viewer();
-document.viewer = html;
-html.header = "#header";
-html.menu = "#topmenu";
-html.aside = "#aside";
-html.article = "#article h2";
-html.footer = "#footer";
-document.api = new Client(html.displayFunction);
-//api.init(html.displayFunction);
-document.api.displayHandler = html.displayFunction;
-document.api.loadPage(0, html.displayFunction);
-
-};
-
-</script>
+		var html = new Viewer();
+		document.viewer = html;
+		html.header = "#header";
+		html.menu = "#topmenu";
+		html.aside = "#aside";
+		html.article = "#media";
+		html.footer = "#footer";
+		document.api = new Client(html.displayFunction);
+		//api.init(html.displayFunction);
+		document.api.displayHandler = html.displayFunction;
+		document.api.loadPage(0, html.displayFunction);
+	};
+	</script>
 </head>
-
 <body>
-	
-	
 
 	<div id="header">
 		<h1>whiteboard</h1>
@@ -56,19 +41,22 @@ document.api.loadPage(0, html.displayFunction);
 	</div>
 	
 	<div id="content">
-	<div id="menu">
-		<h2>Contents</h2>
-		<div id="topmenu"></div>
-		<hr/>
-		<div id="aside"></div>
-	</div>
+		<div id="menu">
+			<h2>Contents</h2>
+			<div id="topmenu"></div>
+			<hr/>
+			<div id="aside"></div>
+		</div>
 
-	<div id="article">
-		<h2>movie</h2>
-		<div id="videos"></div>
+		<div id="article">
+			<div id="desc"></div>
+			<div id="videos"></div>
+			<div id="media"></div>
+		</div>
 	</div>
-	</div>
-	<div id="comments"></div>
+	
+	<div style="display: none;" id="comments"></div>
+	
 	<div id="footer">
 		test
 	</div>

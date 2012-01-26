@@ -112,6 +112,16 @@ h1, h2 {
    width: 70%;
 }
 
+#desc {
+	text-align: justify;
+	color: #000000;
+	font-family: helvetica;
+	font-size: 16px;
+	display: block;
+	width: 80%;
+	padding: 20px;
+}
+
 #comments {
 	background: #EEF2FF;
 	overflow: auto;

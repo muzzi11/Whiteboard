@@ -9,7 +9,10 @@ Client = function(displayFunc) {
 	//this.displayHandler = 0;
 	
 	this.init = function(displayFunc){
-		this.serverUrl = window.location.host;
+        var index = window.location.href.lastIndexOf('/');
+        this.serverUrl = index >= 0 ? window.location.href.substr(0, index) : 'http://' + window.location.host;
+        this.serverUrl += '/';
+
 		//this.displayHandler = displayFunc;
 		//this.ajax = new Ajax(this.successHandler, this.serverUrl);
 		//this.ajax.me = this;
@@ -26,26 +29,26 @@ Client = function(displayFunc) {
 	Client.prototype.loadPage = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
-		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=sitemap");
+		ajax.request("query", "GET", "?q=sitemap");
 	}
 	
 	Client.prototype.loadContent = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
+		ajax.request("query", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
 	Client.prototype.loadComments = function(pageNr, userID, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
 	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}".interpolate({
+		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}".interpolate({
 			nr:pageNr,
 			user:userID, 
 			post:comment, 

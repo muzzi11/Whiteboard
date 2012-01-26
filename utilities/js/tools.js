@@ -216,7 +216,7 @@ Ajax = function(success, server) {
 		var u = url==null ? this.url : url;
 		var m = method==null ? this.method : method;
 		//alert(this.serverUrl+'/'+u+'\n'+m+'\n'+queryString);
-		this.httpRequestObject.open(m, 'http://'+this.serverUrl+'/'+u+queryString, this.asyncFlag);
+		this.httpRequestObject.open(m, this.serverUrl+u+queryString, this.asyncFlag);
 		this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		this.httpRequestObject.send(null);
 	}

@@ -103,11 +103,11 @@ else if('comments' == $q)
     		VALUES ('$post', NOW(),'$user', '$page_id', NULL)";
     		}
     	*/
-    		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : 'NULL';
+    		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : '0';
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-   	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent)'";
+   	 	VALUES ('$post', NOW(), '$user', '$page_id', '$parent')";
     	
-		mysql_query($query, $con);
+		wb_query($query, $con);
     }
     
     

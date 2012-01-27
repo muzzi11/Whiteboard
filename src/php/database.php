@@ -172,8 +172,7 @@ function wb_create_comments_table($con)
         page_id INT UNSIGNED NOT NULL,
         datetime DATETIME,
         comment TEXT,
-        reply_ref BIGINT UNSIGNED NULL,
-        FOREIGN KEY(reply_ref) REFERENCES comments(comment_id)
+        reply_ref BIGINT UNSIGNED NOT NULL DEFAULT 0
     ) ENGINE=InnoDB';
     
     wb_query($query, $con);

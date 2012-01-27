@@ -86,14 +86,18 @@ else if('content' == $q)
 }
 else if('comments' == $q)
 {
-    if( !isset($_GET['page']) )
+	 session_start();
+	 if( isset($_SESSION['user_id'])) //return false;
+	 	$user = mysql_real_escape_string( $_SESSION['user_id']);
+	 else $user = '1';
+	 if( !isset($_GET['page']) )
         wb_server_error();
         
     $page_id = mysql_real_escape_string( $_GET['page'] );
     
-    if(isset($_GET['post']) && isset($_GET['user'])) {
+    if(isset($_GET['post'])) {
     	$post = mysql_real_escape_string( $_GET['post'] );
-    	$user = mysql_real_escape_string( $_GET['user'] );
+    	
     	/*if(isset($_GET['parent'])) {
     		$parent = mysql_real_escape_string( $_GET['parent'] );
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
@@ -103,8 +107,8 @@ else if('comments' == $q)
     		VALUES ('$post', NOW(),'$user', '$page_id', NULL)";
     		}
     	*/
-    		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : '0';
-    		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
+   		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : '0';
+   		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
    	 	VALUES ('$post', NOW(), '$user', '$page_id', '$parent')";
     	
 		wb_query($query, $con);

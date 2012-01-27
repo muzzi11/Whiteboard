@@ -105,7 +105,7 @@ else if('comments' == $q)
     	*/
     		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : 'NULL';
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-   	 	VALUES ('$post', NOW(),'$user', '$page_id', $parent)";
+   	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent)'";
     	
 		mysql_query($query, $con);
     }
@@ -125,14 +125,13 @@ else if('comments' == $q)
     						 'user' => $row['user_id'],
     						 'date' => $row['datetime'],
     						 'parent' => $row['reply_ref']);
-    }
+        }
     	echo json_encode($content);
     }
         
         
     
 }
-
 else
     wb_server_error();
 

@@ -223,3 +223,9 @@ Ajax = function(success, server) {
 	
 	this.init();
 }
+
+function bind(scope, func) {
+    return function () {
+        func.apply(scope, arguments);
+    };
+}

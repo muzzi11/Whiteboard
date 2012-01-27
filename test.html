@@ -1,35 +1,68 @@
 <!DOCTYPE HTML>
 <html>
-
 <head>
-<title>test</title>
-<script type="text/javascript" src="utilities/js/tools.js"></script>
-<script type="text/javascript" src="src/js/wb_client_api.js"></script>
-<script type="text/javascript" src="src/js/wb_viewer.js"></script>
-<script type="text/javascript">
-
-window.onload = function(){
-
-$('#footer').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment()'>POST</a>"});
-			
-
-var html = new Viewer();
-document.api = new Client(html.displayFunction);
-//api.init(html.displayFunction);
-document.api.displayHandler = html.displayFunction;
-document.api.loadPage(0, html.displayFunction);
-
-};
-
-</script>
+    <title>Whiteboard: </title>
+    <link rel="stylesheet" type="text/css" href="src/css/style.css" />
+    <meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
+    <script type="text/javascript" src="utilities/js/tools.js"></script>
+    <script type="text/javascript" src="src/js/wb_controls.js"></script>
+    <script type="text/javascript" src="src/js/wb_client_api.js"></script>
+    <script type="text/javascript" src="src/js/wb_viewer.js"></script>
+    <script type="text/javascript">
+    
+    window.onload = function()
+    {
+        var html = new Viewer();
+    	document.viewer = html;
+    	html.header = "#header";
+    	html.menu = "#topmenu";
+    	html.aside = "#aside";
+    	html.article = "#media";
+    	html.footer = "#footer";
+    	document.api = new Client(html.displayFunction);
+    	//api.init(html.displayFunction);
+    	document.api.displayHandler = html.displayFunction;
+    	document.api.loadPage(0, html.displayFunction);
+    };
+    
+    </script>
 </head>
-<body>test
-<menu></menu>
-<aside></aside>
-<div><div id="videos"></div></div>
-<article>
-</article>
-<section id="comments"></section>
-<div id="footer"></div>
+<body>
+<div id="header">
+		<h1>whiteboard</h1>
+		<div id="loginDiv">
+			<form class="login">
+				NetID:
+				<input type="text" size="16" maxlength="32" class="login" name="netid"/><br />
+				Password:
+				<input type="password" size="16" maxlength="32" class="login" name="password" /><br />
+				<input type="submit" value="Log In" class="login" />
+			</form>
+		</div>
+	</div>
+	
+	<div id="content">
+		<div id="menu">
+			<h2>Contents</h2>
+			<div id="topmenu"></div>
+			<hr/>
+			<div id="aside"></div>
+		</div>
+
+		<div id="article">
+			<div id="desc"></div>
+			<div id="videos"></div>
+            <div id="blabla"></div>
+			<div id="media"></div>
+		</div>
+	</div>
+	
+	<div style="display: none;" id="comments"></div>
+	
+	<div id="footer">
+		test
+	</div>
+	
+	<div style="display: none;" id="reply"></div>
 </body>
 </html>

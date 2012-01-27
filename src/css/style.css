@@ -177,3 +177,66 @@ h1, h2 {
 input.login{
 	width:100px;
 }
+
+
+.tab_control
+{
+	width: 700px;
+}
+
+.tab_content
+{
+	padding: 8px;
+	width: 682px;
+	float: left;
+	border: solid 1px #000;
+	border-top-style: none;
+	min-height: 100px;
+}
+
+.tabs
+{
+	color: Black;
+	float: left;
+	height: 30px;
+	width: inherit;
+	border-bottom: solid 1px #000;
+}
+
+.tabs ul
+{
+	margin: 0;
+	padding: 0;
+}
+
+.tabs li,
+.tabs li:hover,
+.tabs li.current_item
+{
+	height: 20px;
+	min-width: 40px;
+	padding: 4px 8px 6px 8px;
+	float: left;
+	display: block;
+	border-bottom: solid 1px #000;
+	border-right: solid 1px #D8D8D8;
+	text-align: center;
+}
+
+.tabs li:hover
+{
+	background-color: #D8D8D8;
+	cursor: pointer;
+}
+
+.tabs li.current_item
+{
+	border: solid 1px #000;
+	border-bottom-style: none;
+	background-color: White;
+}
+
+.tabs a
+{
+	font-size: 14px;
+}

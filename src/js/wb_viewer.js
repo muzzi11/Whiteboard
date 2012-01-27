@@ -52,7 +52,8 @@ Viewer = function() {
 		document.genContent = function(response) {
 			response = eval('('+response+')');
 			$("#desc").insert("{desc}".interpolate(response));
-         $(document.viewer.article).insert('');
+            $(document.viewer.article).insert('');
+            $('#blabla').insert('');
             try {
                 if(window.DOMParser) {
                     parser = new DOMParser();
@@ -68,10 +69,11 @@ Viewer = function() {
             
             $('#videos').insert('');
             
-            document.DOMWalker(xmlDoc);
+            var tabControl = new TabControl( $('#blabla') );
+            document.DOMWalker(xmlDoc, tabControl);
             
             if( $('#videos').innerHTML != '' ) {
-                $('#videos').insert({top: '<video controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
+                $('#videos').insert({top: '<video width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
             }
 		}
 	}
@@ -79,9 +81,12 @@ Viewer = function() {
     /**
     * Ugly as a mofo, bare with me.
     */
-    document.DOMWalker = function(doc, level) {
+    document.DOMWalker = function(doc, tabControl, tab_index, level) {
         if(!level)
             var level = 0;
+        if(tab_index == undefined)
+            var tab_index = -1;
+            
         var nodes = doc.childNodes;
         for(var i = 0; i < nodes.length; i++) {
             var tabs = '';
@@ -92,10 +97,14 @@ Viewer = function() {
                 var titles = nodes[i].getElementsByTagName('title');
                 if(titles.length > 0)
                 {
-                    if(level > 0)
-                        $(document.viewer.article).insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
+                    if(level == 1) {
+                        tab_index = tabControl.addTab(titles[0].firstChild.nodeValue);
+                    } else if(level > 0) {
+                        tabControl.addTabContent(tab_index, tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />');
+                        //$('.tab_content').insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
+                    }
                     
-                    document.DOMWalker(nodes[i], level + 1);
+                    document.DOMWalker(nodes[i], tabControl, tab_index, level + 1);
                 }
             } else if('bookmark' == nodes[i].nodeName) {
                 var url = nodes[i].attributes[0].firstChild.nodeValue;
@@ -104,9 +113,13 @@ Viewer = function() {
                 if( video_ext = document.getVideoType(url) ) {
                     $('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
                 }
-                
-                $(document.viewer.article).insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
+                if(tab_index < 0)
+                    $(document.viewer.article).insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
+                else
+                    tabControl.addTabContent(tab_index, tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />');
             }
+                        
+            //tab_index = -1;
         }
     }
     
@@ -122,42 +135,42 @@ Viewer = function() {
         return result[result.length - 1].replace('\.', '');
     }
                 
-		document.genComments = function(comments) {
-			//alert(comments);
-			$('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
-			if(comments != ''){
-			comments = eval('('+comments+')');
-			var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a><hr />{text}</section>";
-			var count = 0;
-			for (c in comments) {
-				count++;
-				comments[c].nr = count;
-				if (comments[c].parent == null) {
-					$('#comments').insert({bottom:comment.interpolate(comments[c])});
-					var reply = function(coments, id, level) {
-						var count = 0;
-						for (r in comments) {
-							count++;
-							if(id == comments[r].parent) {
-								comments[r].indent = level * 50;
-								comments[r].nr = count;
-								$('#comments').insert({bottom:comment.interpolate(comments[r])});
-								reply(comments, comments[r].id, level+1);
-							}
-						}
-					}
-					reply(comments, comments[c].id, 1);
-				}
-			}//alert('');
-			$('#textarea').value = '';
-		}
-		}
+	document.genComments = function(comments) {
+		//alert(comments);
+        $('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
+        if(comments != ''){
+    		comments = eval('('+comments+')');
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a><hr />{text}</section>";
+    		var count = 0;
+    		for (c in comments) {
+    			count++;
+    			comments[c].nr = count;
+    			if (comments[c].parent == null) {
+    				$('#comments').insert({bottom:comment.interpolate(comments[c])});
+    				var reply = function(coments, id, level) {
+    					var count = 0;
+    					for (r in comments) {
+    						count++;
+    						if(id == comments[r].parent) {
+    							comments[r].indent = level * 50;
+    							comments[r].nr = count;
+    							$('#comments').insert({bottom:comment.interpolate(comments[r])});
+    							reply(comments, comments[r].id, level+1);
+    						}
+    					}
+    				}
+    				reply(comments, comments[c].id, 1);
+    			}
+    		}//alert('');
+    		$('#textarea').value = '';
+        }
+	}
 		
-			document.postComment = function() {
-				//alert($('#textarea').parent);
-				//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
-			document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent);
-			document.postClose();
+	document.postComment = function() {
+		//alert($('#textarea').parent);
+		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
+		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent);
+		document.postClose();
 
 		//document.sitemap = elems;
 	}

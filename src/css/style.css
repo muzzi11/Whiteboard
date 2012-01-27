@@ -16,7 +16,7 @@ h1, h2 {
 	font-family: helvetica;
 }
 
-#loginDiv{
+#login {
    display:block;
    padding: 0px 50px;
    position:absolute;
@@ -67,7 +67,7 @@ h1, h2 {
    position: relative;
    text-align: center;
 }
-#menu a, menu a {
+#menu a, menu a, #login a {
 	display: inline-block;
 	margin: 2px 4px;
 	background: gray;
@@ -80,7 +80,7 @@ h1, h2 {
 	text-align: center;
 	position: relative;
 }
-#menu a:hover, menu a:hover, #menu a:focus, menu a:focus {
+#menu a:hover, menu a:hover, #menu a:focus, menu a:focus, #login a:hover, #login a:focus {
 	background: lightgray;
 	color: #000000;
 	outline: none;

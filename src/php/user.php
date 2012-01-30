@@ -44,7 +44,7 @@ Returns 1 if $UvaNetID matches teacher pattern, 0 if not.
 */
 function wb_is_teacher($UvaNetID)
 {
-    return preg_match('/[a-z]/ig', $UvaNetID);
+    return preg_match('/[a-z]/i', $UvaNetID);
 }
 
 ?>

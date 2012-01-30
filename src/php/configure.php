@@ -35,9 +35,9 @@
                             "\$username='" . $_POST['username'] . "'; " .
                             "\$password='" . $_POST['password'] . "'; ?>";
             if( fwrite($file, $config) )
-                echo "Config file creation succeeded.\n";
+                echo 'Config file creation succeeded.<br />';
             else
-                echo "Error: config file creation failed.\n";
+                echo 'Error: config file creation failed.<br />';
 
             fclose($file);
         }

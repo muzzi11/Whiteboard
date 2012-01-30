@@ -20,7 +20,7 @@ function wb_insert_user($UvaNetID)
     
     $user_id = false;
     //Check if user exists
-    $result = wb_query("SELECT user_id FROM users WHERE UvaNetID=$UvaNetID LIMIT 1", $con);
+    $result = wb_query("SELECT user_id FROM users WHERE UvaNetID='$UvaNetID' LIMIT 1", $con);
     if($result && mysql_num_rows($result) == 1)
     {
         $row = mysql_fetch_array($result);

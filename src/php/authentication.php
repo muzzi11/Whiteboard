@@ -53,6 +53,7 @@ function wb_verify_ticket($ticket)
     $result = curl_exec($ch);
     curl_close($ch);
     
+    if($result)
     {
         $result = str_replace('cas:', '', $result);
         

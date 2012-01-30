@@ -29,7 +29,7 @@ function wb_load_xml_from_file($filename)
         $error = "Error: file $filename does not exist.";
 
     echo $error;
-    return FALSE;
+    return false;
 }
 
 /**
@@ -43,9 +43,38 @@ function wb_load_xml_from_string($data)
     if($xml)
         return $xml;
     else
-        echo "Error: failed to load $filename";
+        echo 'Error: failed to load xml string.';
         
-    return FALSE;
+    return false;
+}
+
+
+/**
+Retrieves and imports xml data from the specified url.
+Returns true on succes, false otherwise.
+*/
+function wb_import_xml_from_url($url)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+    
+    $data = curl_exec($ch);
+    curl_close($ch);
+    
+    if($data)
+    {
+        if( $xml = wb_load_xml_from_string($data) )
+        {
+            wb_import_xml($xml);
+            return true;
+        }
+    }
+    else
+        echo "Could not retrieve XML data from: $url";
+        
+    return false;
 }
 
 /**

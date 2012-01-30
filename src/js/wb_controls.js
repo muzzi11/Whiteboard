@@ -6,20 +6,6 @@ function TabControl(parentElement)
     this.tabs = new Array();
     this.current_tab = -1;
     
-    this.control = document.createElement('div');
-    this.tab_bar = document.createElement('div');
-    this.list = document.createElement('ul');
-    this.content = document.createElement('div');
-
-    this.control.setAttribute('class', 'tab_control');
-    this.tab_bar.setAttribute('class', 'tabs');
-    this.content.setAttribute('class', 'tab_content');
-    
-    parentElement.appendChild(this.control);
-    this.control.appendChild(this.tab_bar);
-    this.control.appendChild(this.content);
-    this.tab_bar.appendChild(this.list);
-    
     function Tab(parentElement, label)
     {
         this.content = '';
@@ -40,11 +26,35 @@ function TabControl(parentElement)
     }
     
     /**
+    Creates the document elements and sets the appropriate attributes. Automatically called by this.addTab().
+    */
+    this.init = function()
+    {
+        if(this.tabs.length != 0)
+            return;
+
+        this.control = document.createElement('div');
+        this.tab_bar = document.createElement('div');
+        this.list = document.createElement('ul');
+        this.content = document.createElement('div');
+    
+        this.control.setAttribute('class', 'tab_control');
+        this.tab_bar.setAttribute('class', 'tabs');
+        this.content.setAttribute('class', 'tab_content');
+        
+        parentElement.appendChild(this.control);
+        this.control.appendChild(this.tab_bar);
+        this.control.appendChild(this.content);
+        this.tab_bar.appendChild(this.list);
+    }
+    
+    /**
     Adds a tab to the control, if no label is specified it will be labeled 'Tab'.
     Returns the index of the tab.
     */
     this.addTab = function(label)
     {
+        this.init();
         var last_index = this.tabs.length;
         
         this.tabs.push( new Tab(this.list, label) );

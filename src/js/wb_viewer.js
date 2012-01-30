@@ -140,7 +140,7 @@ Viewer = function() {
         $('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
         if(comments != ''){
     		comments = eval('('+comments+')');
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a><hr />{text}</section>";
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>]</span><hr />{text}</section>";
     		var count = 0;
     		for (c in comments) {
     			count++;

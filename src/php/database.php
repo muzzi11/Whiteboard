@@ -7,7 +7,7 @@ function wb_query($query, $con)
 {
     $resource = mysql_query($query, $con);
     if(!$resource)
-        echo 'Invalid query: ' . mysql_error() . "\nQuery: $query";
+        echo 'Invalid query: ' . mysql_error() . "\nQuery: $query\n";
         
     return $resource;
 }

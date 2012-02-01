@@ -149,6 +149,7 @@ a:visited
 {
 	float: right;
 	width: 720px;
+	min-height: 300px;
 	margin-left: 30px;
 }
 
@@ -182,6 +183,7 @@ a:visited
 	clear:both;
 	padding: 8px 15px 8px 5px;
 	margin: 7px 0;
+	word-wrap: break-word;
 	overflow:auto;
 }
 

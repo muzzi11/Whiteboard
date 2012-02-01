@@ -132,12 +132,12 @@ Viewer = function() {
         return result[result.length - 1].replace('\.', '');
     }
                 
-	document.genComments = function(comments) {        
+	document.genComments = function(comments) {
+        $('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
         if(comments != ''){
-        	$('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
     		comments = JSON.parse(comments);
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>]</span><hr />{text}</section>";
-    		var count = 0;
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a class='reply' href='' onclick='document.reply({id}); return false;'>Reply</a><br />{text}</section>";
+            var count = 0;
     		for (c in comments) {
     			count++;
     			comments[c].nr = count;
@@ -162,6 +162,8 @@ Viewer = function() {
     				reply(comments, comments[c].id, 1);
     			}
     		}//alert('');
+            if( $('#comments').offsetHeight > 400 )
+                $('#comments').insert({bottom:"<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
     		$('#textarea').value = '';
         }
 	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,

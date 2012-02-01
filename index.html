@@ -27,7 +27,8 @@
 		document.api = new Client(html.displayFunction);
 		//api.init(html.displayFunction);
 		document.api.displayHandler = html.displayFunction;
-		document.api.loadPage(0, html.displayFunction);
+		document.api.loadPage(document.api.pageNr, html.displayFunction);
+		
 	};
 	</script>
 </head>

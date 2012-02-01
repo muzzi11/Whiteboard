@@ -52,10 +52,12 @@ a:visited
 	line-height: 39px;
 }
 
-#header_logo h1
+#header_logo a
 {
 	color: #fff;
+	font-family: helvetica;
 	font-size: 24px;
+	text-decoration: none;
 }
 
 #login
@@ -207,17 +209,22 @@ a:visited
 {
 	float: right;
 	text-decoration:none;
+}
+
+a.button
+{
+	float: right;
+	text-decoration:none;
 	color: #fff;
 	background-color: #5d7078;
 	border: solid 1px #84a1ab;
 	padding: 3px 13px 5px 13px;
-	margin-bottom: 5px;
+	margin: 0 0 5px 15px;
 }
 
-#comments a.reply
+a.button:hover
 {
-	float: right;
-	text-decoration:none;
+	background-color: #9eb9b9;
 }
 
 #reply
@@ -225,20 +232,21 @@ a:visited
 	position: fixed;
 	min-width: 400px;
 	min-height: 200px;
-	width: 60%;
-	height: 60%;
+	width: 50%;
+	height: 50%;
+	padding: 10px;
 	display: block;
-	background: #FFFFFF;
-	top: 20%;
-	bottom: 20%;
-	left: 20%;
-	right: 20%;
+	background: #f8faff;
+	border: solid 1px #ccd8df;
+	top: 25%;
+	left: 25%;
 	z-index: 10;
 }
 #reply textarea
 {
 	width: 80%;
 	height: 80%;
+	margin: 15px 10%;
 }
 
 #footer, footer

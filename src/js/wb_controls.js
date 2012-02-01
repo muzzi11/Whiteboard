@@ -108,67 +108,19 @@ function TabControl(parentElement)
 }
 
 /**
-Allows for easy list generation.
-Creates an unordered list DOM element and appends it to parent_element.
+MenuControl for easy folder like navigation:
+[+]MenuItem
+[-]AnotherMenuItem
+    SubMenuItem
+    Another SubMenuItem
+
+Creates the neccesary DOM elements and appends them to parent_element. 
 */
-function ListControl(parent_element)
+function MenuControl(parent_element)
 {
-    this.ul = document.createElement('ul');
-    parent_element.appendChild(this.ul);
-    this.items = new Array();
-    
     /**
-    Creates a list item element and appends it to this.ul and adds it to this.items
-    Returns the created <li> element.
+    Contains a <div> for the item's label and a <ul> for the SubMenu.
     */
-    this.addItem = function()
-    {
-        var index = this.items.length;
-        
-        this.items.push( document.createElement('li') );
-        this.ul.appendChild( this.items[index] );
-        
-        return this.items[index];
-    }
-}
-
-/**
-function MenuControl(parent_element)
-{
-    function MenuItem(parent_element, label)
-    {
-        this.item = document.createElement('div');
-        this.item.innerHTML = label ? label : 'Label';
-        parent_element.appendChild(this.item);
-        
-        this.sub_items = document.createElement('div');
-        this.label.appendChild(this.sub_items);
-        this.listControl = new ListControl(this.sub_items);
-        
-        this.addItem = function(label)
-        {
-            return this.listControl.addItem();
-        }
-    }
-    
-    this.parent_element = parent_element;
-    this.listControl = new ListControl(parent_element);
-    this.items = new Array();
-    
-    this.addItem = function()
-    {
-        this.listControl.addItem()
-        
-    }
-    
-    this.onClick = function()
-    {
-        
-    }
-}*/
-
-function MenuControl(parent_element)
-{
     function MenuItem(parent_element, label)
     {   
         this.folded = true;
@@ -183,6 +135,7 @@ function MenuControl(parent_element)
         this.ul.style.display = 'none';
         parent_element.appendChild(this.ul);
         
+        /// Toggles between folded and unfolded display of the menu item
         this.toggleFold = function()
         {
             this.folded = !this.folded;
@@ -225,6 +178,11 @@ function MenuControl(parent_element)
         return index;
     }
     
+    /**
+    Adds a sub item to an already existing menu item.
+    @param index returned by previous call to this.addItem
+    @param page_id is the id of the page the sub item will load in on click.
+    */
     this.addSubItem = function(index, page_id, label)
     {
         if(index < 0 || index >= this.menu_items.length)

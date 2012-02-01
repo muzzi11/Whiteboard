@@ -89,7 +89,7 @@ Client = function(displayFunc) {
 	
 	Client.prototype.getIsTeacher = function(userID) {
 		var alphaNum = /[0-9][A-z]+/gi;
-		return alphaNum.match(userID);
+		return alphaNum.test(userID);
 	}
 	
 	

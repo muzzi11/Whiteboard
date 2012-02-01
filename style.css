@@ -193,6 +193,16 @@ a:visited
 	background-color: #f8faff;
 }
 
+#comments .teacher
+{
+	background-color: #F2D2D2;
+}
+
+#comments .student
+{
+	background-color: #F2F2F2;
+}
+
 #comments a.post
 {
 	float: right;

@@ -138,12 +138,13 @@ Viewer = function() {
         	
     		comments = JSON.parse(comments);
     		//alert(typeof comments);
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";
+    		var comment = "<section class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";
     		var count = 0;
     		for (c in comments) {
     			count++;
     			comments[c].nr = count;
     			if (comments[c].parent == 0) {
+    				comments[c].class = document.api.getIsTeacher(comments[c].user) ? 'teacher' : 'student';
     				$('#comments').insert({bottom:comment.interpolate(comments[c])});
     				var reply = function(coments, id, level) {
     				    //limit number of thread levels
@@ -156,6 +157,7 @@ Viewer = function() {
     						if(id == comments[r].parent) {
     							comments[r].indent = level * 20;
     							comments[r].nr = count;
+    							comments[r].class = document.api.getIsTeacher(comments[c].user) ? 'teacher' : 'student';
     							$('#comments').insert({bottom:comment.interpolate(comments[r])});
     							reply(comments, comments[r].id, level+1);
     						}

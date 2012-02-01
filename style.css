@@ -180,7 +180,10 @@ a:visited
 	min-width: 200px;
 	display: block;
 	margin: 20px 5px;
-	width: 1%;
+	width: 30%;
+	word-wrap: break-word;
+	white-space: pre-line;
+	overflow: auto;
 }
 
 #reply

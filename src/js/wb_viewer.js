@@ -144,7 +144,7 @@ Viewer = function() {
     		for (c in comments) {
     			count++;
     			comments[c].nr = count;
-    			if (comments[c].parent == 0) {//alert(comments[c]);
+    			if (comments[c].parent == 0) {
     				$('#comments').insert({bottom:comment.interpolate(comments[c])});
     				var reply = function(coments, id, level) {
     					var count = 0;
@@ -182,9 +182,10 @@ Viewer = function() {
 	}
 		
 	document.postComment = function() {
+		alert(escape($('textarea').value));
 		//alert($('#textarea').parent);
 		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
-		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, $('textarea').cmd);
+		document.api.postComment($(document.viewer.article).page_id, document.userID, escape($('textarea').value), document.genComments, $('textarea').parent, $('textarea').cmd);
 		document.postClose();
 
 		//document.sitemap = elems;

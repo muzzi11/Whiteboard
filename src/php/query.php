@@ -115,7 +115,11 @@ else if('comments' == $q)
    	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
     	
 		wb_query($query, $con);
-    }
+    } else if (isset($_GET['del'])) {
+    	$comment_id = mysql_escape_string($_GET['del']);
+    		$query = "DELETE FROM comments WHERE comment_id='$comment_id'";
+    		wb_query($query, $con);
+    	}
     
     
     $query = "SELECT comment_id, comment, user_id, datetime, reply_ref FROM comments WHERE page_id='$page_id'";
@@ -143,6 +147,7 @@ else if('verify' == $q) {
 	session_start();
 	echo isset($_SESSION['user_id']) ? true : false;
 }
+
 
 else
     wb_server_error();

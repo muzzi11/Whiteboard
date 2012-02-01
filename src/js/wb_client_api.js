@@ -26,6 +26,22 @@ Client = function(displayFunc) {
 		this.me.displayHandler(elems);
 	}
 	
+	Client.prototype.verifyAuth = function(pageNr, handler) {
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		//ajax.me.displayHandler = handler;
+		ajax.me.displayHandler = function(response) {
+			if(response=='true') {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').insert('LOGOUT');
+			} else {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?logout&service=index.html';
+				$('#login a').insert('LOGIN');
+			}
+		};
+		ajax.request("query", "GET", "?q=verify");
+	}
+	
 	Client.prototype.loadPage = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
@@ -59,6 +75,11 @@ Client = function(displayFunc) {
 		);
 		
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+	}
+	
+	Client.prototype.getIsTeacher = function(userID) {
+		var alphaNum = /[0-9][A-z]+/gi;
+		return alphaNum.match(userID);
 	}
 	
 	

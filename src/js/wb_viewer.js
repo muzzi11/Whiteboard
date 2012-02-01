@@ -18,7 +18,7 @@ Viewer = function() {
         var menuControl = new MenuControl( $('#menu') );
         //alert(elems);
         $('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
-        elems = eval('('+elems+')');
+        elems = JSON.parse(elems);
         for (e in elems) {
             var item_index = menuControl.addItem(elems[e].title);
             var pages = elems[e].children;
@@ -41,7 +41,7 @@ Viewer = function() {
 		}
         
 		document.genContent = function(response) {
-			response = eval('('+response+')');
+			response = JSON.parse(response);
 			$("#desc").insert("{desc}".interpolate(response));
             $(document.viewer.article).insert('');
             $('#blabla').insert('');
@@ -64,8 +64,14 @@ Viewer = function() {
             document.DOMWalker(xmlDoc, tabControl);
             
             if( $('#videos').innerHTML != '' ) {
-                $('#videos').insert({top: '<video width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
+                $('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
             }
+            jwplayer("video").setup({
+                	modes: [
+                		{ type: 'html5' },
+                		{ type: 'flash', src: 'utilities/jwplayer/player.swf' }
+                	]
+                });
 		}
 	}
     
@@ -126,12 +132,11 @@ Viewer = function() {
         return result[result.length - 1].replace('\.', '');
     }
                 
-	document.genComments = function(comments) {
-		//alert(comments);
-        $('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
+	document.genComments = function(comments) {        
         if(comments != ''){
-    		comments = eval('('+comments+')');
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a class='reply' href='' onclick='document.reply({id}); return false;'>Reply</a><br />{text}</section>";
+        	$('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
+    		comments = JSON.parse(comments);
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>]</span><hr />{text}</section>";
     		var count = 0;
     		for (c in comments) {
     			count++;
@@ -159,6 +164,22 @@ Viewer = function() {
     		}//alert('');
     		$('#textarea').value = '';
         }
+	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
+	        function (url) {
+	        //var ytregex = /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/;
+	        //	alert(ytregex + " \n" +url + " \n"+ ytregex.test(url));
+	        //	if (ytregex.test(url))
+	        //	{
+	        
+	        return '<iframe style="max-width: 100%; height: auto;" src="http://www.youtube.com/embed/{url}" frameborder="0" allowfullscreen></iframe>'.interpolate({
+	        	url: url.split(/[=&]/)[1]
+	        	});
+	    //}
+	     //   else {
+	     //   return '<a href="{url}">{url}</a>'.interpolate({url:url});
+	    //}
+	  });
+	        	
 	}
 		
 	document.postComment = function() {

@@ -1,0 +1,249 @@
+html{
+margin: 0px;
+padding: 0px;
+background-color: #000000;
+}
+
+body {
+   margin: 0px;
+   padding: 50px;
+   display: block;
+   min-width: 800px;
+   font-family: verdanna;
+}
+
+h1, h2 {
+	font-family: helvetica;
+}
+
+#login {
+   display:block;
+   padding: 0px 50px;
+   position:absolute;
+   top:0px;
+   right:0px;	
+   width:200px;
+   height:75px;
+   text-align:right;
+   background-color: #FFE;
+   -moz-border-radius: 0px 18px 0px 0px;
+   font:normal 8pt/8pt verdana;
+}
+
+#header, header{
+   display:block;
+   width:100%;
+   height:75px;
+   background-color: #202020;
+   position: relative;
+   border: solid #FFFFFF;
+   border-width: 1px 1px 0px 1px;
+   -moz-border-radius: 20px 20px 0px 0px;
+   -webkit-border-radius: 20px 20px 0px 0px;
+   border-radius: 20px 20px 0px 0px;
+   color: #FFFFFF;
+   text-align: center;
+}
+
+#content {
+	display: block;
+	width: 100%;
+	height: auto;
+	min-height: 500px;
+	min-width: 800px;
+	background: #F8F8F8;
+	position: relative;
+	overflow: auto;
+	border: solid #FFFFFF 1px;
+}
+
+#menu, menu{
+   display:inline-block;
+   float:left;
+   top: 0px;
+   left: 0px;
+   width:220px;
+   height:auto;
+   min-height: 500px;
+   background-color: #D8D8D8;
+   position: relative;
+   text-align: center;
+}
+#menu a, menu a, #login a {
+	display: inline-block;
+	margin: 2px 4px;
+	background: gray;
+	padding: 2px 4px;
+	text-decoration: none;
+	color: #FFFFFF;
+	-moz-border-radius: 10px;
+   -webkit-border-radius: 10px;
+   border-radius: 10px;
+	border: 1px solid #000000;
+	width: 40%;
+	text-align: center;
+	position: relative;
+}
+#menu a:hover, menu a:hover, #menu a:focus, menu a:focus, #login a:hover, #login a:focus {
+	background: lightgray;
+	color: #000000;
+	outline: none;
+}
+#menu h2, menu h2 {
+	background: #202020;
+	padding: 8px;
+	margin: 2px 2px 20px;
+	color: #FFFFFF;
+}
+
+#aside, aside {
+}
+#aside a, aside a {
+	background: none;
+	border: none;
+	display: block;
+	color: black;
+	width: auto;
+}
+
+#article, article{
+   display:inline-block;
+   float:right;
+   top: 0px;
+   min-height:500px;
+   overflow: auto;
+   position: relative;
+   width: 70%;
+}
+
+#desc {
+	text-align: justify;
+	color: #000000;
+	font-family: helvetica;
+	font-size: 16px;
+	display: block;
+	width: 80%;
+	padding: 20px;
+}
+
+#comments {
+	background: #EEF2FF;
+	overflow: auto;
+	bottom: 0px;
+	padding: 20px 0px 20px 8%;
+	border: 1px solid #FFFFFF;
+	width: 92%;
+}
+#comments section {
+	background: #D6DAF0;
+	border: solid #B7C5D9;
+	border-width: 0px 1px 1px 0px;
+	padding: 0px 10px 20px 10px;
+	min-height: 60px;
+	min-width: 200px;
+	display: block;
+	margin: 20px 5px;
+	width: 40%;
+	word-wrap: break-word;
+}
+
+#reply {
+	position: fixed;
+	min-width: 400px;
+	min-height: 200px;
+	width: 60%;
+	height: 60%;
+	display: block;
+	background: #FFFFFF;
+	top: 20%;
+	bottom: 20%;
+	left: 20%;
+	right: 20%;
+	z-index: 10;
+}
+#reply textarea {
+	width: 80%;
+	height: 80%;
+}
+
+#footer, footer{
+   display:block;
+   margin: 0px;
+   padding: 0px;
+   width:100%;
+   height:75px;
+   background-color: #202020;
+   border: 1px solid #FFFFFF;
+   -moz-border-radius: 0px 0px 20px 20px;
+   -webkit-border-radius: 0px 0px 20px 20px;
+   border-radius: 0px 0px 20px 20px;
+   color: #FFFFFF;
+   text-align: center;
+}
+
+input.login{
+	width:100px;
+}
+
+
+.tab_control
+{
+	width: 700px;
+}
+
+.tab_content
+{
+	padding: 8px;
+	width: 682px;
+	float: left;
+	border: solid 1px #000;
+	border-top-style: none;
+	min-height: 100px;
+}
+
+.tabs
+{
+	color: Black;
+	float: left;
+	height: 30px;
+	width: inherit;
+	border-bottom: solid 1px #000;
+}
+
+.tabs ul
+{
+	margin: 0;
+	padding: 0;
+}
+
+.tabs li,
+.tabs li:hover,
+.tabs li.current_item
+{
+	height: 20px;
+	min-width: 40px;
+	padding: 4px 8px 6px 8px;
+	float: left;
+	display: block;
+	border-bottom: solid 1px #000;
+	border-right: solid 1px #D8D8D8;
+	text-align: center;
+}
+
+.tabs li:hover
+{
+	background-color: #D8D8D8;
+	cursor: pointer;
+}
+
+.tabs li.current_item
+{
+	border: solid 1px #000;
+	border-bottom-style: none;
+	background-color: White;
+}
+
+.tabs a
+{
+	font-size: 14px;
+}

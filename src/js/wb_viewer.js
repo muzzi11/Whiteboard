@@ -128,10 +128,10 @@ Viewer = function() {
                 
 	document.genComments = function(comments) {
 		//alert(comments);
-        $('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
+        $('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
         if(comments != ''){
     		comments = eval('('+comments+')');
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a><hr />{text}</section>";
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a class='reply' href='' onclick='document.reply({id}); return false;'>Reply</a><br />{text}</section>";
     		var count = 0;
     		for (c in comments) {
     			count++;
@@ -139,11 +139,15 @@ Viewer = function() {
     			if (comments[c].parent == 0) {
     				$('#comments').insert({bottom:comment.interpolate(comments[c])});
     				var reply = function(coments, id, level) {
+    				    //limit number of thread levels
+                        if(level > 3)
+                            level = 3;
+                            
     					var count = 0;
     					for (r in comments) {
     						count++;
     						if(id == comments[r].parent) {
-    							comments[r].indent = level * 50;
+    							comments[r].indent = level * 20;
     							comments[r].nr = count;
     							$('#comments').insert({bottom:comment.interpolate(comments[r])});
     							reply(comments, comments[r].id, level+1);

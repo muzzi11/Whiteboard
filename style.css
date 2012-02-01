@@ -195,7 +195,17 @@ a:visited
 	background-color: #f8faff;
 }
 
-#comments a.reply
+#comments .teacher
+{
+	background-color: #F2D2D2;
+}
+
+#comments .student
+{
+	background-color: #F2F2F2;
+}
+
+#comments a.post
 {
 	float: right;
 	text-decoration:none;

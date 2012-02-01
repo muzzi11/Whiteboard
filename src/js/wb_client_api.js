@@ -21,7 +21,7 @@ Client = function(displayFunc) {
 	Client.prototype.successHandler = function(response) {
 		//alert(response);
 		if (response !='')
-		var elems = eval('('+response+')');
+		var elems = JSON.parse(response);
 		///@TODO Format data to something useful.
 		this.me.displayHandler(elems);
 	}
@@ -49,6 +49,15 @@ Client = function(displayFunc) {
 	}
 	
 	Client.prototype.loadContent = function(pageNr, handler) {
+				this.verifyAuth(null, function(response) {
+			if(response=='true') {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').insert('Logout');
+			} else {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?logout&service=index.html';
+				$('#login a').insert('Login');
+			}
+		});
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
@@ -60,17 +69,18 @@ Client = function(displayFunc) {
 		ajax.me.displayHandler = handler;
 		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
-	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent) {
+	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent, cmd) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}".interpolate({
+		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}{cmd}".interpolate({
 			nr:pageNr,
 			user:userID, 
 			post:comment, 
 			parent: parent == null || typeof parent === 'undefined' ? '' : "&parent={parent}".interpolate({
 					parent: parent
-				})
+				}),
+			cmd: cmd == null ? '' : cmd
 			})
 		);
 		

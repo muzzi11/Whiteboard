@@ -184,6 +184,7 @@ a:visited
 	padding: 8px 15px 8px 5px;
 	margin: 7px 0;
 	word-wrap: break-word;
+	white-space: pre-line;
 	overflow:auto;
 }
 

@@ -23,14 +23,14 @@ NOTE: on database selection failure calls wb_create_database(), should be taken 
 function wb_connect_database()
 {
     require 'db-config.php';
-    if( !isset($username) || !isset($password) || !isset($db_name) )
-        die('Database config variables are not properly set.');
+    if( !defined('USERNAME') || !defined('PASSWORD') || !defined('DB_NAME') )
+        die('Database config constants are not properly defined.');
     
-    $con = mysql_connect('localhost', $username, $password);
+    $con = mysql_connect('localhost', USERNAME, PASSWORD);
     if($con)
     {
-        if( !mysql_select_db($db_name, $con) )
-            wb_create_database($db_name, $con);
+        if( !mysql_select_db(DB_NAME, $con) )
+            wb_create_database(DB_NAME, $con);
     }
     else
     {

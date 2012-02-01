@@ -31,9 +31,9 @@
         $file = fopen('db-config.php', 'w');
         if($file)
         {
-            $config = "<?php \$db_name='"  . $_POST['db_name'] . "'; " .
-                            "\$username='" . $_POST['username'] . "'; " .
-                            "\$password='" . $_POST['password'] . "'; ?>";
+            $config = "<?php define('DB_NAME', '"  . $_POST['db_name'] . "'); " .
+                            "define('USERNAME', '" . $_POST['username'] . "'); " .
+                            "define('PASSWORD', '" . $_POST['password'] . "'); ?>";
             if( fwrite($file, $config) )
                 echo 'Config file creation succeeded.<br />';
             else
@@ -42,7 +42,7 @@
             fclose($file);
         }
         
-        if( isset($_POST['XML']) )
+        if( isset($_POST['XML']) && $_POST['XML'] != '')
         {
             require 'xml.php';
             if( wb_import_xml_from_url($_POST['XML']) )

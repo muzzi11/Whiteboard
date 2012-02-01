@@ -60,17 +60,18 @@ Client = function(displayFunc) {
 		ajax.me.displayHandler = handler;
 		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
-	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent) {
+	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent, cmd) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}".interpolate({
+		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}{cmd}".interpolate({
 			nr:pageNr,
 			user:userID, 
 			post:comment, 
 			parent: parent == null || typeof parent === 'undefined' ? '' : "&parent={parent}".interpolate({
 					parent: parent
-				})
+				}),
+			cmd: cmd == null ? '' : cmd
 			})
 		);
 		

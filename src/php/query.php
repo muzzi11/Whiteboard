@@ -95,7 +95,15 @@ else if('comments' == $q)
         
     $page_id = mysql_real_escape_string( $_GET['page'] );
     
-    if(isset($_GET['post'])) {
+    
+    if (isset($_GET['del'])) {
+    	
+    		$comment_id = mysql_escape_string($_GET['del']);
+    		$query = "DELETE FROM comments
+    					 WHERE comment_id='$comment_id' AND user_id='$user'";
+    		wb_query($query, $con);
+    	}
+    else if(isset($_GET['post'])) {
  
     	$post = strip_tags($_GET['post']);
     	$post = mysql_real_escape_string( $post );
@@ -124,14 +132,7 @@ else if('comments' == $q)
     	}
 		wb_query($query, $con);
     }
-    else if (isset($_GET['del'])) {
-    	
-    		$comment_id = mysql_escape_string($_GET['del']);
-    		$query = "DELETE FROM comments
-    					 WHERE comment_id='$comment_id' AND user_id='$user'";
-    		wb_query($query, $con);
-    	}
-    
+        
     
     $query =  "SELECT comment_id, comment, user_id, datetime, reply_ref
     				FROM comments

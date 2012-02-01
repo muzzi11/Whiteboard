@@ -133,17 +133,18 @@ Viewer = function() {
     }
                 
 	document.genComments = function(comments) {
-		alert(comments);
-        
+		//alert(comments);
+        $('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
         if(comments != ''){
-        	$('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
+        	
     		comments = JSON.parse(comments);
-    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>]</span><hr />{text}</section>";
+    		//alert(typeof comments);
+    		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";
     		var count = 0;
     		for (c in comments) {
     			count++;
     			comments[c].nr = count;
-    			if (comments[c].parent == 0) {
+    			if (comments[c].parent == 0) {//alert(comments[c]);
     				$('#comments').insert({bottom:comment.interpolate(comments[c])});
     				var reply = function(coments, id, level) {
     					var count = 0;
@@ -183,7 +184,7 @@ Viewer = function() {
 	document.postComment = function() {
 		//alert($('#textarea').parent);
 		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
-		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent);
+		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, $('textarea').cmd);
 		document.postClose();
 
 		//document.sitemap = elems;
@@ -196,6 +197,18 @@ Viewer = function() {
 	document.reply = function(parent) {
 		$('#textarea').parent = parent;
 		$('#reply').show();
+	}
+	document.editComment = function(id) {
+		$('#textarea').cmd = '&edit='+id;
+		$('#reply').show();
+	}
+		document.deleteComment = function(id) {
+		//alert(id);
+		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
+		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, '&del='+id);
+		//document.postClose();
+
+		//document.sitemap = elems;
 	}
 
 	Viewer.prototype.reSubMenu = function(nr, content) {

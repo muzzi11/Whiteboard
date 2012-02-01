@@ -100,6 +100,14 @@ else if('comments' == $q)
     	$post = strip_tags($_GET['post']);
     	$post = mysql_real_escape_string( $post );
     	
+    	if(isset($_GET['edit']))
+    	{
+    		$comment_id = mysql_real_escape_string($_GET['edit']);
+    		$query = "UPDATE comments
+    					 SET comment='$post', datetime=NOW()
+    					 WHERE comment_id='$comment_id' AND user_id='$user'";
+    	}
+    	else {
     	/*if(isset($_GET['parent'])) {
     		$parent = mysql_real_escape_string( $_GET['parent'] );
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
@@ -113,16 +121,21 @@ else if('comments' == $q)
     		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : 'NULL';
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
    	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
-    	
+    	}
 		wb_query($query, $con);
-    } else if (isset($_GET['del'])) {
-    	$comment_id = mysql_escape_string($_GET['del']);
-    		$query = "DELETE FROM comments WHERE comment_id='$comment_id'";
+    }
+    else if (isset($_GET['del'])) {
+    	
+    		$comment_id = mysql_escape_string($_GET['del']);
+    		$query = "DELETE FROM comments
+    					 WHERE comment_id='$comment_id' AND user_id='$user'";
     		wb_query($query, $con);
     	}
     
     
-    $query = "SELECT comment_id, comment, user_id, datetime, reply_ref FROM comments WHERE page_id='$page_id'";
+    $query =  "SELECT comment_id, comment, user_id, datetime, reply_ref
+    				FROM comments
+    				WHERE page_id='$page_id'";
     $result = mysql_query($query, $con);
     if(!$result)
         wb_server_error();

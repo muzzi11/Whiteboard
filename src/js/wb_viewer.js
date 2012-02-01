@@ -170,22 +170,26 @@ Viewer = function() {
                 $('#comments').insert({bottom:"<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
     		$('#textarea').value = '';
         }
-	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
-	        function (url) {
-	        //var ytregex = /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/;
+	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
+	        function (all, url) {
+	        var ytregex = /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
 	        //	alert(ytregex + " \n" +url + " \n"+ ytregex.test(url));
-	        //	if (ytregex.test(url))
-	        //	{
+	        if (ytregex.test(url))
+	        	{alert(url);
 	        
 	        return '<iframe style="max-width: 100%; height: auto;" src="http://www.youtube.com/embed/{url}" frameborder="0" allowfullscreen></iframe>'.interpolate({
 	        	url: url.split(/[=&]/)[1]
 	        	});
-	    //}
-	     //   else {
-	     //   return '<a href="{url}">{url}</a>'.interpolate({url:url});
-	    //}
-	  });
-	        	
+	        }
+	        else{
+	    //});
+	   // $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
+	    //    function (all, url) {
+	    //else {
+	        return '<a href="{url}">{url}</a>'.interpolate({url:url});
+	    }
+	    //);*/
+	     });
 	}
 		
 	document.postComment = function() {

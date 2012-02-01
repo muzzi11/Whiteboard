@@ -77,6 +77,11 @@ Client = function(displayFunc) {
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
 	
+	Client.prototype.getIsTeacher = function(userID) {
+		var alphaNum = /[0-9][A-z]+/gi;
+		return alphaNum.match(userID);
+	}
+	
 	
 	this.init(displayFunc);
 }

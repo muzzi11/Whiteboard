@@ -73,8 +73,14 @@ Viewer = function() {
             document.DOMWalker(xmlDoc, tabControl);
             
             if( $('#videos').innerHTML != '' ) {
-                $('#videos').insert({top: '<video width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
+                $('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
             }
+            jwplayer("video").setup({
+                	modes: [
+                		{ type: 'html5' },
+                		{ type: 'flash', src: 'utilities/jwplayer/player.swf' }
+                	]
+                });
 		}
 	}
     
@@ -164,6 +170,22 @@ Viewer = function() {
     		}//alert('');
     		$('#textarea').value = '';
         }
+	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
+	        function (url) {
+	        //var ytregex = /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/;
+	        //	alert(ytregex + " \n" +url + " \n"+ ytregex.test(url));
+	        //	if (ytregex.test(url))
+	        //	{
+	        
+	        return '<iframe style="max-width: 100%; height: auto;" src="http://www.youtube.com/embed/{url}" frameborder="0" allowfullscreen></iframe>'.interpolate({
+	        	url: url.split(/[=&]/)[1]
+	        	});
+	    //}
+	     //   else {
+	     //   return '<a href="{url}">{url}</a>'.interpolate({url:url});
+	    //}
+	  });
+	        	
 	}
 		
 	document.postComment = function() {

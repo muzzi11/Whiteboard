@@ -15,29 +15,19 @@ Viewer = function() {
 	}
 	
 	this.displayFunction = function(elems) {
-		//alert(elems);
-		$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
-		elems = eval('('+elems+')');
-		for (e in elems) {
-			document.sitemap = elems;
-			/// @TODO display elements in HTML.
-			//alert(elems[e].title);
-			var html = "<a href='#' onclick='document.click({num}); return false;' >{title}</a>";
-			elems[e].num = e;//alert(elems[e].children);
-			html = html.interpolate(elems[e]);
-			//var obj = eval(html.interpolate(elems[e]));
-			
-			$(document.viewer.menu).insert({bottom: html});
+        var menuControl = new MenuControl( $('#menu') );
+        //alert(elems);
+        $('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
+        elems = eval('('+elems+')');
+        for (e in elems) {
+            var item_index = menuControl.addItem(elems[e].title);
+            var pages = elems[e].children;
+            for(p in pages)
+            {
+                menuControl.addSubItem(item_index, pages[p].page_id, pages[p].title);
+            }
 		}
-		document.click = function(nr) {
-				var pages = document.sitemap[nr].children;
-				$(document.viewer.aside).insert('');
-				for(p in pages) {					
-					var menu_item = "<a href='#' onclick='document.loadContent({page_id}); return false;' >{title}</a>";
-					menu_item = menu_item.interpolate(pages[p]);
-					$(document.viewer.aside).insert({bottom:menu_item});
-				}
-			}
+
 		document.loadContent = function(page_id) {
 			$(document.viewer.article).page_id = page_id;
 			$('#textarea').parent = null;
@@ -49,6 +39,7 @@ Viewer = function() {
 			document.api.loadComments(page_id, document.userID, document.genComments);
 		
 		}
+        
 		document.genContent = function(response) {
 			response = eval('('+response+')');
 			$("#desc").insert("{desc}".interpolate(response));

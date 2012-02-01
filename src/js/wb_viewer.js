@@ -79,26 +79,22 @@ Viewer = function() {
     * Ugly as a mofo, bare with me.
     */
     document.DOMWalker = function(doc, tabControl, tab_index, level) {
-        if(!level)
+        if(level == undefined)
             var level = 0;
         if(tab_index == undefined)
             var tab_index = -1;
             
         var nodes = doc.childNodes;
         for(var i = 0; i < nodes.length; i++) {
-            var tabs = '';
-            for(var t = 1; t < level; t++)
-                tabs += '...';
-                            
             if('folder' == nodes[i].nodeName) {
                 var titles = nodes[i].getElementsByTagName('title');
                 if(titles.length > 0)
                 {
+                    var title = titles[0].firstChild.nodeValue;
                     if(level == 1) {
-                        tab_index = tabControl.addTab(titles[0].firstChild.nodeValue);
+                        tab_index = tabControl.addTab(title);
                     } else if(level > 0) {
-                        tabControl.addTabContent(tab_index, tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />');
-                        //$('.tab_content').insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
+                        tabControl.addTabContent(tab_index, '<em>' + title + '</em><br />');
                     }
                     
                     document.DOMWalker(nodes[i], tabControl, tab_index, level + 1);
@@ -111,13 +107,12 @@ Viewer = function() {
                     $('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
                 }
                 if(tab_index < 0)
-                    $(document.viewer.article).insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
+                    $(document.viewer.article).insert({bottom:'<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
                 else
-                    tabControl.addTabContent(tab_index, tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />');
+                    tabControl.addTabContent(tab_index, '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />');
             }
-                        
-            //tab_index = -1;
         }
+        tab_index = -1;
     }
     
     /**

@@ -151,7 +151,7 @@ Viewer = function() {
     		for (c in comments) {
     			count++;
     			comments[c].nr = count;
-    			if (comments[c].parent == null) {
+    			if (comments[c].parent == 0) {
     				$('#comments').insert({bottom:comment.interpolate(comments[c])});
     				var reply = function(coments, id, level) {
     					var count = 0;

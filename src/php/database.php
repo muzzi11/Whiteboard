@@ -7,7 +7,7 @@ function wb_query($query, $con)
 {
     $resource = mysql_query($query, $con);
     if(!$resource)
-        echo 'Invalid query: ' . mysql_error() . "\nQuery: $query";
+        echo 'Invalid query: ' . mysql_error() . "\nQuery: $query\n";
         
     return $resource;
 }
@@ -172,8 +172,7 @@ function wb_create_comments_table($con)
         page_id INT UNSIGNED NOT NULL,
         datetime DATETIME,
         comment TEXT,
-        reply_ref BIGINT UNSIGNED NULL,
-        FOREIGN KEY(reply_ref) REFERENCES comments(comment_id)
+        reply_ref BIGINT UNSIGNED NOT NULL DEFAULT 0
     ) ENGINE=InnoDB';
     
     wb_query($query, $con);

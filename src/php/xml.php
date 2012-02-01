@@ -29,7 +29,7 @@ function wb_load_xml_from_file($filename)
         $error = "Error: file $filename does not exist.";
 
     echo $error;
-    return FALSE;
+    return false;
 }
 
 /**
@@ -43,15 +43,46 @@ function wb_load_xml_from_string($data)
     if($xml)
         return $xml;
     else
-        echo "Error: failed to load $filename";
+        echo 'Error: failed to load xml string.';
         
-    return FALSE;
+    return false;
+}
+
+
+/**
+Retrieves and imports xml data from the specified url.
+Returns true on succes, false otherwise.
+*/
+function wb_import_xml_from_url($url)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+    
+    $data = curl_exec($ch);
+    curl_close($ch);
+    
+    if($data)
+    {
+        if( $xml = wb_load_xml_from_string($data) )
+        {
+            wb_import_xml($xml);
+            return true;
+        }
+    }
+    else
+        echo "Could not retrieve XML data from: $url";
+        
+    return false;
 }
 
 /**
 Imports the $xml object into the database. The root folders are considered sections, the folder one level below are considered chapters.
 The section and chapter titles and the chapter description are imported into the sitemap table.
-Chapter title and description elements are taken out of the xml, the resting xml for that chapter is imported into the content table. 
+Chapter title and description elements are taken out of the xml, the resting xml for that chapter is imported into the content table.
+
+Checks for existing parent_id, title entry. If so, overwrites it. 
 */
 function wb_import_xml($xml)
 {
@@ -61,22 +92,46 @@ function wb_import_xml($xml)
         
     foreach($xml->folder as $section)
     {
+        $update = false;
         $parent_id = 0;
-        $title = $section->title;
+        $title = mysql_real_escape_string($section->title);
         
-        $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
-        if( wb_query($query, $con) )
+        //Only insert if the parent_id, title combination doesn't exist yet.
+        $result = wb_query("SELECT page_id FROM sitemap WHERE parent_id='$parent_id' AND title='$title' LIMIT 1", $con);
+        if($result && mysql_num_rows($result) == 1)
         {
-            $parent_id = mysql_insert_id($con);
+            $update = true;
+            $row = mysql_fetch_array($result);
+            $parent_id = $row['page_id'];
+        }
+        else
+            $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
+
+        if( $update || wb_query($query, $con) )
+        {
+            if(!$update)
+                $parent_id = mysql_insert_id($con);
             
             foreach($section->folder as $chapter)
             {
-                $title = $chapter->title;
+                $update = false;
+                $title = mysql_real_escape_string($chapter->title);
                 
-                $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
-                if( wb_query($query, $con) )
+                //Only insert if the parent_id, title combination doesn't exist yet.
+                $result = wb_query("SELECT page_id FROM sitemap WHERE parent_id='$parent_id' AND title='$title' LIMIT 1", $con);
+                if($result && mysql_num_rows($result) == 1)
                 {
-                    $page_id = mysql_insert_id($con);
+                    $update = true;
+                    $row = mysql_fetch_array($result);
+                    $page_id = $row['page_id'];
+                }
+                else
+                    $query = "INSERT INTO sitemap(parent_id, title) VALUES('$parent_id', '$title')";
+                    
+                if( $update || wb_query($query, $con) )
+                {
+                    if(!$update)
+                        $page_id = mysql_insert_id($con);
                     
                     //Filter out title and description out of parent folder
                     $desc = '';
@@ -98,7 +153,10 @@ function wb_import_xml($xml)
                     $data = mysql_real_escape_string($data, $con);
                     $desc = mysql_real_escape_string($desc, $con);
 
-                    $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', '$data')";
+                    if($update)
+                        $query = "UPDATE content SET description='$desc', data='$data' WHERE page_id='$page_id'";
+                    else
+                        $query = "INSERT INTO content(page_id, description, data) VALUES('$page_id', '$desc', '$data')";
                     wb_query($query, $con);
                 }
             }

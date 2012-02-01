@@ -18,6 +18,17 @@ if( isset($_GET['login']) )
 }
 
 /**
+Usage: authentication?logout&service=[url encoded relative path]
+Redirects the user to the CAS logout page, which logs the user out and redirects the user back to the homepage.
+*/
+if( isset($_GET['logout']) )
+{
+    $host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']);
+    $redirect = "https://bt-lap.ic.uva.nl/cas/logout?service=$host";
+    header("Location: $redirect");
+}
+
+/**
 Proceeds to validate ticket. If ticket is valid, user is inserted into database and user_id is stored in session.
 */
 if( isset($_GET['ticket']) )

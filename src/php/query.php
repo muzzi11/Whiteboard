@@ -96,7 +96,9 @@ else if('comments' == $q)
     $page_id = mysql_real_escape_string( $_GET['page'] );
     
     if(isset($_GET['post'])) {
-    	$post = mysql_real_escape_string( $_GET['post'] );
+ 
+    	$post = strip_tags($_GET['post']);
+    	$post = mysql_real_escape_string( $post );
     	
     	/*if(isset($_GET['parent'])) {
     		$parent = mysql_real_escape_string( $_GET['parent'] );
@@ -110,7 +112,7 @@ else if('comments' == $q)
     	
     		$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : 'NULL';
     		$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-   	 	VALUES ('$post', NOW(),'$user', '$page_id', $parent)";
+   	 	VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
     	
 		wb_query($query, $con);
     }
@@ -137,6 +139,11 @@ else if('comments' == $q)
         
     
 }
+else if('verify' == $q) {
+	session_start();
+	echo isset($_SESSION['user_id']) ? true : false;
+}
+
 else
     wb_server_error();
 

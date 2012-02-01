@@ -26,6 +26,22 @@ Client = function(displayFunc) {
 		this.me.displayHandler(elems);
 	}
 	
+	Client.prototype.verifyAuth = function(pageNr, handler) {
+		var ajax = new Ajax(handler, this.serverUrl);
+		ajax.me = this;
+		//ajax.me.displayHandler = handler;
+		ajax.me.displayHandler = function(response) {
+			if(response=='true') {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').insert('LOGOUT');
+			} else {
+				$('#login a').attributes.href = this.serverUrl + 'authentication?logout&service=index.html';
+				$('#login a').insert('LOGIN');
+			}
+		};
+		ajax.request("query", "GET", "?q=verify");
+	}
+	
 	Client.prototype.loadPage = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;

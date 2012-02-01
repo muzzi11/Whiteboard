@@ -17,7 +17,7 @@ Viewer = function() {
 	this.displayFunction = function(elems) {
         var menuControl = new MenuControl( $('#menu') );
         //alert(elems);
-        $('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
+        $('#reply').insert({bottom:"<textarea id='textarea'></textarea><a class='button' href='#' onclick='document.postClose(); return false;'>Close</a><a class='button' href='#' onclick='document.postComment(); return false;'>Post</a>"});
         elems = JSON.parse(elems);
         for (e in elems) {
             var item_index = menuControl.addItem(elems[e].title);
@@ -44,7 +44,7 @@ Viewer = function() {
 			response = JSON.parse(response);
 			$("#desc").insert("{desc}".interpolate(response));
             $(document.viewer.article).insert('');
-            $('#blabla').insert('');
+            $('#tabs').insert('');
             try {
                 if(window.DOMParser) {
                     parser = new DOMParser();
@@ -60,7 +60,7 @@ Viewer = function() {
             
             $('#videos').insert('');
             
-            var tabControl = new TabControl( $('#blabla') );
+            var tabControl = new TabControl( $('#tabs') );
             document.DOMWalker(xmlDoc, tabControl);
             
             if( $('#videos').innerHTML != '' ) {
@@ -133,7 +133,7 @@ Viewer = function() {
     }
                 
 	document.genComments = function(comments) {
-        $('#comments').insert("<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>");
+        $('#comments').insert("<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>");
         if(comments != ''){
         	
     		comments = JSON.parse(comments);
@@ -164,8 +164,8 @@ Viewer = function() {
     				reply(comments, comments[c].id, 1);
     			}
     		}//alert('');
-            if( $('#comments').offsetHeight > 400 )
-                $('#comments').insert({bottom:"<a class='post' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
+            if( $('#comments').offsetHeight > 500 )
+                $('#comments').insert({bottom:"<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
     		$('#textarea').value = '';
         }
 	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,

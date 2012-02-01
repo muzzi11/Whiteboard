@@ -18,7 +18,7 @@ Viewer = function() {
         var menuControl = new MenuControl( $('#menu') );
         //alert(elems);
         $('#reply').insert({bottom:"<textarea id='textarea'></textarea><a id='post' href='#' onclick='document.postComment(); return false;'>POST</a>	<a href='#' onclick='document.postClose(); return false;'>CLOSE</a>"});
-        elems = eval('('+elems+')');
+        elems = JSON.parse(elems);
         for (e in elems) {
             var item_index = menuControl.addItem(elems[e].title);
             var pages = elems[e].children;
@@ -41,7 +41,7 @@ Viewer = function() {
 		}
         
 		document.genContent = function(response) {
-			response = eval('('+response+')');
+			response = JSON.parse(response);
 			$("#desc").insert("{desc}".interpolate(response));
             $(document.viewer.article).insert('');
             $('#blabla').insert('');
@@ -133,10 +133,11 @@ Viewer = function() {
     }
                 
 	document.genComments = function(comments) {
-		//alert(comments);
-        $('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
+		alert(comments);
+        
         if(comments != ''){
-    		comments = eval('('+comments+')');
+        	$('#comments').insert("<a href='#' onclick='document.reply(null); return false;'>POST NEW</a>");
+    		comments = JSON.parse(comments);
     		var comment = "<section style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>]</span><hr />{text}</section>";
     		var count = 0;
     		for (c in comments) {
@@ -161,7 +162,7 @@ Viewer = function() {
     		}//alert('');
     		$('#textarea').value = '';
         }
-	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
+	     $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
 	        function (url) {
 	        //var ytregex = /(\b(https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/;
 	        //	alert(ytregex + " \n" +url + " \n"+ ytregex.test(url));

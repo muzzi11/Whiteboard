@@ -8,12 +8,12 @@
 * @param o Object containing members to be matched.
 */
 String.prototype.interpolate = function (o) {
-    return this.replace(/{([^{}]*)}/g,
-        function (a, b) {
-            var r = o[b];
-            return typeof r === 'string' || typeof r === 'number' ? r : '';
-        }
-    );
+	return this.replace(/{([^{}]*)}/g,
+		function (a, b) {
+				var r = o[b];
+				return typeof r === 'string' || typeof r === 'number' ? r : '';
+		}
+	);
 }
 
 /**
@@ -68,25 +68,25 @@ Element.prototype.insert = function(h) {
 	} else {
 		this.innerHTML = h;
 	}
- }
- 
- Element.prototype.eventClick = function(func) {
- 	this.onclick = func;
- }
- 
- /**
- * replace the current element with another element.
- * @param e The new element.
- */
- Element.prototype.replace = function(e) {
- 	this.parentNode.replaceChild(e, this);
- }
- 
- /**
- * Replace the element's style with another style.
- * @param o Object of containing the style with which to replace the current style.
- */
- Element.prototype.css = function(o) {
+}
+
+Element.prototype.eventClick = function(func) {
+	this.onclick = func;
+}
+
+/**
+* replace the current element with another element.
+* @param e The new element.
+*/
+Element.prototype.replace = function(e) {
+	this.parentNode.replaceChild(e, this);
+}
+
+/**
+* Replace the element's style with another style.
+* @param o Object of containing the style with which to replace the current style.
+*/
+Element.prototype.css = function(o) {
 	this.class.style = o;
 	return this.class;
 }
@@ -225,7 +225,7 @@ Ajax = function(success, server) {
 }
 
 function bind(scope, func) {
-    return function () {
-        func.apply(scope, arguments);
-    };
+	return function () {
+		func.apply(scope, arguments);
+	};
 }

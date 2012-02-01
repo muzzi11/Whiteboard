@@ -1,31 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Whiteboard: </title>
-    <link rel="stylesheet" type="text/css" href="src/css/style.css" />
-    <meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
-    <script type="text/javascript" src="utilities/js/tools.js"></script>
-    <script type="text/javascript" src="src/js/wb_controls.js"></script>
-    <script type="text/javascript" src="src/js/wb_client_api.js"></script>
-    <script type="text/javascript" src="src/js/wb_viewer.js"></script>
-    <script type="text/javascript">
-    
-    window.onload = function()
-    {
-        var html = new Viewer();
-    	document.viewer = html;
-    	html.header = "#header";
-    	html.menu = "#topmenu";
-    	html.aside = "#aside";
-    	html.article = "#media";
-    	html.footer = "#footer";
-    	document.api = new Client(html.displayFunction);
-    	//api.init(html.displayFunction);
-    	document.api.displayHandler = html.displayFunction;
-    	document.api.loadPage(0, html.displayFunction);
-    };
-    
-    </script>
+	<title>Whiteboard: </title>
+	<link rel="stylesheet" type="text/css" href="src/css/style.css" />
+	<meta http:equiv="Content-Type" content="text/html; charset=us-ascii" />
+	<script type="text/javascript" src="utilities/js/tools.js"></script>
+	<script type="text/javascript" src="src/js/wb_controls.js"></script>
+	<script type="text/javascript" src="src/js/wb_client_api.js"></script>
+	<script type="text/javascript" src="src/js/wb_viewer.js"></script>
+	<script type="text/javascript">
+	
+	window.onload = function()
+	{
+		var html = new Viewer();
+		document.viewer = html;
+		html.header = "#header";
+		html.menu = "#topmenu";
+		html.aside = "#aside";
+		html.article = "#media";
+		html.footer = "#footer";
+		document.api = new Client(html.displayFunction);
+		//api.init(html.displayFunction);
+		document.api.displayHandler = html.displayFunction;
+		document.api.loadPage(0, html.displayFunction);
+	};
+	
+	</script>
 </head>
 <body>
 <div id="header">
@@ -52,7 +52,7 @@
 		<div id="article">
 			<div id="desc"></div>
 			<div id="videos"></div>
-            <div id="blabla"></div>
+				<div id="blabla"></div>
 			<div id="media"></div>
 		</div>
 	</div>

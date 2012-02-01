@@ -9,9 +9,9 @@ Client = function(displayFunc) {
 	//this.displayHandler = 0;
 	
 	this.init = function(displayFunc){
-        var index = window.location.href.lastIndexOf('/');
-        this.serverUrl = index >= 0 ? window.location.href.substr(0, index) : 'http://' + window.location.host;
-        this.serverUrl += '/';
+		var index = window.location.href.lastIndexOf('/');
+		this.serverUrl = index >= 0 ? window.location.href.substr(0, index) : 'http://' + window.location.host;
+		this.serverUrl += '/';
 
 		//this.displayHandler = displayFunc;
 		//this.ajax = new Ajax(this.successHandler, this.serverUrl);
@@ -25,7 +25,7 @@ Client = function(displayFunc) {
 		///@TODO Format data to something useful.
 		this.me.displayHandler(elems);
 	}
-	
+
 	Client.prototype.verifyAuth = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
@@ -86,7 +86,7 @@ Client = function(displayFunc) {
 		
 		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
-	
+
 	Client.prototype.getIsTeacher = function(userID) {
 		var alphaNum = /[0-9][A-z]+/gi;
 		return alphaNum.test(userID);

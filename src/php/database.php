@@ -5,11 +5,11 @@ MySQL query wrapper for error logging purposes.
 */
 function wb_query($query, $con)
 {
-    $resource = mysql_query($query, $con);
-    if(!$resource)
-        echo 'Invalid query: ' . mysql_error() . "\nQuery: $query\n";
-        
-    return $resource;
+	$resource = mysql_query($query, $con);
+	if(!$resource)
+		echo 'Invalid query: ' . mysql_error() . "\nQuery: $query\n";
+		
+	return $resource;
 }
 
 /**
@@ -22,26 +22,26 @@ NOTE: on database selection failure calls wb_create_database(), should be taken 
 */
 function wb_connect_database()
 {
-    require 'db-config.php';
-    if( !defined('USERNAME') || !defined('PASSWORD') || !defined('DB_NAME') )
-        die('Database config constants are not properly defined.');
-    
-    $con = mysql_connect('localhost', USERNAME, PASSWORD);
-    if($con)
-    {
-        if( !mysql_select_db(DB_NAME, $con) )
-            wb_create_database(DB_NAME, $con);
-    }
-    else
-    {
-        echo 'Could not connect: ' . mysql_error();
-        return FALSE;
-    }
-    
-    if( !mysql_set_charset('utf8', $con) )
-        echo 'Failed to set character set, current set is:' . mysql_client_encoding($con);
-        
-    return $con;
+	require 'db-config.php';
+	if( !defined('USERNAME') || !defined('PASSWORD') || !defined('DB_NAME') )
+		die('Database config constants are not properly defined.');
+	
+	$con = mysql_connect('localhost', USERNAME, PASSWORD);
+	if($con)
+	{
+		if( !mysql_select_db(DB_NAME, $con) )
+				wb_create_database(DB_NAME, $con);
+	}
+	else
+	{
+		echo 'Could not connect: ' . mysql_error();
+		return FALSE;
+	}
+	
+	if( !mysql_set_charset('utf8', $con) )
+		echo 'Failed to set character set, current set is:' . mysql_client_encoding($con);
+		
+	return $con;
 }
 
 /**
@@ -49,17 +49,17 @@ Creates the database and all it's tables on the localhost.
 */
 function wb_create_database($db_name, $con)
 {        
-    if( !mysql_query("CREATE DATABASE IF NOT EXISTS $db_name", $con) )
-        die( 'Could not create databse: ' . mysql_error() );
-    if( !mysql_select_db($db_name, $con) )
-        die( 'Could not select database: ' . mysql_error() );
-    
-    wb_create_sitemap_table($con);
-    wb_create_content_table($con);
-    wb_create_users_table($con);
-    wb_create_permissions_table($con);
-    wb_create_last_pages_table($con);
-    wb_create_comments_table($con);
+	if( !mysql_query("CREATE DATABASE IF NOT EXISTS $db_name", $con) )
+		die( 'Could not create databse: ' . mysql_error() );
+	if( !mysql_select_db($db_name, $con) )
+		die( 'Could not select database: ' . mysql_error() );
+	
+	wb_create_sitemap_table($con);
+	wb_create_content_table($con);
+	wb_create_users_table($con);
+	wb_create_permissions_table($con);
+	wb_create_last_pages_table($con);
+	wb_create_comments_table($con);
 }
 
 /**
@@ -67,16 +67,16 @@ Creates the sitemap table if it doesn't exist yet.
 */
 function wb_create_sitemap_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS sitemap
-    (
-        page_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-        PRIMARY KEY(page_id),
-        parent_id INT UNSIGNED,
-        active BOOL NOT NULL DEFAULT 1,
-        title VARCHAR(100)
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS sitemap
+	(
+		page_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+		PRIMARY KEY(page_id),
+		parent_id INT UNSIGNED,
+		active BOOL NOT NULL DEFAULT 1,
+		title VARCHAR(100)
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 /**
@@ -86,17 +86,17 @@ NOTE: not sure if data should be of type MEDIUMBLOB
 */
 function wb_create_content_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS content
-    (
-        content_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-        PRIMARY KEY(content_id),
-        page_id INT UNSIGNED NOT NULL,
-        FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
-        description TEXT,
-        data MEDIUMBLOB
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS content
+	(
+		content_id INT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+		PRIMARY KEY(content_id),
+		page_id INT UNSIGNED NOT NULL,
+		FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
+		description TEXT,
+		data MEDIUMBLOB
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 /**
@@ -107,15 +107,15 @@ NOTE: name is allowed to be null, might have to change that.
 */
 function wb_create_users_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS users
-    (
-        user_id SERIAL,
-        PRIMARY KEY(user_id),
-        UvaNetID VARCHAR(50) NOT NULL UNIQUE,
-        name VARCHAR(50)
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS users
+	(
+		user_id SERIAL,
+		PRIMARY KEY(user_id),
+		UvaNetID VARCHAR(50) NOT NULL UNIQUE,
+		name VARCHAR(50)
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 /**
@@ -125,19 +125,19 @@ application would have to handle relation with the users table.
 */
 function wb_create_permissions_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS permissions
-    (
-        permission_id SERIAL,
-        PRIMARY KEY(permission_id),
-        user_id BIGINT UNSIGNED NOT NULL,
-        FOREIGN KEY(user_id) REFERENCES users(user_id),
-        view BOOL NOT NULL DEFAULT 1,
-        edit BOOL NOT NULL DEFAULT 1,
-        del BOOL NOT NULL DEFAULT 0,
-        admin BOOL NOT NULL DEFAULT 0
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS permissions
+	(
+		permission_id SERIAL,
+		PRIMARY KEY(permission_id),
+		user_id BIGINT UNSIGNED NOT NULL,
+		FOREIGN KEY(user_id) REFERENCES users(user_id),
+		view BOOL NOT NULL DEFAULT 1,
+		edit BOOL NOT NULL DEFAULT 1,
+		del BOOL NOT NULL DEFAULT 0,
+		admin BOOL NOT NULL DEFAULT 0
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 /**
@@ -146,16 +146,16 @@ last_pages is a serialized array of page_ids and corresponding parent page ids: 
 */
 function wb_create_last_pages_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS last_pages
-    (
-        last_page_id SERIAL,
-        PRIMARY KEY(last_page_id),
-        user_id BIGINT UNSIGNED NOT NULL UNIQUE,
-        FOREIGN KEY(user_id) REFERENCES users(user_id),
-        ser_last_pages BLOB
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS last_pages
+	(
+		last_page_id SERIAL,
+		PRIMARY KEY(last_page_id),
+		user_id BIGINT UNSIGNED NOT NULL UNIQUE,
+		FOREIGN KEY(user_id) REFERENCES users(user_id),
+		ser_last_pages BLOB
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 /**
@@ -163,19 +163,19 @@ Creates the comments table if it doesn't exist yet.
 */
 function wb_create_comments_table($con)
 {
-    $query = 'CREATE TABLE IF NOT EXISTS comments
-    (
-        comment_id SERIAL,
-        PRIMARY KEY(comment_id),
-        user_id BIGINT UNSIGNED NOT NULL,
-        FOREIGN KEY(user_id) REFERENCES users(user_id),
-        page_id INT UNSIGNED NOT NULL,
-        datetime DATETIME,
-        comment TEXT,
-        reply_ref BIGINT UNSIGNED NOT NULL DEFAULT 0
-    ) ENGINE=InnoDB';
-    
-    wb_query($query, $con);
+	$query = 'CREATE TABLE IF NOT EXISTS comments
+	(
+		comment_id SERIAL,
+		PRIMARY KEY(comment_id),
+		user_id BIGINT UNSIGNED NOT NULL,
+		FOREIGN KEY(user_id) REFERENCES users(user_id),
+		page_id INT UNSIGNED NOT NULL,
+		datetime DATETIME,
+		comment TEXT,
+		reply_ref BIGINT UNSIGNED NOT NULL DEFAULT 0
+	) ENGINE=InnoDB';
+	
+	wb_query($query, $con);
 }
 
 ?>

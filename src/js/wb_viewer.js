@@ -65,6 +65,7 @@ Viewer = function() {
 				if( $('#videos').innerHTML != '' ) {
 					$('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
 				    
+                    jwplayer("video").remove();
                     jwplayer("video").setup({
 						modes: [
 							{ type: 'html5' },
@@ -81,15 +82,15 @@ Viewer = function() {
     function ContentGenerator(xmlDoc)
     {
         this.tabControl = new TabControl( $('#tabs') );
-        
+        this.num_videos = 0;
         /**
     	Returns false if the url is not a video url, otherwise returns the video extension as a string
     	*/
     	this.getVideoType = function(url) {
-    		var patt = /(\.avi|\.mp4)/ig;
+    		var patt = /(\.avi|\.mp4|\.mov|\.flv)/ig;
     		var result = url.match(patt);
     		if(!result)
-    				return false; 
+  				return false; 
     		return result[result.length - 1].replace('\.', '');
     	}
         
@@ -109,9 +110,11 @@ Viewer = function() {
                     if( nodes[n].hasAttributes() && ( hrefAttr = nodes[n].attributes.getNamedItem('href') ) )
                     {
                         var url = hrefAttr.firstChild.nodeValue;
-                        var video_ext;
-    					if( video_ext = this.getVideoType(url) ) {
-    						$('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
+                        var video_ext = this.getVideoType(url);
+    					if( video_ext ) {
+                            this.num_videos++;
+                            if(this.num_videos == 1)
+    						  $('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
     					}
                         
                         var title;
@@ -122,7 +125,10 @@ Viewer = function() {
                         }
                         else
                             title = url;
-                        this.tabControl.addTabContent(tab_index, '<a href='+url+'>' + title + '<br />');
+                            
+                        var html = video_ext ? '<a href="#" onclick="switchVideo(\''+url+'\',\''+ video_ext + '\');" return false;">' + title + '</a><br />' : 
+                                                '<a href="'+url+'">'+title+'</a><br />';
+                        this.tabControl.addTabContent(tab_index, html);
                     }
                 }
             }
@@ -159,6 +165,21 @@ Viewer = function() {
                 }
             }
         }
+    }
+    
+    document.switchVideo = function(url, video_ext)
+    {
+        jwplayer("video").remove();
+        $('#videos').insert('');
+        $('#videos').insert('<source src="' + url + '" type="video/' + video_ext + '" />');
+        $('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
+				    
+        jwplayer("video").setup({
+			modes: [
+				{ type: 'html5' },
+				{ type: 'flash', src: 'utilities/jwplayer/player.swf' }
+			]
+		}); 
     }
 					
 	document.genComments = function(comments) {

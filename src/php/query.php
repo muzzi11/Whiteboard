@@ -94,7 +94,6 @@ else if('comments' == $q)
 	require('authentication.php');
 	if( wb_get_user_id()) { //return false;
 		$user = mysql_real_escape_string( $_SESSION['user_id']);
-		
 
 	if( !isset($_GET['page']) )
 		wb_server_error();

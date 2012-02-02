@@ -30,7 +30,10 @@ if( isset($_GET['logout']) )
 }
 
 function wb_get_user_id() {
-	if(isset($_SESSION['user_id'])) return $_SESSION['user_id'];
+	if(isset($_SESSION['UvaNetID']))
+        return $_SESSION['UvaNetID'];
+    else
+        return false;
 }
 if ( isset($_GET['user'])) {
 	echo wb_get_user_id();
@@ -47,7 +50,10 @@ if( isset($_GET['ticket']) )
 	if ( $UvaNetID = wb_verify_ticket($_GET['ticket']) )
 	{
 		if( $user_id = wb_insert_user($UvaNetID) )
-				$_SESSION['user_id'] = $user_id;
+        {
+            $_SESSION['user_id'] = $user_id;
+            $_SESSION['UvaNetID'] = $UvaNetID;
+        }
 	}
 	
 	if( isset($_SESSION['service']) )

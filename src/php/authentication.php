@@ -12,7 +12,7 @@ if( isset($_GET['login']) )
 	if( isset($_GET['service']) )
 		$_SESSION['service'] = $_GET['service'];
 
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URI']);
     echo $host;
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
 	//header("Location: $redirect");
@@ -25,7 +25,7 @@ Redirects the user to the CAS logout page and destroys session data.
 if( isset($_GET['logout']) )
 {
 	session_destroy();
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URI']);
 	$redirect = "https://bt-lap.ic.uva.nl/cas/logout";
 	header("Location: $redirect");
 }

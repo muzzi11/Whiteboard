@@ -70,6 +70,11 @@ Element.prototype.insert = function(h) {
 	}
 }
 
+/**
+* TODO: Implement properly. Unused / untested.
+* Bind a function to an element's click event.
+* @param func Function to bind.
+*/
 Element.prototype.eventClick = function(func) {
 	this.onclick = func;
 }
@@ -144,6 +149,12 @@ Element.prototype.show = function() {
 	}
 }
 
+
+/**
+* Ajax object defines and manages an Ajax context.
+* @param success Success handler function.
+* @param server Server url.
+*/
 Ajax = function(success, server) {
 	this.httpRequestObject = null;
 	this.successFunc = null;
@@ -153,15 +164,18 @@ Ajax = function(success, server) {
 	this.serverUrl = server;
 	this.me = this;
 	
+	// initialize stuff
 	Ajax.prototype.init = function () {
 		this.httpRequestObject = this.getHttpRequestObject();
 		this.setDefaults();
 	}
 	
+	// pre-processing relocation of the Ajax response.
 	Ajax.prototype.successHandler = function(response) {
 		this.successFunc(response);
 	}
 	
+	//Reset the default states.
 	Ajax.prototype.setDefaults = function() {
 		//this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 		this.httpRequestObject.onreadystatechange = this.stateHandler;
@@ -171,6 +185,7 @@ Ajax = function(success, server) {
 		this.method = 'POST';
 	}
 	
+	//Get the actual object the standard cross-browser way.
 	Ajax.prototype.getHttpRequestObject = function() {
 		var httpRequest = null;
 		if (window.XMLHttpRequest) { // Mozilla, Safari, ...  
@@ -193,6 +208,7 @@ Ajax = function(success, server) {
 		return httpRequest;
 	}
 	
+	//Handle the different states of the Ajax object
 	Ajax.prototype.stateHandler = function() {
 		switch(this.readyState) {
 			case 0: /*uninitialized*/ ; break;
@@ -212,6 +228,12 @@ Ajax = function(success, server) {
 		}
 	}
 	
+	/***
+	* Ajax request does all of the interesting stuff, making the request to the server.
+	* @param url Relative path url.
+	* @param method Set method of the request, for example 'GET', 'POST'
+	* @param queryString The query sent to the url / server.
+	**/
 	Ajax.prototype.request = function(url, method, queryString) {
 		var u = url==null ? this.url : url;
 		var m = method==null ? this.method : method;
@@ -224,6 +246,10 @@ Ajax = function(success, server) {
 	this.init();
 }
 
+/***
+* @TODO comment function please!
+*
+**/
 function bind(scope, func) {
 	return function () {
 		func.apply(scope, arguments);

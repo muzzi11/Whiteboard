@@ -2,6 +2,13 @@
 
 session_start();
 
+$host = 'http://' . $_SERVER['SERVER_NAME'];
+if( isset($_SERVER['REDIRECT_URL']) )
+   $host .= $_SERVER['REDIRECT_URL'];
+else
+    $host .= 'webdb1230/whiteboard/src/php/';
+$host = urlencode($host);
+
 /**
 Usage: authentication?login&service=[url encoded relative path]
 Redirects the user to the CAS login page.
@@ -11,11 +18,9 @@ if( isset($_GET['login']) )
 {
 	if( isset($_GET['service']) )
 		$_SESSION['service'] = $_GET['service'];
-
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
-    echo $host;
+    
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
-	//header("Location: $redirect");
+	header("Location: $redirect");
 }
 
 /**
@@ -25,7 +30,6 @@ Redirects the user to the CAS logout page and destroys session data.
 if( isset($_GET['logout']) )
 {
 	session_destroy();
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
 	$redirect = "https://bt-lap.ic.uva.nl/cas/logout";
 	header("Location: $redirect");
 }
@@ -55,9 +59,7 @@ Validates the ticket trough CAS.
 Returns the UvaNetID on succes, false otherwise.
 */
 function wb_verify_ticket($ticket)
-{
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
-	
+{	
 	$ch = curl_init();
 
 	curl_setopt($ch, CURLOPT_URL, "https://bt-lap.ic.uva.nl/cas/serviceValidate?ticket=$ticket&service=$host");

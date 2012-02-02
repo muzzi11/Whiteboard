@@ -6,7 +6,7 @@ $host = 'http://' . $_SERVER['SERVER_NAME'];
 if( isset($_SERVER['REDIRECT_URL']) )
    $host .= $_SERVER['REDIRECT_URL'];
 else
-    $host .= 'webdb1230/whiteboard/src/php/';
+    $host .= '/webdb1230/whiteboard/src/php/authentication.php';
 $host = urlencode($host);
 
 /**

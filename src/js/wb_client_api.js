@@ -34,14 +34,14 @@ Client = function(displayFunc) {
 		//ajax.me.displayHandler = handler;
 		ajax.me.displayHandler = function(response) {
 			if(response=='true') {
-				$('#login a').attributes.href = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').attributes.href = this.serverUrl + 'src/php/authentication.php?login&service=index.html';
 				$('#login a').insert('LOGOUT');
 			} else {
-				$('#login a').attributes.href = this.serverUrl + 'authentication?logout&service=index.html';
+				$('#login a').attributes.href = this.serverUrl + 'src/php/authentication.php?logout&service=index.html';
 				$('#login a').insert('LOGIN');
 			}
 		};
-		ajax.request("query", "GET", "?q=verify");
+		ajax.request("src/php/query.php", "GET", "?q=verify");
 	}
 	
 	/**
@@ -50,7 +50,7 @@ Client = function(displayFunc) {
 	Client.prototype.loadPage = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
-		ajax.request("query", "GET", "?q=sitemap");
+		ajax.request("src/php/query.php", "GET", "?q=sitemap");
 	}
 	
 	/**
@@ -60,7 +60,7 @@ Client = function(displayFunc) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
+		ajax.request("src/php/query.php", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
 	
 	/**
@@ -70,7 +70,7 @@ Client = function(displayFunc) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
+		ajax.request("src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
 	
 	/**
@@ -80,7 +80,7 @@ Client = function(displayFunc) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
-		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}{cmd}".interpolate({
+		ajax.request("src/php/query.php", "GET", "?q=comments&page={nr}&user={user}&post='{post}'{parent}{cmd}".interpolate({
 			nr:pageNr,
 			user:userID, 
 			post:comment, 
@@ -105,14 +105,14 @@ Client = function(displayFunc) {
 		var ajax = new Ajax(function(response) {
 			document.userID = response;
             if(response != '') {
-				$('#login a').attributes['href'].value = this.serverUrl + 'authentication?logout';
+				$('#login a').attributes['href'].value = this.serverUrl + 'src/php/authentication.php?logout';
 				$('#login a').insert('Logout');
 			} else {
-				$('#login a').attributes['href'].value = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').attributes['href'].value = this.serverUrl + 'src/php/authentication.php?login&service=index.html';
 				$('#login a').insert('Login');
 			}
 		}, this.serverUrl);		
-		ajax.request("query", "GET", "?q=user");
+		ajax.request("src/php/query.php", "GET", "?q=user");
 	}
 	
 	//Call init by default.

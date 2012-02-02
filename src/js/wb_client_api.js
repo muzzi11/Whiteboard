@@ -6,18 +6,17 @@
 Client = function(displayFunc) {
 	this.ajax = null;
 	this.serverUrl = null;
-	//this.displayHandler = 0;
 	
+	//Set/Reset initial values.
 	this.init = function(displayFunc){
 		var index = window.location.href.lastIndexOf('/');
 		this.serverUrl = index >= 0 ? window.location.href.substr(0, index) : 'http://' + window.location.host;
 		this.serverUrl += '/';
-
-		//this.displayHandler = displayFunc;
-		//this.ajax = new Ajax(this.successHandler, this.serverUrl);
-		//this.ajax.me = this;
 	}
 	
+	/**
+	* Internal default success handler.
+	*/
 	Client.prototype.successHandler = function(response) {
 		//alert(response);
 		if (response !='')
@@ -25,7 +24,10 @@ Client = function(displayFunc) {
 		///@TODO Format data to something useful.
 		this.me.displayHandler(elems);
 	}
-
+	
+	/**
+	* Verify whether the user is logged in or not. 
+	*/
 	Client.prototype.verifyAuth = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
@@ -42,12 +44,18 @@ Client = function(displayFunc) {
 		ajax.request("query", "GET", "?q=verify");
 	}
 	
+	/**
+	* Retrieve the page sitemap/menu info from the server.
+	*/
 	Client.prototype.loadPage = function(pageNr, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.request("query", "GET", "?q=sitemap");
 	}
 	
+	/**
+	* Retrieve the page content from the server.
+	*/
 	Client.prototype.loadContent = function(pageNr, handler) {
 				this.verifyAuth(null, function(response) {
 			if(response=='true') {
@@ -63,12 +71,20 @@ Client = function(displayFunc) {
 		ajax.me.displayHandler = handler;
 		ajax.request("query", "GET", "?q=content&page={nr}".interpolate({nr:pageNr}));
 	}
+	
+	/**
+	* Retrieve the comments for a page from the server.
+	*/
 	Client.prototype.loadComments = function(pageNr, userID, handler) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
 		ajax.request("query", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
+	
+	/**
+	* Insert comment into the database, and retrieve the result.
+	*/
 	Client.prototype.postComment = function(pageNr, userID, comment, handler, parent, cmd) {
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
@@ -84,14 +100,23 @@ Client = function(displayFunc) {
 			})
 		);
 		
-		//this.ajax.request("Whiteboard/src/php/query.php", "GET", "?q=comments&page={nr}&user={user}".interpolate({nr:pageNr, user:userID}));
 	}
-
+	
+	/**
+	* Test whether a user us a teacher.
+	*/
 	Client.prototype.getIsTeacher = function(userID) {
 		var alphaNum = /[0-9][A-z]+/gi;
 		return alphaNum.test(userID);
 	}
 	
+	Client.prototype.setUserID = function() {
+		var ajax = new Ajax(function(response) {
+			document.userID = response;
+		}, this.serverUrl);		
+		ajax.request("authentication", "GET", "?q=user");
+	}
 	
+	//Call init by default.
 	this.init(displayFunc);
 }

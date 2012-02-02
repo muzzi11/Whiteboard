@@ -57,15 +57,6 @@ Client = function(displayFunc) {
 	* Retrieve the page content from the server.
 	*/
 	Client.prototype.loadContent = function(pageNr, handler) {
-				this.verifyAuth(null, function(response) {
-			if(response=='true') {
-				$('#login a').attributes.href = this.serverUrl + 'authentication?login&service=index.html';
-				$('#login a').insert('Logout');
-			} else {
-				$('#login a').attributes.href = this.serverUrl + 'authentication?logout&service=index.html';
-				$('#login a').insert('Login');
-			}
-		});
 		var ajax = new Ajax(handler, this.serverUrl);
 		ajax.me = this;
 		ajax.me.displayHandler = handler;
@@ -113,8 +104,15 @@ Client = function(displayFunc) {
 	Client.prototype.setUserID = function() {
 		var ajax = new Ajax(function(response) {
 			document.userID = response;
+            if(response != '') {
+				$('#login a').attributes['href'].value = this.serverUrl + 'authentication?logout';
+				$('#login a').insert('Logout');
+			} else {
+				$('#login a').attributes['href'].value = this.serverUrl + 'authentication?login&service=index.html';
+				$('#login a').insert('Login');
+			}
 		}, this.serverUrl);		
-		ajax.request("authentication", "GET", "?user");
+		ajax.request("query", "GET", "?q=user");
 	}
 	
 	//Call init by default.

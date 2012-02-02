@@ -29,18 +29,6 @@ if( isset($_GET['logout']) )
 	header("Location: $redirect");
 }
 
-function wb_get_user_id() {
-	if(isset($_SESSION['UvaNetID']))
-        return $_SESSION['UvaNetID'];
-    else
-        return false;
-}
-
-if ( isset($_GET['user'])) {
-	echo wb_get_user_id();
-}
-
-
 /**
 Proceeds to validate ticket. If ticket is valid, user is inserted into database and user_id is stored in session.
 */

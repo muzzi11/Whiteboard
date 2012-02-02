@@ -153,11 +153,15 @@ else if('comments' == $q)
 	}
 }
 /**
-* Return true when the user is logged in, otherwise return false.
+* Return UvaNetID when the user is logged in, otherwise return false.
 */
-else if('verify' == $q) {
-	session_start();
-	echo isset($_SESSION['user_id']) ? true : false;
+else if ( $q ='user' ) {
+    session_start();
+    
+	if(isset($_SESSION['UvaNetID']))
+        echo $_SESSION['UvaNetID'];
+    else
+        echo '';
 }
 
 else

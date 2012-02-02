@@ -7,13 +7,11 @@ Client = function(displayFunc) {
 	this.ajax = null;
 	this.serverUrl = null;
 	
-	
 	//Set/Reset initial values.
 	this.init = function(displayFunc){
 		var index = window.location.href.lastIndexOf('/');
 		this.serverUrl = index >= 0 ? window.location.href.substr(0, index) : 'http://' + window.location.host;
 		this.serverUrl += '/';
-
 	}
 	
 	/**
@@ -110,6 +108,13 @@ Client = function(displayFunc) {
 	Client.prototype.getIsTeacher = function(userID) {
 		var alphaNum = /[0-9][A-z]+/gi;
 		return alphaNum.test(userID);
+	}
+	
+	Client.prototype.setUserID = function() {
+		var ajax = new Ajax(function(response) {
+			document.userID = response;
+		}, this.serverUrl);		
+		ajax.request("authentication", "GET", "?q=user");
 	}
 	
 	//Call init by default.

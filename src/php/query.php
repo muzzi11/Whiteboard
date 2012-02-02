@@ -90,10 +90,12 @@ else if('content' == $q)
 */
 else if('comments' == $q)
 {
-	session_start();
-	if( isset($_SESSION['user_id'])) //return false;
+	//session_start();
+	require('authentication.php');
+	if( wb_get_user_id()) { //return false;
 		$user = mysql_real_escape_string( $_SESSION['user_id']);
-	else $user = '1';
+		
+
 	if( !isset($_GET['page']) )
 		wb_server_error();
 		
@@ -149,7 +151,7 @@ else if('comments' == $q)
 		echo json_encode($content);
 	}
 		
-		
+	}
 	
 }
 /**

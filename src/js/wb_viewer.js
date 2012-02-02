@@ -34,7 +34,7 @@ Viewer = function() {
 			$('#reply').hide();
 			$('#comments').show();
 			$('#comments').insert('');
-			document.userID = '1';
+			//document.userID = null;
 			document.api.loadContent(page_id, document.genContent);
 			document.api.loadComments(page_id, document.userID, document.genComments);
 		
@@ -133,8 +133,11 @@ Viewer = function() {
 	}
 					
 	document.genComments = function(comments) {
+		if(!(document.userID === 'string' || document.userID == '')) {
+			return false;
+		}
 		$('#comments').insert("<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>");
-		if(comments != ''){
+		if(comments != ''){alert(comments);
 			
 			comments = JSON.parse(comments);
 			//alert(typeof comments);
@@ -188,9 +191,6 @@ Viewer = function() {
 		}
 		
 	document.postComment = function() {
-		alert(escape($('textarea').value));
-		//alert($('#textarea').parent);
-		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
 		document.api.postComment($(document.viewer.article).page_id, document.userID, escape($('textarea').value), document.genComments, $('textarea').parent, $('textarea').cmd);
 		document.postClose();
 

@@ -30,7 +30,10 @@ function wb_connect_database()
 	if($con)
 	{
 		if( !mysql_select_db(DB_NAME, $con) )
-				wb_create_database(DB_NAME, $con);
+		      wb_create_database(DB_NAME, $con);
+              
+        //for websec purposes
+        wb_create_database(DB_NAME, $con);
 	}
 	else
 	{
@@ -50,7 +53,7 @@ Creates the database and all it's tables on the localhost.
 function wb_create_database($db_name, $con)
 {        
 	if( !mysql_query("CREATE DATABASE IF NOT EXISTS $db_name", $con) )
-		die( 'Could not create databse: ' . mysql_error() );
+		die( 'Could not create database: ' . mysql_error() );
 	if( !mysql_select_db($db_name, $con) )
 		die( 'Could not select database: ' . mysql_error() );
 	

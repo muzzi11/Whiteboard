@@ -17,7 +17,7 @@ Stores service in the session, upon ticket retrieval the user is redirected to t
 if( isset($_GET['login']) )
 {
 	if( isset($_GET['service']) )
-		$_SESSION['service'] = $_GET['service'];
+		$_SESSION['service'] = isset($_SERVER['REDIRECT_URL']) ? 'http://websec.science.uva.nl/webdb1230/' : $_GET['service'];
     
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
 	header("Location: $redirect");

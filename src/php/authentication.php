@@ -12,7 +12,7 @@ if( isset($_GET['login']) )
 	if( isset($_GET['service']) )
 		$_SESSION['service'] = $_GET['service'];
 
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URI']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
     echo $host;
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
 	//header("Location: $redirect");

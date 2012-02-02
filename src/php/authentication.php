@@ -12,7 +12,7 @@ if( isset($_GET['login']) )
 	if( isset($_GET['service']) )
 		$_SESSION['service'] = $_GET['service'];
 
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
     echo $host;
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
 	//header("Location: $redirect");
@@ -25,7 +25,7 @@ Redirects the user to the CAS logout page and destroys session data.
 if( isset($_GET['logout']) )
 {
 	session_destroy();
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URI']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
 	$redirect = "https://bt-lap.ic.uva.nl/cas/logout";
 	header("Location: $redirect");
 }
@@ -56,7 +56,7 @@ Returns the UvaNetID on succes, false otherwise.
 */
 function wb_verify_ticket($ticket)
 {
-	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']);
+	$host = urlencode('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PATH_INFO']);
 	
 	$ch = curl_init();
 

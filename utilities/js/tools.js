@@ -162,7 +162,6 @@ Ajax = function(success, server) {
 	this.method = null;
 	this.url = null;
 	this.serverUrl = server;
-	this.me = this;
 	
 	// initialize stuff
 	Ajax.prototype.init = function () {
@@ -178,7 +177,7 @@ Ajax = function(success, server) {
 	//Reset the default states.
 	Ajax.prototype.setDefaults = function() {
 		//this.httpRequestObject.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		this.httpRequestObject.onreadystatechange = this.stateHandler;
+		this.httpRequestObject.onreadystatechange = bind(this, this.stateHandler);
 		this.successFunc = success;
 		this.httpRequestObject.me = this;
 		this.asyncFlag = true;
@@ -210,18 +209,18 @@ Ajax = function(success, server) {
 	
 	//Handle the different states of the Ajax object
 	Ajax.prototype.stateHandler = function() {
-		switch(this.readyState) {
+		switch(this.httpRequestObject.readyState) {
 			case 0: /*uninitialized*/ ; break;
 			case 1: /*loading*/ ; break;
 			case 2: /*loaded*/ ; break;
 			case 3: /*interactive*/ ; break;
 			case 4: /*complete*/ {
-				if (this.status === 200) {
-					this.me.successHandler(this.responseText);
-				} else if (this.status != 0) {
+				if (this.httpRequestObject.status === 200) {
+					this.successHandler(this.httpRequestObject.responseText);
+				} else if (this.httpRequestObject.status != 0) {
 					/// @TODO add parameter for empty response handling.
 					// Just ignore empty reponses for now and alert only on error.
-					alert("ERROR: "+this.status);
+					alert("ERROR: "+this.httpRequestObject.status);
 				}
 				//this.httpRequestObject.close();
 			} ; break;
@@ -248,9 +247,11 @@ Ajax = function(success, server) {
 
 /***
 * @TODO comment function please!
-*
+* Bind a function to another scope.
+* @param scope The function/object/scope on which to bind.
+* @param func The function to bind.
 **/
-function bind(scope, func) {
+bind = function(scope, func) {
 	return function () {
 		func.apply(scope, arguments);
 	};

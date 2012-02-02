@@ -246,9 +246,8 @@ Ajax = function(success, server) {
 }
 
 /***
-* @TODO comment function please!
-* Bind a function to another scope.
-* @param scope The function/object/scope on which to bind.
+* Sets the scope of a function and makes sure it will not be lost.
+* @param scope The function/object/method on which to bind.
 * @param func The function to bind.
 **/
 bind = function(scope, func) {

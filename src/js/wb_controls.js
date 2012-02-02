@@ -1,12 +1,18 @@
 /**
-Creates a tab control and corresponding DOM elements and appends them to parentElement.
+Creates a tabbed navigation control and corresponding DOM elements and appends them to parentElement.
 No elements are created if addTab is never called.
+@param parentElement Is a DOM element.
 */
 function TabControl(parentElement)
 {
 	this.tabs = new Array();
 	this.current_tab = -1;
 	
+    /**
+    Contains the <li> element and holds the content that's displayed for the tab.
+    @param parentElement <li> element of the tab is appended to this element
+    @param label Sets the name of the tab.
+    */
 	function Tab(parentElement, label)
 	{
 		this.content = '';
@@ -14,15 +20,16 @@ function TabControl(parentElement)
 		this.li.innerHTML = label == undefined ? 'Tab' : label;
 		parentElement.appendChild(this.li);
 		
+        /// (De)highlights the tab by setting or removing the class in this.li
 		this.activate = function(state)
 		{
-				if(state)
-					this.li.setAttribute('class', 'current_item');
-				else
-				{
-					if( this.li.hasAttribute('class') )
-						this.li.removeAttribute('class');
-				}
+			if(state)
+				this.li.setAttribute('class', 'current_item');
+			else
+			{
+				if( this.li.hasAttribute('class') )
+					this.li.removeAttribute('class');
+			}
 		}
 	}
 	
@@ -32,7 +39,7 @@ function TabControl(parentElement)
 	this.init = function()
 	{
 		if(this.tabs.length != 0)
-				return;
+			return;
 
 		this.control = document.createElement('div');
 		this.tab_bar = document.createElement('div');
@@ -62,7 +69,7 @@ function TabControl(parentElement)
 		this.tabs[last_index].li.onclick = bind( this, function(){this.activateTab(last_index)} );
 		
 		if(this.current_tab < 0 || this.current_tab >= last_index)
-				this.activateTab(last_index);
+			this.activateTab(last_index);
 				
 		return last_index;
 	}
@@ -73,10 +80,10 @@ function TabControl(parentElement)
 	this.activateTab = function(index)
 	{
 		if(index < 0 || index >= this.tabs.length || index == this.current_tab)
-				return;
+			return;
 		
 		if(this.current_tab >= 0 && this.current_tab < this.tabs.length)
-				this.tabs[this.current_tab].activate(false);
+			this.tabs[this.current_tab].activate(false);
 		this.current_tab = index;
 		this.tabs[index].activate(true);
 		
@@ -85,25 +92,30 @@ function TabControl(parentElement)
 	
 	/**
 	Sets the content of the specified tab and updates the textNode if the tab is currently active.
+    @param index Returned by this.addTab()
 	*/
 	this.setTabContent = function(index, content)
 	{
 		if(index >= 0 && index < this.tabs.length)
 		{
-				this.tabs[index].content = content;
-				if(index == this.current_tab)
-					this.content.innerHTML = content;
+			this.tabs[index].content = content;
+			if(index == this.current_tab)
+				this.content.innerHTML = content;
 		}
 	}
 	
+    /**
+    Instead of replacing the content for the specified tab, it adds it to the bottom of the existing content.
+    @param index Returned by this.addTab()
+    */
 	this.addTabContent = function(index, content)
 	{
 		if(index < 0 || index >= this.tabs.length)
-				return;
+			return;
 				
 		this.tabs[index].content += content;
 		if(index == this.current_tab)
-				this.content.innerHTML = this.tabs[index].content;
+			this.content.innerHTML = this.tabs[index].content;
 	}
 }
 

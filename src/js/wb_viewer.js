@@ -15,16 +15,16 @@ Viewer = function() {
 	}
 	
 	this.displayFunction = function(elems) {
-		var menuControl = new MenuControl( $('#menu') );
+		this.menuControl = new MenuControl( $('#menu') );
 		//alert(elems);
 		$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a class='button' href='#' onclick='document.postClose(); return false;'>Close</a><a class='button' href='#' onclick='document.postComment(); return false;'>Post</a>"});
 		elems = JSON.parse(elems);
 		for (e in elems) {
-				var item_index = menuControl.addItem(elems[e].title);
+				var item_index = this.menuControl.addItem(elems[e].title);
 				var pages = elems[e].children;
 				for(p in pages)
 				{
-					menuControl.addSubItem(item_index, pages[p].page_id, pages[p].title);
+					this.menuControl.addSubItem(item_index, pages[p].page_id, pages[p].title);
 				}
 		}
 
@@ -59,78 +59,107 @@ Viewer = function() {
 				}
 				
 				$('#videos').insert('');
-				
-				var tabControl = new TabControl( $('#tabs') );
-				document.DOMWalker(xmlDoc, tabControl);
+                
+                this.contentGenerator = new ContentGenerator(xmlDoc);
 				
 				if( $('#videos').innerHTML != '' ) {
 					$('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
-				}
-				jwplayer("video").setup({
+				    
+                    jwplayer("video").setup({
 						modes: [
 							{ type: 'html5' },
 							{ type: 'flash', src: 'utilities/jwplayer/player.swf' }
 						]
-					});
+					});                    
+                }
 		}
 	}
 	
-	/**
-	* Ugly as a mofo, bare with me.
-	*/
-	document.DOMWalker = function(doc, tabControl, tab_index, level) {
-		if(!level)
-				var level = 0;
-		if(tab_index == undefined)
-				var tab_index = -1;
-				
-		var nodes = doc.childNodes;
-		for(var i = 0; i < nodes.length; i++) {
-				var tabs = '';
-				for(var t = 1; t < level; t++)
-					tabs += '...';
-									
-				if('folder' == nodes[i].nodeName) {
-					var titles = nodes[i].getElementsByTagName('title');
-					if(titles.length > 0)
-					{
-						if(level == 1) {
-								tab_index = tabControl.addTab(titles[0].firstChild.nodeValue);
-						} else if(level > 0) {
-								tabControl.addTabContent(tab_index, tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />');
-								//$('.tab_content').insert({bottom:tabs + '<em>' + titles[0].firstChild.nodeValue + '</em><br />'});
-						}
-						
-						document.DOMWalker(nodes[i], tabControl, tab_index, level + 1);
-					}
-				} else if('bookmark' == nodes[i].nodeName) {
-					var url = nodes[i].attributes[0].firstChild.nodeValue;
-					
-					var video_ext;
-					if( video_ext = document.getVideoType(url) ) {
-						$('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
-					}
-					if(tab_index < 0)
-						$(document.viewer.article).insert({bottom:tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />'});
-					else
-						tabControl.addTabContent(tab_index, tabs + '<a href=' + url + '>' + nodes[i].getElementsByTagName('title')[0].firstChild.nodeValue + '<br />');
-				}
-								
-				//tab_index = -1;
-		}
-	}
-	
-	/**
-	* Chewbacca
-	* Returns false if the url is not a video url
-	*/
-	document.getVideoType = function(url) {
-		var patt = /(\.avi|\.mp4)/ig;
-		var result = url.match(patt);
-		if(!result)
-				return false; 
-		return result[result.length - 1].replace('\.', '');
-	}
+    /**
+    Generats the content
+    */
+    function ContentGenerator(xmlDoc)
+    {
+        this.tabControl = new TabControl( $('#tabs') );
+        
+        /**
+    	Returns false if the url is not a video url, otherwise returns the video extension as a string
+    	*/
+    	this.getVideoType = function(url) {
+    		var patt = /(\.avi|\.mp4)/ig;
+    		var result = url.match(patt);
+    		if(!result)
+    				return false; 
+    		return result[result.length - 1].replace('\.', '');
+    	}
+        
+        /**
+        Walks trough the folder recursively, adds links to the tab control and inserts video in the #video div
+        */
+        this.walk = function(folder, tab_index)
+        {   
+            var nodes = folder.childNodes;
+            for(var n in nodes)
+            {
+                if('folder' == nodes[n].nodeName)
+                    this.walk(nodes[n], tab_index);
+                else if('bookmark' == nodes[n].nodeName)
+                {
+                    var hrefAttr;
+                    if( nodes[n].hasAttributes() && ( hrefAttr = nodes[n].attributes.getNamedItem('href') ) )
+                    {
+                        var url = hrefAttr.firstChild.nodeValue;
+                        var video_ext;
+    					if( video_ext = this.getVideoType(url) ) {
+    						$('#videos').insert({bottom:'<source src="' + url + '" type="video/' + video_ext + '" />'});
+    					}
+                        
+                        var title;
+                        if(nodes[n].nodeType == 1)
+                        {
+                            var titles = nodes[n].getElementsByTagName('title');
+                            title = titles.length > 0 ? titles[0].firstChild.nodeValue : url;
+                        }
+                        else
+                            title = url;
+                        this.tabControl.addTabContent(tab_index, '<a href='+url+'>' + title + '<br />');
+                    }
+                }
+            }
+        }
+        
+        var nodes = xmlDoc.childNodes;
+        for(var n in nodes)
+        {       
+            if( nodes[n].nodeType != 1 || nodes[n].nodeName != 'folder' )
+                continue;
+                
+            var folders = nodes[n].childNodes;
+            for(var f = 0; f < folders.length; f++)
+            {
+                if(folders[f].nodeType != 1)
+                    continue;
+                
+                var titles = folders[f].getElementsByTagName('title');
+                if('folder' == folders[f].nodeName)
+                {
+    			    var title = titles.length > 0 ? titles[0].firstChild.nodeValue : 'Tab';
+                    var tab_index = this.tabControl.addTab(title);
+                    this.walk(folders[f], tab_index);
+                }
+                else if('bookmark' == folders[f].nodeName)
+                {
+                    var title = titles.length > 0 ? titles[0].firstChild.nodeValue : 'Tab';
+                    var hrefAttr;
+                    if( folders[f].hasAttributes() && ( hrefAttr = folders[f].attributes.getNamedItem('href') ) )
+                    {
+                        var url = hrefAttr.firstChild.nodeValue;
+                        $('#media').insert({bottom:'<a href=' + url + '>' + title + '<br />'});
+                    }
+                }
+            }
+        }
+    }
 					
 	document.genComments = function(comments) {
 		$('#comments').insert("<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>");

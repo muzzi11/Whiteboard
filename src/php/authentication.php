@@ -35,6 +35,7 @@ function wb_get_user_id() {
     else
         return false;
 }
+
 if ( isset($_GET['user'])) {
 	echo wb_get_user_id();
 }

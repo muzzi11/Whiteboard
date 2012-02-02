@@ -162,12 +162,12 @@ Viewer = function() {
     }
 					
 	document.genComments = function(comments) {
-		if(!(document.userID === 'string' || document.userID == '')) {
+		if( document.userID == '') {
+            $('#comments').insert('Login to view and post comments');
 			return false;
 		}
 		$('#comments').insert("<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>");
-		if(comments != ''){alert(comments);
-			
+		if(comments != ''){
 			comments = JSON.parse(comments);
 			//alert(typeof comments);
 			var comment = "<section class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";

@@ -114,7 +114,7 @@ Client = function(displayFunc) {
 		var ajax = new Ajax(function(response) {
 			document.userID = response;
 		}, this.serverUrl);		
-		ajax.request("authentication", "GET", "?q=user");
+		ajax.request("authentication", "GET", "?user");
 	}
 	
 	//Call init by default.

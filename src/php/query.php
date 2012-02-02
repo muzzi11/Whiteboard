@@ -90,10 +90,12 @@ else if('content' == $q)
 */
 else if('comments' == $q)
 {
-	//session_start();
-	require('authentication.php');
-	if( wb_get_user_id()) { //return false;
-		$user = mysql_real_escape_string( $_SESSION['user_id']);
+	session_start();
+    
+    if( isset($_SESSION['user_id']) )
+	   $user_id = $_SESSION['user_id'];
+    else
+        die();
 
 	if( !isset($_GET['page']) )
 		wb_server_error();
@@ -105,7 +107,7 @@ else if('comments' == $q)
 		
 			$comment_id = mysql_escape_string($_GET['del']);
 			$query = "DELETE FROM comments
-						WHERE comment_id='$comment_id' AND user_id='$user'";
+						WHERE comment_id='$comment_id' AND user_id='$user_id'";
 			wb_query($query, $con);
 		}
 	else if(isset($_GET['post'])) {
@@ -118,13 +120,13 @@ else if('comments' == $q)
 			$comment_id = mysql_real_escape_string($_GET['edit']);
 			$query = "UPDATE comments
 						SET comment='$post', datetime=NOW()
-						WHERE comment_id='$comment_id' AND user_id='$user'";
+						WHERE comment_id='$comment_id' AND user_id='$user_id'";
 		}
 		else {
 
 			$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : '0';
 			$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-			VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
+			VALUES ('$post', NOW(),'$user_id', '$page_id', '$parent')";
 		}
 		wb_query($query, $con);
 	}
@@ -149,9 +151,6 @@ else if('comments' == $q)
 		}
 		echo json_encode($content);
 	}
-		
-	}
-	
 }
 /**
 * Return true when the user is logged in, otherwise return false.

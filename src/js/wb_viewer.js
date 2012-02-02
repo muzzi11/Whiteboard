@@ -165,32 +165,27 @@ Viewer = function() {
 					}
 					reply(comments, comments[c].id, 1);
 				}
-			}//alert('');
+			}
 				if( $('#comments').offsetHeight > 500 )
 					$('#comments').insert({bottom:"<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
 			$('#textarea').value = '';
 		}
 		$('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
 			function (all, url) {
-			var ytregex = /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
-			//	alert(ytregex + " \n" +url + " \n"+ ytregex.test(url));
-			if (ytregex.test(url))
-				{alert(url);
+				var ytregex = /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
+				
+				if (ytregex.test(url))
+				{
 			
-			return '<iframe style="max-width: 100%; height: auto;" src="http://www.youtube.com/embed/{url}" frameborder="0" allowfullscreen></iframe>'.interpolate({
-				url: url.split(/[=&]/)[1]
-				});
-			}
-			else{
-		//});
-		// $('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
-		//    function (all, url) {
-		//else {
-			return '<a href="{url}">{url}</a>'.interpolate({url:url});
+					return '<iframe style="max-width: 100%; height: auto;" src="http://www.youtube.com/embed/{url}" frameborder="0" allowfullscreen></iframe>'.interpolate({
+							url: url.split(/[=&]/)[1]
+						});
+				}	
+				else{
+					return '<a href="{url}">{url}</a>'.interpolate({url:url});
+				}
+			});
 		}
-		//);*/
-		});
-	}
 		
 	document.postComment = function() {
 		alert(escape($('textarea').value));
@@ -215,12 +210,8 @@ Viewer = function() {
 		$('#reply').show();
 	}
 		document.deleteComment = function(id) {
-		//alert(id);
-		//alert("PAGE:	"+$('article').page_id+'\nUSER:	'+document.userID+'\nPOST:	'+$('#textarea').value+'\n');
-		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, '&del='+id);
-		//document.postClose();
-
-		//document.sitemap = elems;
+			document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, '&del='+id);
+	
 	}
 
 	Viewer.prototype.reSubMenu = function(nr, content) {

@@ -84,6 +84,10 @@ else if('content' == $q)
 	
 	echo json_encode($content);
 }
+/**
+* Post/Delete/Edit and/or Retrieve comments. page_id is always required.
+* Usage: query?q=comments&page=page_id&[&del=comment_id][&post="text"[&parent=parent][&edit=comment_id]]
+*/
 else if('comments' == $q)
 {
 	session_start();
@@ -116,15 +120,6 @@ else if('comments' == $q)
 						WHERE comment_id='$comment_id' AND user_id='$user'";
 		}
 		else {
-		/*if(isset($_GET['parent'])) {
-			$parent = mysql_real_escape_string( $_GET['parent'] );
-			$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-			VALUES ('$post', NOW(),'$user', '$page_id', '$parent')";
-		} else {
-			$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
-			VALUES ('$post', NOW(),'$user', '$page_id', NULL)";
-			}
-		*/
 
 			$parent = isset($_GET['parent']) ? mysql_real_escape_string( $_GET['parent'] ) : '0';
 			$query = "INSERT INTO comments (comment, datetime, user_id, page_id, reply_ref) 
@@ -157,11 +152,13 @@ else if('comments' == $q)
 		
 	
 }
+/**
+* Return true when the user is logged in, otherwise return false.
+*/
 else if('verify' == $q) {
 	session_start();
 	echo isset($_SESSION['user_id']) ? true : false;
 }
-
 
 else
 	wb_server_error();

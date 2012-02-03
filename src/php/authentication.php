@@ -47,6 +47,9 @@ if( isset($_GET['ticket']) )
         {
             $_SESSION['user_id'] = $user_id;
             $_SESSION['UvaNetID'] = $UvaNetID;
+            
+            if( wb_is_teacher($UvaNetID) )
+                $_SESSION['teacher'] = true;
         }
 	}
 	

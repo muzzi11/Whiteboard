@@ -105,11 +105,13 @@ else if('comments' == $q)
 
 	if (isset($_GET['del'])) {
 		
-			$comment_id = mysql_escape_string($_GET['del']);
-			$query = "DELETE FROM comments
-						WHERE comment_id='$comment_id' AND user_id='$user_id'";
-			wb_query($query, $con);
-		}
+		$comment_id = mysql_escape_string($_GET['del']);
+		$query = "DELETE FROM comments
+					WHERE comment_id='$comment_id'";
+        if( !isset($_SESSION['teacher']) )
+            $query .= " AND user_id='$user_id'";
+		wb_query($query, $con);
+	}
 	else if(isset($_GET['post'])) {
 
 		$post = strip_tags($_GET['post']);

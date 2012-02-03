@@ -216,6 +216,7 @@ function MenuControl(parent_element)
 				}
 				this.cur_sub_item = sub_index;
 				this.sub_items[this.cur_sub_item].setAttribute('class', 'cur_item');
+                window.scroll(0,0);
 		});
 	}
 }

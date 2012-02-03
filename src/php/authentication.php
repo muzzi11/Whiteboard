@@ -41,7 +41,7 @@ if( isset($_GET['ticket']) )
 {
 	require 'user.php';
 	
-	if ( $UvaNetID = wb_verify_ticket($_GET['ticket']) )
+	if ( $UvaNetID = wb_verify_ticket($_GET['ticket'], $host) )
 	{
 		if( $user_id = wb_insert_user($UvaNetID) )
         {
@@ -53,15 +53,15 @@ if( isset($_GET['ticket']) )
         }
 	}
 	
-	/*if( isset($_SESSION['service']) )
-		header('Location: ' . $_SESSION['service']);*/
+	if( isset($_SESSION['service']) )
+		header('Location: ' . $_SESSION['service']);
 }
 
 /**
 Validates the ticket trough CAS.
 Returns the UvaNetID on succes, false otherwise.
 */
-function wb_verify_ticket($ticket)
+function wb_verify_ticket($ticket, $host)
 {	
 	$ch = curl_init();
 

@@ -58,6 +58,8 @@ Viewer = function() {
 					alert(e.message);
 				}
 				
+                if( $('#videos').innerHTML != '' )
+                    jwplayer("video").remove();
 				$('#videos').insert('');
                 
                 this.contentGenerator = new ContentGenerator(xmlDoc);
@@ -65,7 +67,6 @@ Viewer = function() {
 				if( $('#videos').innerHTML != '' ) {
 					$('#videos').insert({top: '<video id="video" width="640" controls="controls">', bottom:'Your browser does not support the video tag.</video>'});
 				    
-                    jwplayer("video").remove();
                     jwplayer("video").setup({
 						modes: [
 							{ type: 'html5' },

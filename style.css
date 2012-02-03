@@ -266,13 +266,14 @@ a.button:hover
 .tab_control
 {
 	margin: 20px 0;
-	width: 720px;
+	width: 722px;
 }
 
 .tab_content
 {
 	padding: 15px;
 	width: 690px;
+    margin-bottom: 20px;
 	float: left;
 	border: solid 1px #ccd8df;
 	border-top-style: none;

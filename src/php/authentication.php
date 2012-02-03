@@ -3,8 +3,8 @@
 session_start();
 
 $host = 'http://' . $_SERVER['SERVER_NAME'];
-if( isset($_SERVER['REDIRECT_URL']) )
-   $host .= $_SERVER['REDIRECT_URL'];
+if( isset($_SERVER['PHP_SELF']) )
+   $host .= $_SERVER['PHP_SELF'];
 else
     $host .= '/webdb1230/whiteboard/src/php/authentication.php';
 $host = urlencode($host);
@@ -17,7 +17,10 @@ Stores service in the session, upon ticket retrieval the user is redirected to t
 if( isset($_GET['login']) )
 {
 	if( isset($_GET['service']) )
-		$_SESSION['service'] = isset($_SERVER['REDIRECT_URL']) ? $_GET['service'] : 'http://websec.science.uva.nl/webdb1230/';
+    {
+		$_SESSION['service'] = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : 'http://websec.science.uva.nl/webdb1230/';
+        $_SESSION['service'] .= $_GET['service'];
+    }
     
 	$redirect = "https://bt-lap.ic.uva.nl/cas/login?service=$host";
 	header("Location: $redirect");
@@ -54,7 +57,13 @@ if( isset($_GET['ticket']) )
 	}
 	
 	if( isset($_SESSION['service']) )
-		header('Location: ' . $_SESSION['service']);
+    {
+        $redirect = $_SESSION['service'];
+        $pos = strpos($redirect, 'src/php/');
+        if($pos !== false)
+            $redirect = substr($redirect, 0, $pos);
+		header('Location: ' . $redirect);
+    }
 }
 
 /**

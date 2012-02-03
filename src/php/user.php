@@ -29,10 +29,10 @@ function wb_insert_user($UvaNetID)
 	//Insert new user and user permission
 	else
 	{
-		if( wb_query("INSERT INTO users(UvaNetID) VALUE('$UvaNetID')") )
+		if( wb_query("INSERT INTO users(UvaNetID) VALUE('$UvaNetID')", $con) )
 		{
 				$user_id = mysql_insert_id($con);
-				wb_query("INSERT INTO permissions(user_id, del) VALUES('$user_id', '" . wb_is_teacher($UvaNetID) . "')");
+				wb_query("INSERT INTO permissions(user_id, del) VALUES('$user_id', '" . wb_is_teacher($UvaNetID) . "')", $con);
 		}
 	}
 	
@@ -44,7 +44,7 @@ Returns 1 if $UvaNetID matches teacher pattern, 0 if not.
 */
 function wb_is_teacher($UvaNetID)
 {
-	return preg_match('/[a-z]/ig', $UvaNetID);
+	return preg_match('/[a-z]/i', $UvaNetID);
 }
 
 ?>

@@ -53,8 +53,8 @@ if( isset($_GET['ticket']) )
         }
 	}
 	
-	if( isset($_SESSION['service']) )
-		header('Location: ' . $_SESSION['service']);
+	/*if( isset($_SESSION['service']) )
+		header('Location: ' . $_SESSION['service']);*/
 }
 
 /**

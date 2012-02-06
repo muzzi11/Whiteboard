@@ -61,7 +61,6 @@ function wb_create_database($db_name, $con)
 	wb_create_content_table($con);
 	wb_create_users_table($con);
 	wb_create_permissions_table($con);
-	wb_create_last_pages_table($con);
 	wb_create_comments_table($con);
 }
 
@@ -138,24 +137,6 @@ function wb_create_permissions_table($con)
 		edit BOOL NOT NULL DEFAULT 1,
 		del BOOL NOT NULL DEFAULT 0,
 		admin BOOL NOT NULL DEFAULT 0
-	) ENGINE=InnoDB';
-	
-	wb_query($query, $con);
-}
-
-/**
-Creates the last_pages table if it doesn't exist yet.
-last_pages is a serialized array of page_ids and corresponding parent page ids: [parent id][page id]
-*/
-function wb_create_last_pages_table($con)
-{
-	$query = 'CREATE TABLE IF NOT EXISTS last_pages
-	(
-		last_page_id SERIAL,
-		PRIMARY KEY(last_page_id),
-		user_id BIGINT UNSIGNED NOT NULL UNIQUE,
-		FOREIGN KEY(user_id) REFERENCES users(user_id),
-		ser_last_pages BLOB
 	) ENGINE=InnoDB';
 	
 	wb_query($query, $con);

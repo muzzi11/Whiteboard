@@ -154,6 +154,7 @@ function wb_create_comments_table($con)
 		user_id BIGINT UNSIGNED NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES users(user_id),
 		page_id INT UNSIGNED NOT NULL,
+        FOREIGN KEY(page_id) REFERENCES sitemap(page_id),
 		datetime DATETIME,
 		comment TEXT,
 		reply_ref BIGINT UNSIGNED NOT NULL DEFAULT 0

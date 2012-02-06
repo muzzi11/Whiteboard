@@ -14,9 +14,12 @@ Viewer = function() {
 		//this.displayFunction = Viewer.displayFunction;
 	}
 	
+	/**
+	* Initial loading function to set up the page.
+	* @param elems Elements returned by a query for the sitemap.
+	*/
 	this.displayFunction = function(elems) {
 		this.menuControl = new MenuControl( $('#menu') );
-		//alert(elems);
 		$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a class='button' href='#' onclick='document.postClose(); return false;'>Close</a><a class='button' href='#' onclick='document.postComment(); return false;'>Post</a>"});
 		elems = JSON.parse(elems);
 		for (e in elems) {
@@ -27,7 +30,12 @@ Viewer = function() {
 					this.menuControl.addSubItem(item_index, pages[p].page_id, pages[p].title);
 				}
 		}
-
+		
+		/**
+		* Attatch to document (hack) to force persistant context.
+		* Load the initial state of the 'page'.
+		* @param page_id ID of the page to load.
+		*/
 		document.loadContent = function(page_id) {
 			$(document.viewer.article).page_id = page_id;
 			$('#textarea').parent = null;
@@ -40,6 +48,11 @@ Viewer = function() {
 		
 		}
 		
+		/**
+		* Attatch to document (hack) to force persistant context.
+		* Load the content of the 'page'
+		* @param response Content to be generated.
+		*/
 		document.genContent = function(response) {
 			response = JSON.parse(response);
 			$("#desc").insert("{desc}".interpolate(response));
@@ -182,7 +195,12 @@ Viewer = function() {
 			]
 		}); 
     }
-					
+	
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Generate the comments in correct order with correct elements, by dumb looping.
+	* @param comments Response containing the comment data.
+	*/
 	document.genComments = function(comments) {
 		if( document.userID == '') {
             $('#comments').insert('Login to view and post comments');
@@ -192,7 +210,7 @@ Viewer = function() {
 		if(comments != ''){
 			comments = JSON.parse(comments);
 			//alert(typeof comments);
-			var comment = "<section class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";
+			var comment = "<div class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</div>";
 			var count = 0;
 			for (c in comments) {
 				count++;

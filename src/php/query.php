@@ -33,9 +33,12 @@ if( 'sitemap' == $q)
 	$pages = array();
 	while( $row = mysql_fetch_array($result) )
 	{
-		$pages[] = array( 'page_id' => $row['page_id'],
+        if($row['active'])
+        {
+            $pages[] = array( 'page_id' => $row['page_id'],
 								'parent_id' => $row['parent_id'],
 								'title' => $row['title'] );
+        }
 	}
 	
 	$sitemap = array();

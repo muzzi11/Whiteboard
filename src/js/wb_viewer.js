@@ -14,9 +14,12 @@ Viewer = function() {
 		//this.displayFunction = Viewer.displayFunction;
 	}
 	
+	/**
+	* Initial loading function to set up the page.
+	* @param elems Elements returned by a query for the sitemap.
+	*/
 	this.displayFunction = function(elems) {
 		this.menuControl = new MenuControl( $('#menu') );
-		//alert(elems);
 		$('#reply').insert({bottom:"<textarea id='textarea'></textarea><a class='button' href='#' onclick='document.postClose(); return false;'>Close</a><a class='button' href='#' onclick='document.postComment(); return false;'>Post</a>"});
 		elems = JSON.parse(elems);
 		for (e in elems) {
@@ -27,7 +30,12 @@ Viewer = function() {
 					this.menuControl.addSubItem(item_index, pages[p].page_id, pages[p].title);
 				}
 		}
-
+		
+		/**
+		* Attatch to document (hack) to force persistant context.
+		* Load the initial state of the 'page'.
+		* @param page_id ID of the page to load.
+		*/
 		document.loadContent = function(page_id) {
 			$(document.viewer.article).page_id = page_id;
 			$('#textarea').parent = null;
@@ -40,6 +48,11 @@ Viewer = function() {
 		
 		}
 		
+		/**
+		* Attatch to document (hack) to force persistant context.
+		* Load the content of the 'page'
+		* @param response Content to be generated.
+		*/
 		document.genContent = function(response) {
 			response = JSON.parse(response);
 			$("#desc").insert("{desc}".interpolate(response));
@@ -182,7 +195,12 @@ Viewer = function() {
 			]
 		}); 
     }
-					
+	
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Generate the comments in correct order with correct elements, by dumb looping.
+	* @param comments Response containing the comment data.
+	*/
 	document.genComments = function(comments) {
 		if( document.userID == '') {
             $('#comments').insert('Login to view and post comments');
@@ -191,8 +209,8 @@ Viewer = function() {
 		$('#comments').insert("<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>");
 		if(comments != ''){
 			comments = JSON.parse(comments);
-			//alert(typeof comments);
-			var comment = "<section class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</section>";
+			//long string, dirty solution, but it works.
+			var comment = "<div class='{class}' style='margin-left:{indent}px;'><b>{user}</b>	{date}	<a href='#' onclick='document.reply({id}); return false;'>No.{nr}</a>	<span style='right:20px; position:relative; float:right;'>[<a href='#' onclick='document.reply({id}); return false;'>reply</a>][<a href='#' onclick='document.editComment({id}); return false;'>edit</a>][<a href='#' onclick='document.deleteComment({id}); return false;'>delete</a>]</span><hr />{text}</div>";
 			var count = 0;
 			for (c in comments) {
 				count++;
@@ -224,6 +242,8 @@ Viewer = function() {
 					$('#comments').insert({bottom:"<a class='button' href='' onclick='document.reply(null); return false;'>Post comment</a>"});
 			$('#textarea').value = '';
 		}
+		
+		//Parse string for link and youtube links to embed them properly. 
 		$('#comments').innerHTML = $('#comments').innerHTML.replace( /((https?|http):\/\/(www\.)?[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi,
 			function (all, url) {
 				var ytregex = /((https?|http):\/\/(www\.)?(youtube|youtu\.be)[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
@@ -240,33 +260,53 @@ Viewer = function() {
 				}
 			});
 		}
-		
+	
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Post function to do what it says.
+	*/
 	document.postComment = function() {
 		document.api.postComment($(document.viewer.article).page_id, document.userID, escape($('textarea').value), document.genComments, $('textarea').parent, $('textarea').cmd);
 		document.postClose();
 
 		//document.sitemap = elems;
 	}
+	
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Close the post window and reset the values.
+	*/
 	document.postClose = function() {
 		$('#textarea').parent = null;
 		$('#textarea').value = '';
 		$('#reply').hide();
 	}
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Open the post window for comment replies to the page.
+	* @param parent of the comment to reply to. 0 or null is top level.
+	*/
 	document.reply = function(parent) {
 		$('#textarea').parent = parent;
 		$('#reply').show();
 	}
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Open the post window for edit replies to the page.
+	* @param id ID of the comment to edit.
+	*/
 	document.editComment = function(id) {
 		$('#textarea').cmd = '&edit='+id;
 		$('#reply').show();
 	}
-		document.deleteComment = function(id) {
-			document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, '&del='+id);
 	
-	}
-
-	Viewer.prototype.reSubMenu = function(nr, content) {
-		alert(nr+"	"+document.sitemap);
+	/**
+	* Attatch to document (hack) to force persistant context.
+	* Delete comment function to do what it says.
+	* @param id ID of the post to delete.
+	*/
+	document.deleteComment = function(id) {
+		document.api.postComment($(document.viewer.article).page_id, document.userID, $('textarea').value, document.genComments, $('textarea').parent, '&del='+id);
 	}
 	
 	this.init();

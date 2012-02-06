@@ -101,6 +101,9 @@ Client = function(displayFunc) {
 		return alphaNum.test(userID);
 	}
 	
+	/**
+	* Get whether the user is logged in, set the ID, swap the login/logout.
+	*/
 	Client.prototype.setUserID = function() {
 		var ajax = new Ajax(function(response) {
 			document.userID = response;
